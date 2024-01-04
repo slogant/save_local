@@ -11,7 +11,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="menuCrearIng">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Crear Ingeniero Soporte"/>
               </Properties>
