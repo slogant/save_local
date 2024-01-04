@@ -139,7 +139,7 @@ public class InitForm extends javax.swing.JFrame {
             out.println("No Actualizado");
         }
         ingSopController.obtenerIngSop().forEachOrdered(out::println);
-        ingSopController.otenerIngSopNumEmp("23445564").forEachOrdered(out::println);
+        ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
         
         menuCrearIng.addActionListener(e->{
         invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true));
