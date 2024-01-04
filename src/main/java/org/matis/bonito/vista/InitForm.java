@@ -134,9 +134,9 @@ public class InitForm extends javax.swing.JFrame {
         }
         var updatesoporte = new IngenieroSoporte("Matias","Peque Bonito","Mi Niño bonito","20201982");
         if(ingSopController.actualizaIngSop("65070600", updatesoporte)) {
-            out.println("Actualizado");
+            out.println("Actualizados");
         } else {
-            out.println("No Actualizado");
+            out.println("No Actualizados");
         }
         ingSopController.obtenerIngSop().forEachOrdered(out::println);
         ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
