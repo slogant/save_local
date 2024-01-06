@@ -2,18 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package org.matis.bonito.controller.formularios;
+package org.matis.bonito.formularios;
+
+import javax.swing.JFrame;
 
 /**
  *
  * @author oscar
  */
-public class ElimnarIngSop extends javax.swing.JDialog {
+public class CrearIngSop extends javax.swing.JDialog {
 
     /**
-     * Creates new form ElimnarIngSop
+     * Creates new form CrearIngSop
+     * @param parent
+     * @param modal
      */
-    public ElimnarIngSop(java.awt.Frame parent, boolean modal) {
+    public CrearIngSop(JFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -28,7 +32,8 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Eliminar");
+        setTitle("Registrar ing");
+        setLocationByPlatform(true);
         setModal(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setResizable(false);
@@ -37,14 +42,15 @@ public class ElimnarIngSop extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 535, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 236, Short.MAX_VALUE)
+            .addGap(0, 382, Short.MAX_VALUE)
         );
 
-        setBounds(0, 0, 480, 266);
+        setSize(new java.awt.Dimension(545, 412));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 

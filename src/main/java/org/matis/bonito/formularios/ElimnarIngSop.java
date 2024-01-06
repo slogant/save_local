@@ -2,20 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package org.matis.bonito.controller.formularios;
+package org.matis.bonito.formularios;
 
 /**
  *
  * @author oscar
  */
-public class EditarIngSop extends javax.swing.JDialog {
+public class ElimnarIngSop extends javax.swing.JDialog {
 
     /**
-     * Creates new form EditarIngSop
-     * @param parent
-     * @param modal
+     * Creates new form ElimnarIngSop
      */
-    public EditarIngSop(java.awt.Frame parent, boolean modal) {
+    public ElimnarIngSop(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -30,8 +28,7 @@ public class EditarIngSop extends javax.swing.JDialog {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Editar");
-        setLocationByPlatform(true);
+        setTitle("Eliminar");
         setModal(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setResizable(false);
@@ -40,17 +37,16 @@ public class EditarIngSop extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 405, Short.MAX_VALUE)
+            .addGap(0, 236, Short.MAX_VALUE)
         );
 
-        setBounds(0, 0, 497, 435);
+        setBounds(0, 0, 480, 266);
     }// </editor-fold>//GEN-END:initComponents
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

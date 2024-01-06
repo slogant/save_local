@@ -2,22 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package org.matis.bonito.controller.formularios;
-
-import javax.swing.JFrame;
+package org.matis.bonito.formularios;
 
 /**
  *
  * @author oscar
  */
-public class CrearIngSop extends javax.swing.JDialog {
+public class EditarIngSop extends javax.swing.JDialog {
 
     /**
-     * Creates new form CrearIngSop
+     * Creates new form EditarIngSop
      * @param parent
      * @param modal
      */
-    public CrearIngSop(JFrame parent, boolean modal) {
+    public EditarIngSop(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -32,7 +30,7 @@ public class CrearIngSop extends javax.swing.JDialog {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registrar ing");
+        setTitle("Editar");
         setLocationByPlatform(true);
         setModal(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
@@ -42,17 +40,17 @@ public class CrearIngSop extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 535, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 382, Short.MAX_VALUE)
+            .addGap(0, 405, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(545, 412));
-        setLocationRelativeTo(null);
+        setBounds(0, 0, 497, 435);
     }// </editor-fold>//GEN-END:initComponents
 
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

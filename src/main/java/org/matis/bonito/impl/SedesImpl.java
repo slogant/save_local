@@ -7,8 +7,19 @@ import java.util.stream.Stream;
 
 public interface SedesImpl {
 
-    public boolean crearSede(Sedes sedes);
-    public boolean EliminarSede(String codigo_sede);
-    public boolean actualizaSede(String codigo_sede,Sedes sedes);
-    public Stream<Sedes> obtenerSedes();
+    public default boolean crearSede(Sedes sedes) {
+        return false;
+    }
+
+    public default boolean EliminarSede(String codigo_sede) {
+        return false;
+    }
+
+    public default boolean actualizaSede(String codigo_sede, Sedes sedes) {
+        return false;
+    }
+
+    public default Stream<Sedes> obtenerSedes() {
+        return null;
+    }
 }

@@ -6,9 +6,23 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public interface IngSopImpl {
-    boolean crearIngSop(IngenieroSoporte ing);
-    boolean eliminarIngsop(String numeroEmp);
-    boolean actualizaIngSop(String numeroEmp, IngenieroSoporte ingenieroSoporte);
-    Stream<IngenieroSoporte> obtenerIngSop();
-    Stream<IngenieroSoporte> otenerIngSopNumEmp(String numeroEmp);
+    default boolean crearIngSop(IngenieroSoporte ing) {
+        return false;
+    }
+
+    default boolean eliminarIngsop(String numeroEmp) {
+        return false;
+    }
+
+    default boolean actualizaIngSop(String numeroEmp, IngenieroSoporte ingenieroSoporte) {
+        return false;
+    }
+
+    default Stream<IngenieroSoporte> obtenerIngSop() {
+        return null;
+    }
+
+    default Stream<IngenieroSoporte> otenerIngSopNumEmp(String numeroEmp) {
+        return null;
+    }
 }

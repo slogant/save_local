@@ -8,7 +8,7 @@ import java.io.Serializable;
 import static jakarta.persistence.Persistence.*;
 import static java.util.Objects.requireNonNull;
 
-public class ConectaEntityDB implements Serializable {
+public final class ConectaEntityDB implements Serializable {
     static public EntityManager obtenerEntityManager(EntityManagerFactory entityManagerFactory) {
         if ((entityManagerFactory != null) || !requireNonNull(entityManagerFactory.isOpen())) {
             return entityManagerFactory.createEntityManager();
@@ -24,5 +24,9 @@ public class ConectaEntityDB implements Serializable {
             return null;
         }
     }
-    static final private String MATIS = "bonitomatis";
+    static final private String MATIS;
+
+    static {
+        MATIS = "bonitomatis";
+    }
 }

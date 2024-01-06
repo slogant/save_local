@@ -7,8 +7,19 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public interface SistemaOperativoImpl {
-    public boolean crearSistemaOperativo(SistemaOperativo sistemaOperativo);
-    public boolean EliminarSistemaOperativo(Long id_sistema);
-    public boolean actualizaSistemaOperativo(SistemaOperativo sistemaOperativo);
-    public Stream<SistemaOperativo> obtenerSistemaOperativo();
+    public default boolean crearSistemaOperativo(SistemaOperativo sistemaOperativo) {
+        return false;
+    }
+
+    public default boolean EliminarSistemaOperativo(Long id_sistema) {
+        return false;
+    }
+
+    public default boolean actualizaSistemaOperativo(SistemaOperativo sistemaOperativo) {
+        return false;
+    }
+
+    public default Stream<SistemaOperativo> obtenerSistemaOperativo() {
+        return null;
+    }
 }

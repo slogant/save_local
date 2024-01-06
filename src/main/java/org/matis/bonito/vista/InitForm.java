@@ -10,7 +10,7 @@ import org.matis.bonito.model.IngenieroSoporte;
 
 import static java.lang.System.out;
 import javax.swing.JFrame;
-import org.matis.bonito.controller.formularios.CrearIngSop;
+import org.matis.bonito.formularios.CrearIngSop;
 
 /**
  *
