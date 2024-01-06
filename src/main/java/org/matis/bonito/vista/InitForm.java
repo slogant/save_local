@@ -141,9 +141,7 @@ public class InitForm extends javax.swing.JFrame {
         ingSopController.obtenerIngSop().forEachOrdered(out::println);
         ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
         
-        menuCrearIng.addActionListener(e->{
-        invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true));
-        });
+        menuCrearIng.addActionListener(_ -> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
