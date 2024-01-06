@@ -31,6 +31,8 @@ public class Inicia {
             getLogger(InitForm.class.getName()).log(SEVERE, null, ex);
         }
         /* Create and display the form */
-        invokeLater(() -> new InitForm().setVisible(true));
+        invokeLater(() -> {
+            new InitForm().setVisible(true);
+        });
     }
 }
