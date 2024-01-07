@@ -4,9 +4,15 @@
  */
 package org.matis.bonito.formularios;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+
+import org.matis.bonito.controller.IngSopController;
+import org.matis.bonito.model.IngenieroSoporte;
 import org.matis.bonito.validador.JTextFieldLimit;
 import org.matis.bonito.validador.LimitandorTexto;
+
+import static java.awt.Toolkit.getDefaultToolkit;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  *
@@ -45,7 +51,7 @@ public class CrearIngSop extends javax.swing.JDialog {
         textoApellidoPat = new javax.swing.JTextField();
         textApellidoMat = new javax.swing.JTextField();
         textNumEmp = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
         cerrar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
@@ -72,8 +78,10 @@ public class CrearIngSop extends javax.swing.JDialog {
 
         textNumEmp.setDocument(new JTextFieldLimit(8,false));
 
-        jButton1.setText("Guardar");
+        guardar.setMnemonic('G');
+        guardar.setText("Guardar");
 
+        cerrar.setMnemonic('C');
         cerrar.setText("Cerrar");
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
@@ -119,7 +127,7 @@ public class CrearIngSop extends javax.swing.JDialog {
                                             .addComponent(textoApellidoPat, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(guardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cerrar)
                         .addGap(6, 6, 6)))
@@ -158,7 +166,7 @@ public class CrearIngSop extends javax.swing.JDialog {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(guardar)
                     .addComponent(cerrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,12 +182,91 @@ public class CrearIngSop extends javax.swing.JDialog {
 
     private void misComponetes() {
         this.setUndecorated(true);
-        cerrar.addActionListener(_->this.dispose());
+        guardar.setEnabled(false);
+        textoNombre.addActionListener(e->{
+            var textnombre = textoNombre.getText();
+            if (textnombre.isEmpty()) {
+                showMessageDialog(this, "El campo nombre está vacío", "Monitor", 0);
+                getDefaultToolkit().beep();
+                textoNombre.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+        textoApellidoPat.addActionListener(e->{
+            var apellidoPat = textoApellidoPat.getText();
+            if (apellidoPat.isEmpty()) {
+                showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", 0);
+                textoApellidoPat.requestFocus();
+                getDefaultToolkit().beep();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        textApellidoMat.addActionListener(e->{
+            var apellidoPat = textApellidoMat.getText();
+            if (apellidoPat.isEmpty()) {
+                showMessageDialog(this,"El campo apellido materno esta vacío...","Monitor", 0);
+                textApellidoMat.requestFocus();
+                getDefaultToolkit().beep();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        textNumEmp.addActionListener(e -> {
+            var numEmp = textNumEmp.getText();
+            if (numEmp.isEmpty()) {
+                showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", 0);
+                textNumEmp.requestFocus();
+                getDefaultToolkit().beep();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+                guardar.setEnabled(true);
+            }
+        });
+        guardar.addActionListener(e->{guardarDatos();});
+        cerrar.addActionListener(e->this.dispose());
+    }
+    
+    private void guardarDatos() {
+        var ingSoporte = new IngenieroSoporte();
+        var nombre = textoNombre.getText();
+        var apellidoPat = textoApellidoPat.getText();
+        var apellidoMat = textApellidoMat.getText();
+        var numEmp = textNumEmp.getText();
+        ingSoporte.setNombre_ing(nombre);
+        ingSoporte.setApellido_pat(apellidoPat);
+        ingSoporte.setApellido_mat(apellidoMat);
+        ingSoporte.setNumero_empleado(numEmp);
+        var ingSopController = new IngSopController();
+        if(nombre.isEmpty()) {
+            showMessageDialog(this,"El campo nombre esta vacío...","Monitor", 0);
+            textoNombre.requestFocus();
+        } else if(apellidoPat.isEmpty()) {
+            showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", 0);
+            textoApellidoPat.requestFocus();
+        } else if(apellidoMat.isEmpty()) {
+            showMessageDialog(this,"El campo apellido materno esta vacío...","Monitor", 0);
+            textApellidoMat.requestFocus();
+        } else if(numEmp.isEmpty()) {
+            showMessageDialog(this,"El campo numero empleado esta vacío...","Monitor", 0);
+            textNumEmp.requestFocus();
+        } else if(ingSopController.crearIngSop(ingSoporte)) {
+            showMessageDialog(this,"Datos gardados correctamente","Monitor", 1);
+            textoNombre.requestFocus();
+            textoNombre.setText("");
+            textoApellidoPat.setText("");
+            textApellidoMat.setText("");
+            textNumEmp.setText("");
+            guardar.setEnabled(false);
+        }
     }
       
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
