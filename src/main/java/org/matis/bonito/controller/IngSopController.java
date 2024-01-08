@@ -140,7 +140,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             var soloIngeSop = requireNonNull(emfa).createNamedQuery("FindBy.NumeroEmp",IngenieroSoporte.class);
             soloIngeSop.setParameter(1,numeroEmp);
             requireNonNull(emfa).getTransaction().commit();
-            return soloIngeSop.getResultStream();
+            return soloIngeSop.setMaxResults(1).getResultStream();
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             return null;

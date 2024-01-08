@@ -2,7 +2,6 @@ package org.matis.bonito.impl;
 
 import org.matis.bonito.model.IngenieroSoporte;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 public interface IngSopImpl {
@@ -22,6 +21,11 @@ public interface IngSopImpl {
         return null;
     }
 
+    /**
+     *
+     * @param numeroEmp
+     * @return
+     */
     default Stream<IngenieroSoporte> otenerIngSopNumEmp(String numeroEmp) {
         return null;
     }

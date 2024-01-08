@@ -220,7 +220,7 @@ public class CrearIngSop extends javax.swing.JDialog {
                 var ingSopController = new IngSopController();
                 var emp = ingSopController.otenerIngSopNumEmp(numEmp);
                 if (emp != null) {
-                    showMessageDialog(this, "Número de empleado ya registrado....", "Monitor", INFORMATION_MESSAGE);
+                    showMessageDialog(this, "Número de empleado ya registrado....", "Monitor", ERROR_MESSAGE);
                     textNumEmp.requestFocus();
                     getDefaultToolkit().beep();
                     textNumEmp.select(0, textNumEmp.getText().length());
