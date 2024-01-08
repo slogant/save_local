@@ -22,7 +22,6 @@ import static javax.swing.JOptionPane.*;
  */
 public class CrearIngSop extends javax.swing.JDialog {
 
-
     public CrearIngSop(JFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -176,11 +175,10 @@ public class CrearIngSop extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void misComponentes() {
         this.setUndecorated(true);
         guardar.setEnabled(false);
-        textoNombre.addActionListener(e->{
+        textoNombre.addActionListener(e -> {
             var textnombre = textoNombre.getText();
             if (textnombre.isEmpty()) {
                 showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
@@ -190,10 +188,10 @@ public class CrearIngSop extends javax.swing.JDialog {
                 ((JComponent) e.getSource()).transferFocus();
             }
         });
-        textoApellidoPat.addActionListener(e->{
+        textoApellidoPat.addActionListener(e -> {
             var apellidoPat = textoApellidoPat.getText();
             if (apellidoPat.isEmpty()) {
-                showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", ERROR_MESSAGE);
+                showMessageDialog(this, "El campo apellido paterno esta vacío...", "Monitor", ERROR_MESSAGE);
                 textoApellidoPat.requestFocus();
                 getDefaultToolkit().beep();
             } else {
@@ -201,10 +199,10 @@ public class CrearIngSop extends javax.swing.JDialog {
             }
         });
 
-        textApellidoMat.addActionListener(e->{
+        textApellidoMat.addActionListener(e -> {
             var apellidoPat = textApellidoMat.getText();
             if (apellidoPat.isEmpty()) {
-                showMessageDialog(this,"El campo apellido materno esta vacío...","Monitor", ERROR_MESSAGE);
+                showMessageDialog(this, "El campo apellido materno esta vacío...", "Monitor", ERROR_MESSAGE);
                 textApellidoMat.requestFocus();
                 getDefaultToolkit().beep();
             } else {
@@ -215,24 +213,37 @@ public class CrearIngSop extends javax.swing.JDialog {
         textNumEmp.addActionListener(e -> {
             var numEmp = textNumEmp.getText();
             if (numEmp.isEmpty()) {
-                showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", ERROR_MESSAGE);
+                showMessageDialog(this, "El campo numero de empleado esta vacío...", "Monitor", ERROR_MESSAGE);
                 textNumEmp.requestFocus();
                 getDefaultToolkit().beep();
             } else {
-                ((JComponent) e.getSource()).transferFocus();
-                guardar.setEnabled(true);
+                var ingSopController = new IngSopController();
+                var emp = ingSopController.otenerIngSopNumEmp(numEmp);
+                if (emp != null) {
+                    showMessageDialog(this, "Número de empleado ya registrado....", "Monitor", INFORMATION_MESSAGE);
+                    textNumEmp.requestFocus();
+                    getDefaultToolkit().beep();
+                    textNumEmp.select(0, textNumEmp.getText().length());
+                } else {
+                    ((JComponent) e.getSource()).transferFocus();
+                    guardar.setEnabled(true);
+                    
+                }
             }
         });
 
         guardar.addActionListener(this::actionPerformed);
         cerrar.addActionListener(this::actionPerformed2);
     }
+
     private void actionPerformed(ActionEvent e) {
         guardarDatos();
     }
+
     private void actionPerformed2(ActionEvent e) {
         this.dispose();
     }
+
     private void guardarDatos() {
         var ingSoporte = new IngenieroSoporte();
         var nombre = textoNombre.getText();
@@ -244,20 +255,20 @@ public class CrearIngSop extends javax.swing.JDialog {
         ingSoporte.setApellido_mat(apellidoMat);
         ingSoporte.setNumero_empleado(numEmp);
         var ingSopController = new IngSopController();
-        if(nombre.isEmpty()) {
-            showMessageDialog(this,"El campo nombre esta vacío...","Monitor", ERROR_MESSAGE);
+        if (nombre.isEmpty()) {
+            showMessageDialog(this, "El campo nombre esta vacío...", "Monitor", ERROR_MESSAGE);
             textoNombre.requestFocus();
-        } else if(apellidoPat.isEmpty()) {
-            showMessageDialog(this,"El campo apellido paterno esta vacío...","Monitor", ERROR_MESSAGE);
+        } else if (apellidoPat.isEmpty()) {
+            showMessageDialog(this, "El campo apellido paterno esta vacío...", "Monitor", ERROR_MESSAGE);
             textoApellidoPat.requestFocus();
-        } else if(apellidoMat.isEmpty()) {
-            showMessageDialog(this,"El campo apellido materno esta vacío...","Monitor", ERROR_MESSAGE);
+        } else if (apellidoMat.isEmpty()) {
+            showMessageDialog(this, "El campo apellido materno esta vacío...", "Monitor", ERROR_MESSAGE);
             textApellidoMat.requestFocus();
-        } else if(numEmp.isEmpty()) {
-            showMessageDialog(this,"El campo numero empleado esta vacío...","Monitor", ERROR_MESSAGE);
+        } else if (numEmp.isEmpty()) {
+            showMessageDialog(this, "El campo numero empleado esta vacío...", "Monitor", ERROR_MESSAGE);
             textNumEmp.requestFocus();
-        } else if(ingSopController.crearIngSop(ingSoporte)) {
-            showMessageDialog(this,"Datos gardados correctamente","Monitor", INFORMATION_MESSAGE);
+        } else if (ingSopController.crearIngSop(ingSoporte)) {
+            showMessageDialog(this, "Datos gardados correctamente", "Monitor", INFORMATION_MESSAGE);
             textoNombre.requestFocus();
             textoNombre.setText("");
             textoApellidoPat.setText("");
