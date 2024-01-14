@@ -11,6 +11,7 @@ import org.matis.bonito.model.IngenieroSoporte;
 import static java.lang.System.out;
 import javax.swing.JFrame;
 import org.matis.bonito.formularios.CrearIngSop;
+import org.matis.bonito.formularios.EditarIngSop;
 
 /**
  *
@@ -41,7 +42,7 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuCrearIng = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuEditaIng = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -83,8 +84,8 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuCrearIng);
         MenuAdmin.add(jSeparator2);
 
-        jMenuItem2.setText("Editar Ingeniero Soporte");
-        MenuAdmin.add(jMenuItem2);
+        menuEditaIng.setText("Editar Ingeniero Soporte");
+        MenuAdmin.add(menuEditaIng);
         MenuAdmin.add(jSeparator4);
 
         jMenuItem3.setText("Eliminar Ingeniero Soporte");
@@ -142,12 +143,12 @@ public class InitForm extends javax.swing.JFrame {
         ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
         
         menuCrearIng.addActionListener(e-> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
+        menuEditaIng.addActionListener(e-> invokeLater(() -> new EditarIngSop(new JFrame(),true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -164,5 +165,6 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenuItem menuCrearIng;
+    private javax.swing.JMenuItem menuEditaIng;
     // End of variables declaration//GEN-END:variables
 }

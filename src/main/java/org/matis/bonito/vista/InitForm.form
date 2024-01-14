@@ -18,7 +18,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="menuEditaIng">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar Ingeniero Soporte"/>
               </Properties>
