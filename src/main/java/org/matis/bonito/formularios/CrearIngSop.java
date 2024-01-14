@@ -4,17 +4,14 @@
  */
 package org.matis.bonito.formularios;
 
-import javax.swing.*;
-
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.model.IngenieroSoporte;
 import org.matis.bonito.validador.JTextFieldLimit;
 import org.matis.bonito.validador.LimitandorTexto;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.System.out;
