@@ -21,11 +21,7 @@ public interface IngSopImpl {
         return null;
     }
 
-    /**
-     *
-     * @param numeroEmp
-     * @return
-     */
+
     default Stream<IngenieroSoporte> otenerIngSopNumEmp(String numeroEmp) {
         return null;
     }
