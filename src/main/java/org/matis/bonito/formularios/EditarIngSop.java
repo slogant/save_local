@@ -4,6 +4,7 @@
  */
 package org.matis.bonito.formularios;
 
+import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.model.IngenieroSoporte;
 
@@ -23,6 +24,7 @@ public class EditarIngSop extends javax.swing.JDialog {
     public EditarIngSop(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        model = new DefaultTableModel(null, new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Apellido Paterno"});
         cargandoMisComponentes();
     }
 
@@ -37,6 +39,8 @@ public class EditarIngSop extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         comboEmpleado = new javax.swing.JComboBox<>();
+        scroll = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar");
@@ -47,16 +51,36 @@ public class EditarIngSop extends javax.swing.JDialog {
 
         jLabel1.setText("Numero empleado: ");
 
+        scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        scroll.setViewportView(tabla);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scroll)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -65,10 +89,12 @@ public class EditarIngSop extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(624, 196));
+        setSize(new java.awt.Dimension(624, 429));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -77,14 +103,20 @@ public class EditarIngSop extends javax.swing.JDialog {
         comboEmpleado.removeAllItems();
         comboEmpleado.addItem(null);
         ing.obtenerIngSop().forEach(this::ingresa);
-    }
+        tabla.setModel(model);
+    }  
      private void ingresa(IngenieroSoporte ing) {
         comboEmpleado.addItem(ing);
+        model.addRow(new Object[]{ing.getNumero_empleado(), ing.getApellido_pat(), ing.getApellido_mat(), ing.getNumero_empleado()});
     }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<IngenieroSoporte> comboEmpleado;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane scroll;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+   
+    private DefaultTableModel model;
 }
