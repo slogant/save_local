@@ -29,4 +29,12 @@ public interface IngSopImpl {
     default Stream<IngenieroSoporte> otenerIngSopNumEmp(String numeroEmp) {
         return null;
     }
+
+    /**
+     * @param numeroEmpleado
+     * @return
+     */
+    default IngenieroSoporte obtenerIngenieroSoporteActivo(String numeroEmpleado) {
+        return null;
+    }
 }

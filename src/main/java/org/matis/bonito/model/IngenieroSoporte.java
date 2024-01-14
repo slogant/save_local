@@ -14,7 +14,8 @@ import static java.lang.StringTemplate.STR;
         @NamedQuery(name = "IngenieroSoporte.countBy", query = "select count(i) from IngenieroSoporte i"),
         @NamedQuery(name = "FindBy.NumeroEmp", query = "select i from IngenieroSoporte i where i.numero_empleado like ?1"),
         @NamedQuery(name = "IngenieroSoporte.countByNumero_empleado", query = "select count(i) from IngenieroSoporte i where i.numero_empleado = ?1"),
-        @NamedQuery(name = "IngenieroSoporte.findByNumero_Empleado", query = "select  i from IngenieroSoporte i where i.numero_empleado like ?1")
+        @NamedQuery(name = "IngenieroSoporte.findByNumero_Empleado", query = "select  i from IngenieroSoporte i where i.numero_empleado = ?1"),
+        @NamedQuery(name = "Find.IngNum", query = "select i from IngenieroSoporte i where i.numero_empleado = :numero_empleado")
 })
 public class IngenieroSoporte implements Serializable {
 

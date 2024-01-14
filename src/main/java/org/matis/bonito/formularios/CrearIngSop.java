@@ -11,9 +11,13 @@ import org.matis.bonito.model.IngenieroSoporte;
 import org.matis.bonito.validador.JTextFieldLimit;
 import org.matis.bonito.validador.LimitandorTexto;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import static java.awt.Toolkit.getDefaultToolkit;
+import static java.lang.System.out;
 import static javax.swing.JOptionPane.*;
 
 /**
@@ -213,21 +217,21 @@ public class CrearIngSop extends javax.swing.JDialog {
         textNumEmp.addActionListener(e -> {
             var numEmp = textNumEmp.getText();
             if (numEmp.isEmpty()) {
-                showMessageDialog(this, "El campo numero de empleado esta vacío...", "Monitor", ERROR_MESSAGE);
                 textNumEmp.requestFocus();
                 getDefaultToolkit().beep();
             } else {
                 var ingSopController = new IngSopController();
-                var emp = ingSopController.otenerIngSopNumEmp(numEmp);
+                var emp = ingSopController.obtenerIngenieroSoporteActivo(numEmp);
+                out.println(emp);
                 if (emp != null) {
-                    showMessageDialog(this, "Número de empleado ya registrado....", "Monitor", ERROR_MESSAGE);
                     textNumEmp.requestFocus();
                     getDefaultToolkit().beep();
                     textNumEmp.select(0, textNumEmp.getText().length());
+                    textNumEmp.setSelectedTextColor(Color.RED);
                 } else {
+                    System.out.println();
                     ((JComponent) e.getSource()).transferFocus();
                     guardar.setEnabled(true);
-                    
                 }
             }
         });
