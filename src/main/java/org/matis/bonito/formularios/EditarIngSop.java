@@ -16,15 +16,11 @@ import org.matis.bonito.model.IngenieroSoporte;
  */
 public class EditarIngSop extends javax.swing.JDialog {
 
-    /**
-     * Creates new form EditarIngSop
-     * @param parent
-     * @param modal
-     */
+
     public EditarIngSop(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        model = new DefaultTableModel(null, new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Apellido Paterno"});
+        model = new DefaultTableModel(null, new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Número de empleado"});
         cargandoMisComponentes();
     }
 
@@ -108,6 +104,7 @@ public class EditarIngSop extends javax.swing.JDialog {
      private void ingresa(IngenieroSoporte ing) {
         comboEmpleado.addItem(ing);
         model.addRow(new Object[]{ing.getNombre_ing(), ing.getApellido_pat(), ing.getApellido_mat(), ing.getNumero_empleado()});
+        System.out.println(ing.getId_ing_soporte());
     }
    
 
@@ -117,6 +114,5 @@ public class EditarIngSop extends javax.swing.JDialog {
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
-   
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 }
