@@ -144,7 +144,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             assert emfa != null;
             requireNonNull(emfa).getTransaction().begin();
             var soloIngeSop = requireNonNull(emfa).createNamedQuery("FindBy.NumeroEmp",IngenieroSoporte.class);
-            soloIngeSop.setParameter(1,numeroEmp);
+            soloIngeSop.setParameter(1,"%"+ numeroEmp + "%");
             requireNonNull(emfa).getTransaction().commit();
             return soloIngeSop.getResultStream();
         } catch (Exception e) {
