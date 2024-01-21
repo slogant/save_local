@@ -5,6 +5,7 @@ import org.matis.bonito.model.IngenieroSoporte;
 import java.util.stream.Stream;
 
 public interface IngSopImpl {
+    
     default boolean crearIngSop(IngenieroSoporte ing) {
         return false;
     }

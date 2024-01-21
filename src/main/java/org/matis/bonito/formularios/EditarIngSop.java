@@ -108,6 +108,7 @@ public class EditarIngSop extends javax.swing.JDialog {
      private void ingresa(IngenieroSoporte ing) {
         comboEmpleado.addItem(ing);
         model.addRow(new Object[]{ing.getNombre_ing(), ing.getApellido_pat(), ing.getApellido_mat(), ing.getNumero_empleado()});
+         System.out.println(ing.getId_ing_soporte());
     }
    
 
