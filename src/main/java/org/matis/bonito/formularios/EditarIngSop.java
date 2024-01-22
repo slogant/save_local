@@ -199,6 +199,7 @@ public class EditarIngSop extends javax.swing.JDialog {
     private void cargandoMisComponentes() {
         var ing = new IngSopController();
         btnSave.setEnabled(false);
+        tabla.setDefaultEditor(Object.class, null);
         textNombre.addActionListener(e -> {
             var textnombre = textNombre.getText();
             if (textnombre.isEmpty()) {
