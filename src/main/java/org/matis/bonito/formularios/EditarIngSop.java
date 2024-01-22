@@ -5,13 +5,15 @@
 package org.matis.bonito.formularios;
 
 import java.awt.Color;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.model.IngenieroSoporte;
 
+import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.System.out;
 import java.util.Objects;
-import javax.swing.JComponent;
+
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -24,7 +26,7 @@ import org.matis.bonito.validador.LimitandorTexto;
  */
 public class EditarIngSop extends javax.swing.JDialog {
 
-    public EditarIngSop(java.awt.Frame parent, boolean modal) {
+    public EditarIngSop(JFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         model = new DefaultTableModel(null, new Object[]{"Nombre", "Apellido Paterno", "Apellido Materno", "Número de empleado"});
@@ -204,7 +206,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             var textnombre = textNombre.getText();
             if (textnombre.isEmpty()) {
                 showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 textNombre.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -214,7 +216,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             var textapellidopaterno = textApePat.getText();
             if (textapellidopaterno.isEmpty()) {
                 showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 textApePat.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -224,7 +226,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             var textapellidomaterno = textApeMat.getText();
             if (textapellidomaterno.isEmpty()) {
                 showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 textApeMat.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -234,7 +236,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             var numEmp = textNumEmp.getText();
             if ("".equals(numEmp)) {
                 showMessageDialog(this, "El número de empleado esta vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 textNumEmp.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -265,14 +267,14 @@ public class EditarIngSop extends javax.swing.JDialog {
                 emp.filter(Objects::nonNull).forEach(e -> model.addRow(new Object[]{e.getNombre_ing(), e.getApellido_pat(), e.getApellido_mat(), e.getNumero_empleado()}));
                 tabla.setModel(model);
             } else if (emp.count() == 0) {
-                System.out.println("Sin registro....." + emp.count());
-                DefaultTableModel dm = (DefaultTableModel) tabla.getModel();
+                out.println(STR."Sin registro.....\{emp.count()}");
+                var dm = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 tabla.setModel(dm);
                 tabla.updateUI();
             }
         } else {
-            DefaultTableModel dm = (DefaultTableModel) tabla.getModel();
+            var dm = (DefaultTableModel) tabla.getModel();
             model.setRowCount(0);
             tabla.setModel(dm);
             tabla.updateUI();
@@ -285,7 +287,7 @@ public class EditarIngSop extends javax.swing.JDialog {
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         // TODO add your handling code here:
         if (tabla.getModel() != null) {
-            int seleccion = tabla.getSelectedRow();
+            var seleccion = tabla.getSelectedRow();
             if (seleccion >= 0) {
                 textNombre.setText(tabla.getValueAt(seleccion, 0).toString());
                 textApePat.setText(tabla.getValueAt(seleccion, 1).toString());
@@ -298,7 +300,7 @@ public class EditarIngSop extends javax.swing.JDialog {
                 btnSave.setEnabled(true);
             }
         } else {
-            System.out.println("Error.........................");
+            out.println("Error.........................");
         }
     }//GEN-LAST:event_tablaMouseClicked
 
@@ -306,7 +308,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         var nombre = textNombre.getText();
         if(nombre.isEmpty()) {
             showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 textNombre.requestFocus();
         } else {
               ((JComponent) evt.getSource()).transferFocus();
