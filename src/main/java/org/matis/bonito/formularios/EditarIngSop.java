@@ -4,18 +4,25 @@
  */
 package org.matis.bonito.formularios;
 
+import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.model.IngenieroSoporte;
 
-
+import static java.lang.System.out;
+import java.util.Objects;
+import javax.swing.JComponent;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
+import org.matis.bonito.validador.JTextFieldLimit;
+import org.matis.bonito.validador.LimitandorTexto;
 
 /**
  *
  * @author oscar
  */
 public class EditarIngSop extends javax.swing.JDialog {
-
 
     public EditarIngSop(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -37,6 +44,16 @@ public class EditarIngSop extends javax.swing.JDialog {
         comboEmpleado = new javax.swing.JComboBox<>();
         scroll = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        textBuscarNumEmp = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        textNombre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        textApePat = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        textApeMat = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        textNumEmp = new javax.swing.JTextField();
+        btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar");
@@ -61,7 +78,48 @@ public class EditarIngSop extends javax.swing.JDialog {
 
             }
         ));
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         scroll.setViewportView(tabla);
+
+        textBuscarNumEmp.setDocument(new JTextFieldLimit(8,true));
+        textBuscarNumEmp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textBuscarNumEmp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textBuscarNumEmpKeyReleased(evt);
+            }
+        });
+
+        jLabel2.setText("Nombre: ");
+
+        textNombre.setDocument(new LimitandorTexto(textNombre,35));
+        textNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textNombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                textNombreFocusLost(evt);
+            }
+        });
+
+        jLabel3.setText("Apellido Paterno: ");
+
+        textApePat.setDocument(new LimitandorTexto(textApePat, 30));
+        textApePat.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel4.setText("Apellido Materno: ");
+
+        textApeMat.setDocument(new LimitandorTexto(textApeMat,35));
+        textApeMat.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel5.setText("Número emp: ");
+
+        textNumEmp.setDocument(new JTextFieldLimit(8, true));
+        textNumEmp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        btnSave.setMnemonic('A');
+        btnSave.setText("Actualizar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,49 +128,210 @@ public class EditarIngSop extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 18, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textBuscarNumEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(194, 194, 194)
+                                .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addComponent(jLabel5)
+                                        .addGap(25, 25, 25))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel4))
+                                        .addGap(18, 18, 18)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(textNumEmp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                                        .addComponent(textApeMat, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(textApePat, javax.swing.GroupLayout.Alignment.LEADING)))))
+                        .addGap(0, 74, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSave))
+                    .addComponent(scroll))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
+                    .addComponent(textBuscarNumEmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(textApePat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textApeMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textNumEmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSave)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(624, 429));
+        setSize(new java.awt.Dimension(653, 413));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargandoMisComponentes() {
         var ing = new IngSopController();
+        btnSave.setEnabled(false);
+        textNombre.addActionListener(e -> {
+            var textnombre = textNombre.getText();
+            if (textnombre.isEmpty()) {
+                showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                textNombre.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+        textApePat.addActionListener(e -> {
+            var textapellidopaterno = textApePat.getText();
+            if (textapellidopaterno.isEmpty()) {
+                showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                textApePat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+        textApeMat.addActionListener(e -> {
+            var textapellidomaterno = textApeMat.getText();
+            if (textapellidomaterno.isEmpty()) {
+                showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                textApeMat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+        textNumEmp.addActionListener(e -> {
+            var numEmp = textNumEmp.getText();
+            if ("".equals(numEmp)) {
+                showMessageDialog(this, "El número de empleado esta vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                textNumEmp.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
         comboEmpleado.removeAllItems();
         comboEmpleado.addItem(null);
         ing.obtenerIngSop().forEach(this::ingresa);
-        tabla.setModel(model);
-    }  
-     private void ingresa(IngenieroSoporte ing) {
-        comboEmpleado.addItem(ing);
-        model.addRow(new Object[]{ing.getNombre_ing(), ing.getApellido_pat(), ing.getApellido_mat(), ing.getNumero_empleado()});
-        System.out.println(ing.getId_ing_soporte());
+        //tabla.setModel(model);
+        btnSave.addActionListener(e -> actualizaDatos());
     }
-   
+
+    private void ingresa(IngenieroSoporte ing) {
+        comboEmpleado.addItem(ing);
+        //model.addRow(new Object[]{ing.getNombre_ing(), ing.getApellido_pat(), ing.getApellido_mat(), ing.getNumero_empleado()});
+        out.println(ing.getId_ing_soporte());
+    }
+
+    @SuppressWarnings("null")
+    private void textBuscarNumEmpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBuscarNumEmpKeyReleased
+        // TODO add your handling code here:
+        var empleadoEncontrado = textBuscarNumEmp.getText();
+        var ingSopController = new IngSopController();
+        if (!empleadoEncontrado.isEmpty()) {
+            var emp = ingSopController.otenerIngSopNumEmp(empleadoEncontrado);
+            if (emp != null) {
+                emp.filter(Objects::nonNull).forEach(e -> model.addRow(new Object[]{e.getNombre_ing(), e.getApellido_pat(), e.getApellido_mat(), e.getNumero_empleado()}));
+                tabla.setModel(model);
+            } else if (emp.count() == 0) {
+                System.out.println("Sin registro....." + emp.count());
+                DefaultTableModel dm = (DefaultTableModel) tabla.getModel();
+                model.setRowCount(0);
+                tabla.setModel(dm);
+                tabla.updateUI();
+            }
+        } else {
+            DefaultTableModel dm = (DefaultTableModel) tabla.getModel();
+            model.setRowCount(0);
+            tabla.setModel(dm);
+            tabla.updateUI();
+            out.println("Registro no encontrado");
+            btnSave.setEnabled(false);
+        }
+
+    }//GEN-LAST:event_textBuscarNumEmpKeyReleased
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+        if (tabla.getModel() != null) {
+            int seleccion = tabla.getSelectedRow();
+            if (seleccion >= 0) {
+                textNombre.setText(tabla.getValueAt(seleccion, 0).toString());
+                textApePat.setText(tabla.getValueAt(seleccion, 1).toString());
+                textApeMat.setText(tabla.getValueAt(seleccion, 2).toString());
+                textNumEmp.setText(tabla.getValueAt(seleccion, 3).toString());
+                textBuscarNumEmp.setEnabled(false);
+                textNombre.requestFocus();
+                textNombre.selectAll();
+                textNombre.setSelectedTextColor(Color.RED);
+                btnSave.setEnabled(true);
+            }
+        } else {
+            System.out.println("Error.........................");
+        }
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void textNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textNombreFocusLost
+        var nombre = textNombre.getText();
+        if(nombre.isEmpty()) {
+            showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                textNombre.requestFocus();
+        } else {
+              ((JComponent) evt.getSource()).transferFocus();
+        }
+    }//GEN-LAST:event_textNombreFocusLost
+
+    private void actualizaDatos() {
+        var nombre = textNombre.getText();
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<IngenieroSoporte> comboEmpleado;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tabla;
+    private javax.swing.JTextField textApeMat;
+    private javax.swing.JTextField textApePat;
+    private javax.swing.JTextField textBuscarNumEmp;
+    private javax.swing.JTextField textNombre;
+    private javax.swing.JTextField textNumEmp;
     // End of variables declaration//GEN-END:variables
-    private final DefaultTableModel model;
+    private DefaultTableModel model;
 }
