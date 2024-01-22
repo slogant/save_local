@@ -317,7 +317,28 @@ public class EditarIngSop extends javax.swing.JDialog {
 
     private void actualizaDatos() {
         var nombre = textNombre.getText();
-
+        var apellidopat = textApePat.getText();
+        var apellidomat = textApeMat.getText();
+        var numemp = textNumEmp.getText();
+        var ingSopController = new IngSopController();
+        var ingeniero = new IngenieroSoporte(nombre,apellidopat,apellidomat,numemp);
+        if(ingSopController.crearIngSop(ingeniero)) {
+            showMessageDialog(this, "Datos guardados correctamente.....", "Monitor", INFORMATION_MESSAGE);
+            var dm = (DefaultTableModel) tabla.getModel();
+            model.setRowCount(0);
+            tabla.setModel(dm);
+            tabla.updateUI();
+            btnSave.setEnabled(false);
+            textBuscarNumEmp.setEnabled(true);
+            textBuscarNumEmp.setText("");
+            textBuscarNumEmp.requestFocus();
+            textNombre.setText("");
+            textApePat.setText("");
+            textApeMat.setText("");
+            textNumEmp.setText("");
+        } else {
+            showMessageDialog(this, "No fue posible guardar los datos", "Monitor", ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
