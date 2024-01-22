@@ -323,7 +323,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         var ingSopController = new IngSopController();
         var ingeniero = new IngenieroSoporte(nombre,apellidopat,apellidomat,numemp);
         if(ingSopController.crearIngSop(ingeniero)) {
-            showMessageDialog(this, "Datos guardados correctamente.....", "Monitor", INFORMATION_MESSAGE);
+            showMessageDialog(this, "Datos guardados.....", "Monitor", INFORMATION_MESSAGE);
             var dm = (DefaultTableModel) tabla.getModel();
             model.setRowCount(0);
             tabla.setModel(dm);
@@ -337,7 +337,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             textApeMat.setText("");
             textNumEmp.setText("");
         } else {
-            showMessageDialog(this, "No fue posible guardar los datos", "Monitor", ERROR_MESSAGE);
+            showMessageDialog(this, "No se guardaron los datos", "Monitor", ERROR_MESSAGE);
         }
     }
 
