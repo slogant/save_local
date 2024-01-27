@@ -25,7 +25,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="menuEliminaIng">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Eliminar Ingeniero Soporte"/>
               </Properties>
