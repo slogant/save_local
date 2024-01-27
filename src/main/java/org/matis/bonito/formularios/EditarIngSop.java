@@ -249,11 +249,9 @@ public class EditarIngSop extends javax.swing.JDialog {
                 ((JComponent) e.getSource()).transferFocus();
             }
         });
-
         comboEmpleado.removeAllItems();
         comboEmpleado.addItem(null);
         ing.obtenerIngSop().forEach(this::ingresa);
-        //tabla.setModel(model);
         btnSave.addActionListener(e -> actualizaDatos());
     }
 
@@ -274,9 +272,7 @@ public class EditarIngSop extends javax.swing.JDialog {
                 emp.filter(Objects::nonNull).forEach(e -> model.addRow(new Object[]{e.getNombre_ing(), e.getApellido_pat(), e.getApellido_mat(), e.getNumero_empleado()}));
                 tabla.setModel(model);
             } else if (emp.count() == 0) {
-                out.println(STR."Sin registro.....\{emp.count()
-                
-                }");
+                out.println(STR."Sin registro.....\{emp.count()}");
                 var dm = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 tabla.setModel(dm);

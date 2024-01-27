@@ -8,12 +8,12 @@ import java.awt.Color;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.StringTemplate.STR;
 import static java.lang.System.out;
+import static javax.swing.JOptionPane.*;
+
 import java.util.Objects;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.validador.ForcedListSelectionModel;
@@ -171,9 +171,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 emp.filter(Objects::nonNull).forEach(e -> model.addRow(new Object[]{e.getNombre_ing(), e.getApellido_pat(), e.getApellido_mat(), e.getNumero_empleado()}));
                 tabla.setModel(model);
             } else if (emp.count() == 0) {
-                out.println(STR."Sin registro.....\{emp.count()
-                
-                }");
+                out.println(STR."Sin registro.....\{emp.count()}");
                 var dm = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
                 tabla.setModel(dm);
@@ -221,7 +219,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 var numemp = tabla.getValueAt(seleccion, 3).toString();
                 if (!numemp.isEmpty()) {
                     if (ingSopController.eliminarIngsop(numemp)) {
-                        JOptionPane.showMessageDialog(this, "Registro eliminado", "Monitor", JOptionPane.INFORMATION_MESSAGE);
+                        showMessageDialog(this, "Registro eliminado", "Monitor", INFORMATION_MESSAGE);
                         eliminar.setEnabled(false);
                         textNumEmpleado.requestFocus();
                         textNumEmpleado.setText("");
@@ -230,7 +228,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                         tabla.setModel(dm);
                         tabla.updateUI();
                     } else {
-                        JOptionPane.showMessageDialog(this, "No se logro eliminar registro", "Monitor", JOptionPane.ERROR_MESSAGE);
+                        showMessageDialog(this, "No se logro eliminar registro", "Monitor", ERROR_MESSAGE);
                     }
                 }
             }
