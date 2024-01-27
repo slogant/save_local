@@ -4,17 +4,17 @@
  */
 package org.matis.bonito.formularios;
 
+import java.awt.Color;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.StringTemplate.STR;
 import static java.lang.System.out;
 import java.util.Objects;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.validador.ForcedListSelectionModel;
 
@@ -86,6 +86,11 @@ public class ElimnarIngSop extends javax.swing.JDialog {
             }
         ));
         tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         scroll.setViewportView(tabla);
 
         eliminar.setMnemonic('E');
@@ -152,6 +157,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 ((JComponent) e.getSource()).transferFocus();
             }
         });
+        eliminar.addActionListener(e -> eliminado());
     }
 
 
@@ -186,7 +192,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     private void textNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textNombreFocusLost
         // TODO add your handling code here:
         var nombre = textNumEmpleado.getText();
-        if (nombre.isEmpty()) {
+        if (nombre.equals("")) {
             showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
             getDefaultToolkit().beep();
             textNumEmpleado.requestFocus();
@@ -195,6 +201,43 @@ public class ElimnarIngSop extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_textNombreFocusLost
 
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+        if (tabla.getModel() != null) {
+            var seleccion = tabla.getSelectedRow();
+            if (seleccion >= 0) {
+                eliminar.setEnabled(true);
+            }
+        } else {
+            out.println("Error.........................");
+        }
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void eliminado() {
+        if (tabla.getModel() != null) {
+            var seleccion = tabla.getSelectedRow();
+            if (seleccion >= 0) {
+                var ingSopController = new IngSopController();
+                var numemp = tabla.getValueAt(seleccion, 3).toString();
+                if (!numemp.isEmpty()) {
+                    if (ingSopController.eliminarIngsop(numemp)) {
+                        JOptionPane.showMessageDialog(this, "Registro eliminado", "Monitor", JOptionPane.INFORMATION_MESSAGE);
+                        eliminar.setEnabled(false);
+                        textNumEmpleado.requestFocus();
+                        textNumEmpleado.setText("");
+                        var dm = (DefaultTableModel) tabla.getModel();
+                        model.setRowCount(0);
+                        tabla.setModel(dm);
+                        tabla.updateUI();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se logro eliminar registro", "Monitor", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        } else {
+            out.println("Error.........................");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton eliminar;
