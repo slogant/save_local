@@ -45,6 +45,11 @@ public class IngSopController implements Serializable, IngSopImpl {
         }
     }
 
+    /**
+     *
+     * @param numeroEmp
+     * @return
+     */
     @Override
     public boolean eliminarIngsop(String numeroEmp) {
         var emt = obtenerEntityManagerFactory();
