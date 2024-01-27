@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import org.matis.bonito.controller.IngSopController;
+import org.matis.bonito.validador.ForcedListSelectionModel;
 
 /**
  *
@@ -139,20 +140,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     private void cargaMisComponente() {
         textNumEmpleado.requestFocus();
         tabla.setDefaultEditor(Object.class, null);
-        tabla.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        ListSelectionModel listaModel = tabla.getSelectionModel();
-        listaModel.addListSelectionListener((e) -> {
-            if(e.getValueIsAdjusting()) {
-                return;
-            } 
-            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-            if(lsm.isSelectionEmpty()){
-                System.out.println("Seleccion vacía.....");
-            } else {
-                int valor = lsm.getMinSelectionIndex();
-                System.out.println(valor);
-            }
-        });
+        tabla.setSelectionModel(new ForcedListSelectionModel());
         eliminar.setEnabled(false);
         textNumEmpleado.addActionListener(e -> {
             var numEmp = textNumEmpleado.getText();
@@ -178,6 +166,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 tabla.setModel(model);
             } else if (emp.count() == 0) {
                 out.println(STR."Sin registro.....\{emp.count()
+                
                 }");
                 var dm = (DefaultTableModel) tabla.getModel();
                 model.setRowCount(0);
