@@ -17,6 +17,7 @@ import java.util.Objects;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
+
 import org.matis.bonito.validador.ForcedListSelectionModel;
 import org.matis.bonito.validador.JTextFieldLimit;
 import org.matis.bonito.validador.LimitandorTexto;
@@ -70,7 +71,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
+        /*tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -80,7 +81,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             new String [] {
 
             }
-        ));
+        ));*/
         //tabla.setSelectionMode(new ForcedListSelectionModel());
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -203,19 +204,7 @@ public class EditarIngSop extends javax.swing.JDialog {
     private void cargandoMisComponentes() {
         var ing = new IngSopController();
         tabla.setDefaultEditor(Object.class, null);
-        var listaModel = tabla.getSelectionModel();
-        listaModel.addListSelectionListener((e) -> {
-            if (e.getValueIsAdjusting()) {
-                return;
-            }
-            var lsm = (ListSelectionModel) e.getSource();
-            if (lsm.isSelectionEmpty()) {
-                out.println("Seleccion vacía.....");
-            } else {
-                var valor = lsm.getMinSelectionIndex();
-                out.println(valor);
-            }
-        });
+        tabla.setSelectionModel(new ForcedListSelectionModel());
         tabla.setFocusable(false);
         tabla.setRowSelectionAllowed(true);
         tabla.setDefaultEditor(Object.class, null);
@@ -343,7 +332,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         var ingSopController = new IngSopController();
         var ingeniero = new IngenieroSoporte(nombre, apellidopat, apellidomat, numemp);
         if (ingSopController.crearIngSop(ingeniero)) {
-            showMessageDialog(this, "Datos guardados.....", "Monitor", INFORMATION_MESSAGE);
+            showMessageDialog(this, "Dato actualizado correctamente.....", "Monitor", INFORMATION_MESSAGE);
             var dm = (DefaultTableModel) tabla.getModel();
             model.setRowCount(0);
             tabla.setModel(dm);
