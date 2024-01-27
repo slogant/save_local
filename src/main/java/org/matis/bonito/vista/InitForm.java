@@ -12,6 +12,7 @@ import static java.lang.System.out;
 import javax.swing.JFrame;
 import org.matis.bonito.formularios.CrearIngSop;
 import org.matis.bonito.formularios.EditarIngSop;
+import org.matis.bonito.formularios.ElimnarIngSop;
 
 /**
  *
@@ -44,7 +45,7 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuEditaIng = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuEliminaIng = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
@@ -88,8 +89,8 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuEditaIng);
         MenuAdmin.add(jSeparator4);
 
-        jMenuItem3.setText("Eliminar Ingeniero Soporte");
-        MenuAdmin.add(jMenuItem3);
+        menuEliminaIng.setText("Eliminar Ingeniero Soporte");
+        MenuAdmin.add(menuEliminaIng);
         MenuAdmin.add(jSeparator3);
 
         jMenuItem4.setText("Registrar sede");
@@ -144,12 +145,12 @@ public class InitForm extends javax.swing.JFrame {
         
         menuCrearIng.addActionListener(e-> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
         menuEditaIng.addActionListener(e-> invokeLater(() -> new EditarIngSop(new JFrame(),true).setVisible(true)));
+        menuEliminaIng.addActionListener(e-> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -166,5 +167,6 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenuItem menuCrearIng;
     private javax.swing.JMenuItem menuEditaIng;
+    private javax.swing.JMenuItem menuEliminaIng;
     // End of variables declaration//GEN-END:variables
 }
