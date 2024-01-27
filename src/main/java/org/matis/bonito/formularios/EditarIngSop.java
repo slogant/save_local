@@ -208,12 +208,12 @@ public class EditarIngSop extends javax.swing.JDialog {
             if (e.getValueIsAdjusting()) {
                 return;
             }
-            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+            var lsm = (ListSelectionModel) e.getSource();
             if (lsm.isSelectionEmpty()) {
-                System.out.println("Seleccion vacía.....");
+                out.println("Seleccion vacía.....");
             } else {
-                int valor = lsm.getMinSelectionIndex();
-                System.out.println(valor);
+                var valor = lsm.getMinSelectionIndex();
+                out.println(valor);
             }
         });
         tabla.setFocusable(false);
