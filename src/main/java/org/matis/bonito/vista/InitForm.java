@@ -6,6 +6,7 @@ package org.matis.bonito.vista;
 
 import static java.awt.EventQueue.invokeLater;
 import org.matis.bonito.controller.IngSopController;
+import org.matis.bonito.controller.SedeController;
 import org.matis.bonito.model.IngenieroSoporte;
 
 import static java.lang.System.out;
@@ -14,6 +15,7 @@ import org.matis.bonito.formularios.CrearIngSop;
 import org.matis.bonito.formularios.CrearSede;
 import org.matis.bonito.formularios.EditarIngSop;
 import org.matis.bonito.formularios.ElimnarIngSop;
+import org.matis.bonito.model.Sedes;
 
 /**
  *
@@ -124,11 +126,18 @@ public class InitForm extends javax.swing.JFrame {
 
     private void cargaComponentes() {
         var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez","65070610");
+        var sede = new Sedes("Torre Tp", "A000001");
         var ingSopController = new IngSopController();
+        var sedesCotroller = new SedeController();
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
             out.println("No se logro el registro");
+        }
+        if(sedesCotroller.crearSede(sede)) {
+            out.println("Sede guardada");
+        } else {
+            out.println("No se logro el registro de la sede......");
         }
         if (ingSopController.eliminarIngsop("23445564")) {
             out.println("Eliminado");

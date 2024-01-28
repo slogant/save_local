@@ -11,7 +11,8 @@ import java.io.Serializable;
 @Table(name = "sedes")
 @NamedQueries({
         @NamedQuery(name = "Sedes.findAll", query = "select s from Sedes s"),
-        @NamedQuery(name = "Sedes.findByCodigo_sedeLike", query = "select s from Sedes s where s.codigo_sede like ?1")
+        @NamedQuery(name = "Sedes.findByCodigo_sedeLike", query = "select s from Sedes s where s.codigo_sede like ?1"),
+        @NamedQuery(name = "Sedes.findLast", query = "select s from Sedes s order by s.id_sede desc")
 })
 
 public class Sedes implements Serializable {

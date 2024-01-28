@@ -109,6 +109,6 @@ public class IngenieroSoporte implements Serializable {
     @Column(name = "apellido_mat",nullable = false,length = 80)
     private String apellido_mat;
     @NotNull
-    @Column(name = "numero_empleado", length = 180)
+    @Column(name = "numero_empleado", length = 180, unique = true)
     private String numero_empleado;
 }
