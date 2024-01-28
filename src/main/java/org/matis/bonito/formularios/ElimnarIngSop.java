@@ -61,11 +61,6 @@ public class ElimnarIngSop extends javax.swing.JDialog {
 
         jLabel1.setText("Número Emp: ");
 
-        textNumEmpleado.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                textNombreFocusLost(evt);
-            }
-        });
         textNumEmpleado.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 textBuscarNumEmpKeyReleased(evt);
@@ -141,7 +136,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaMisComponente() {
-        textNumEmpleado.requestFocus();
+        
         this.getRootPane().setDefaultButton(eliminar);
         tabla.setDefaultEditor(Object.class, null);
         tabla.setSelectionModel(new ForcedListSelectionModel());
@@ -156,6 +151,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 ((JComponent) e.getSource()).transferFocus();
             }
         });
+        textNumEmpleado.requestFocus();
         eliminar.addActionListener(e -> eliminado());
     }
 
@@ -185,18 +181,6 @@ public class ElimnarIngSop extends javax.swing.JDialog {
             eliminar.setEnabled(false);
         }
     }//GEN-LAST:event_textBuscarNumEmpKeyReleased
-
-    private void textNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textNombreFocusLost
-        // TODO add your handling code here:
-        var nombre = textNumEmpleado.getText();
-        if (nombre.equals("")) {
-            //showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
-            getDefaultToolkit().beep();
-            textNumEmpleado.requestFocus();
-        } else {
-            ((JComponent) evt.getSource()).transferFocus();
-        }
-    }//GEN-LAST:event_textNombreFocusLost
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         // TODO add your handling code here:
