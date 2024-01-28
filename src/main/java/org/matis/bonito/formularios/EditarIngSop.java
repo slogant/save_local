@@ -58,12 +58,14 @@ public class EditarIngSop extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         textNumEmp = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
+        cerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar");
         setLocationByPlatform(true);
         setModal(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setUndecorated(true);
         setResizable(false);
 
         jLabel1.setText("Numero empleado: ");
@@ -71,7 +73,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        /*tabla.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -81,8 +83,7 @@ public class EditarIngSop extends javax.swing.JDialog {
             new String [] {
 
             }
-        ));*/
-        //tabla.setSelectionMode(new ForcedListSelectionModel());
+        ));
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaMouseClicked(evt);
@@ -126,6 +127,9 @@ public class EditarIngSop extends javax.swing.JDialog {
         btnSave.setMnemonic('A');
         btnSave.setText("Actualizar");
 
+        cerrar.setMnemonic('e');
+        cerrar.setText("Cerrar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,7 +165,8 @@ public class EditarIngSop extends javax.swing.JDialog {
                                         .addComponent(textApePat, javax.swing.GroupLayout.Alignment.LEADING)))))
                         .addGap(0, 74, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cerrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSave))
                     .addComponent(scroll))
                 .addContainerGap())
@@ -193,11 +198,13 @@ public class EditarIngSop extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSave)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSave)
+                    .addComponent(cerrar))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(653, 413));
+        setSize(new java.awt.Dimension(643, 383));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -253,6 +260,7 @@ public class EditarIngSop extends javax.swing.JDialog {
         comboEmpleado.addItem(null);
         ing.obtenerIngSop().forEach(this::ingresa);
         btnSave.addActionListener(e -> actualizaDatos());
+        cerrar.addActionListener(e-> dispose());
     }
 
     private void ingresa(IngenieroSoporte ing) {
@@ -348,6 +356,7 @@ public class EditarIngSop extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton cerrar;
     private javax.swing.JComboBox<IngenieroSoporte> comboEmpleado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -51,12 +51,14 @@ public class ElimnarIngSop extends javax.swing.JDialog {
         scroll = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         eliminar = new javax.swing.JButton();
+        cerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Eliminar");
         setLocationByPlatform(true);
         setModal(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setUndecorated(true);
         setResizable(false);
 
         jLabel1.setText("Número Emp: ");
@@ -89,6 +91,9 @@ public class ElimnarIngSop extends javax.swing.JDialog {
         eliminar.setMnemonic('E');
         eliminar.setText("Eliminar");
 
+        cerrar.setMnemonic('e');
+        cerrar.setText("Cerrar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,12 +109,12 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                         .addComponent(textNumEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cerrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(eliminar)))
                 .addContainerGap())
         );
@@ -127,11 +132,13 @@ public class ElimnarIngSop extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(eliminar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(eliminar)
+                    .addComponent(cerrar))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(525, 343));
+        setSize(new java.awt.Dimension(515, 313));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -152,7 +159,8 @@ public class ElimnarIngSop extends javax.swing.JDialog {
             }
         });
         textNumEmpleado.requestFocus();
-        eliminar.addActionListener(e -> eliminado());
+        eliminar.addActionListener(e-> eliminado());
+        cerrar.addActionListener(e-> this.dispose());
     }
 
 
@@ -221,6 +229,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cerrar;
     private javax.swing.JButton eliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
