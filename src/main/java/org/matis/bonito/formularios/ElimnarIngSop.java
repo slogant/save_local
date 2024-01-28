@@ -4,7 +4,6 @@
  */
 package org.matis.bonito.formularios;
 
-import java.awt.Color;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.StringTemplate.STR;
 import static java.lang.System.out;
@@ -13,7 +12,6 @@ import static javax.swing.JOptionPane.*;
 import java.util.Objects;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.validador.ForcedListSelectionModel;
@@ -192,7 +190,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
         // TODO add your handling code here:
         var nombre = textNumEmpleado.getText();
         if (nombre.equals("")) {
-            showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
+            //showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
             getDefaultToolkit().beep();
             textNumEmpleado.requestFocus();
         } else {
