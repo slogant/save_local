@@ -68,6 +68,7 @@ public class SedeController implements Serializable, SedesImpl {
     }
 
     /**
+     * @param codigo_sede
      * @param sedes 
      * @return
      */
