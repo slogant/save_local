@@ -144,6 +144,7 @@ public class ElimnarIngSop extends javax.swing.JDialog {
 
     private void cargaMisComponente() {
         textNumEmpleado.requestFocus();
+        this.getRootPane().setDefaultButton(eliminar);
         tabla.setDefaultEditor(Object.class, null);
         tabla.setSelectionModel(new ForcedListSelectionModel());
         eliminar.setEnabled(false);
