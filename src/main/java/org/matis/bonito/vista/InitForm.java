@@ -11,6 +11,7 @@ import org.matis.bonito.model.IngenieroSoporte;
 import static java.lang.System.out;
 import javax.swing.JFrame;
 import org.matis.bonito.formularios.CrearIngSop;
+import org.matis.bonito.formularios.CrearSede;
 import org.matis.bonito.formularios.EditarIngSop;
 import org.matis.bonito.formularios.ElimnarIngSop;
 
@@ -47,7 +48,7 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         menuEliminaIng = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        MenuCrearSede = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
@@ -93,8 +94,8 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuEliminaIng);
         MenuAdmin.add(jSeparator3);
 
-        jMenuItem4.setText("Registrar sede");
-        MenuAdmin.add(jMenuItem4);
+        MenuCrearSede.setText("Registrar sede");
+        MenuAdmin.add(MenuCrearSede);
         MenuAdmin.add(jSeparator5);
 
         jMenuItem6.setText("Registrar piso");
@@ -146,12 +147,13 @@ public class InitForm extends javax.swing.JFrame {
         menuCrearIng.addActionListener(e-> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
         menuEditaIng.addActionListener(e-> invokeLater(() -> new EditarIngSop(new JFrame(),true).setVisible(true)));
         menuEliminaIng.addActionListener(e-> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
+        MenuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
+    private javax.swing.JMenuItem MenuCrearSede;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
