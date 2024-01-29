@@ -134,11 +134,11 @@ public class InitForm extends javax.swing.JFrame {
         } else {
             out.println("No se logro el registro");
         }
-        if(sedesCotroller.crearSede(sede)) {
+       /* if(sedesCotroller.crearSede(sede)) {
             out.println("Sede guardada");
         } else {
             out.println("No se logro el registro de la sede......");
-        }
+        }*/
         if (ingSopController.eliminarIngsop("23445564")) {
             out.println("Eliminado");
         } else {

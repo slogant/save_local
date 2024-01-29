@@ -11,13 +11,19 @@ import java.io.Serializable;
 @Table(name = "sedes")
 @NamedQueries({
         @NamedQuery(name = "Sedes.findAll", query = "select s from Sedes s"),
-        @NamedQuery(name = "Sedes.findByCodigo_sedeLike", query = "select s from Sedes s where s.codigo_sede like ?1"),
-        @NamedQuery(name = "Sedes.findLast", query = "select s from Sedes s order by s.id_sede desc")
+        @NamedQuery(name = "Sedes.findByCodigo_sede", query = "select s from Sedes s where s.codigo_sede = ?1"),
+        @NamedQuery(name = "Sedes.findByNombre_sede", query = "select s from Sedes s where s.nombre_sede = ?1"),
+        @NamedQuery(name = "Sedes.findLast", query = "select s from Sedes s where s.nombre_sede = ?1 order by s.id_sede desc"),
+        @NamedQuery(name = "Sedes.findByCodigo_sedelike", query = "select s from Sedes s where s.codigo_sede like ?1")
 })
 
 public class Sedes implements Serializable {
 
     public Sedes() {
+    }
+
+    public Sedes(String codigo_sede) {
+        this.codigo_sede = codigo_sede;
     }
 
     public Sedes(long id_sede, String nombre_sede) {
@@ -56,7 +62,7 @@ public class Sedes implements Serializable {
 
     @Override
     public String toString() {
-        return  nombre_sede;
+        return STR."\{nombre_sede} \{codigo_sede}";
     }
 
     @NotNull

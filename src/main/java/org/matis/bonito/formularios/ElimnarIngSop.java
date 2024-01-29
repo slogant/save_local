@@ -143,7 +143,6 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaMisComponente() {
-        
         this.getRootPane().setDefaultButton(eliminar);
         tabla.setDefaultEditor(Object.class, null);
         tabla.setSelectionModel(new ForcedListSelectionModel());
@@ -238,6 +237,5 @@ public class ElimnarIngSop extends javax.swing.JDialog {
     private javax.swing.JTable tabla;
     private javax.swing.JTextField textNumEmpleado;
     // End of variables declaration//GEN-END:variables
-
     private final DefaultTableModel model;
 }

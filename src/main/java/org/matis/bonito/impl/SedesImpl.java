@@ -2,24 +2,34 @@ package org.matis.bonito.impl;
 
 import org.matis.bonito.model.Sedes;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 public interface SedesImpl {
 
-    public default boolean crearSede(Sedes sedes) {
+    default boolean crearSede(Sedes sedes) {
         return false;
     }
 
-    public default boolean EliminarSede(String codigo_sede) {
+    default boolean EliminarSede(String codigo_sede) {
         return false;
     }
 
-    public default boolean actualizaSede(String codigo_sede, Sedes sedes) {
+    default boolean actualizaSede(String codigo_sede, Sedes sedes) {
         return false;
     }
 
-    public default Stream<Sedes> obtenerSedes() {
+    default Stream<Sedes> obtenerSedes() {
+        return null;
+    }
+
+    default Sedes obtenerUltimoFolio(String nombreSede) {
+        return null;
+    }
+    default Sedes obtenerSede(String folio) {
+        return null;
+    }
+    
+    default Sedes obtenerSedeActivo(String sede) {
         return null;
     }
 }
