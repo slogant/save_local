@@ -43,7 +43,9 @@ public class EliminarSede extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void cargaMisComponentes() {
+        this.setResizable(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
