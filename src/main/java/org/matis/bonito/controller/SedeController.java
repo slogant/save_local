@@ -27,11 +27,11 @@ public class SedeController implements Serializable, SedesImpl {
             requireNonNull(emf).getTransaction().rollback();
             return false;
         } finally {
-            if (requireNonNull(emf).isOpen()) {
+            if(requireNonNull(emf).isOpen()) {
                 emf.clear();
                 emf.close();
             }
-            if (requireNonNull(em).isOpen()) {
+            if(requireNonNull(em).isOpen()){
                 em.close();
             }
         }
@@ -44,8 +44,8 @@ public class SedeController implements Serializable, SedesImpl {
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
-            sedesTypedQuery.setParameter(1, codigo_sede);
+            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedeLike", Sedes.class);
+            sedesTypedQuery.setParameter(1,codigo_sede);
             var sedes = sedesTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
@@ -57,7 +57,7 @@ public class SedeController implements Serializable, SedesImpl {
             requireNonNull(emfc).getTransaction().rollback();
             return false;
         } finally {
-            if (requireNonNull(emfc).isOpen()) {
+            if(requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
             }
@@ -68,19 +68,18 @@ public class SedeController implements Serializable, SedesImpl {
     }
 
     /**
-     * @param codigo_sede
-     * @param sedes
+     * @param sedes 
      * @return
      */
     @Override
-    public boolean actualizaSede(String codigo_sede, Sedes sedes) {
+    public boolean actualizaSede(String codigo_sede,Sedes sedes) {
         var emt = obtenerEntityManagerFactory();
         var emfc = obtenerEntityManager(emt);
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
-            sedesTypedQuery.setParameter(1, codigo_sede);
+            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedeLike", Sedes.class);
+            sedesTypedQuery.setParameter(1,codigo_sede);
             var sedes1 = sedesTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
@@ -94,10 +93,10 @@ public class SedeController implements Serializable, SedesImpl {
             requireNonNull(emfc).getTransaction().rollback();
             return false;
         } finally {
-            if (requireNonNull(emt).isOpen()) {
+            if(requireNonNull(emt).isOpen()) {
                 emt.close();
             }
-            if (requireNonNull(emfc).isOpen()) {
+            if(requireNonNull(emfc).isOpen()){
                 emfc.clear();
                 emfc.close();
             }
@@ -105,110 +104,24 @@ public class SedeController implements Serializable, SedesImpl {
     }
 
     /**
-     * @return
+     * @return 
      */
     @Override
     public Stream<Sedes> obtenerSedes() {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
-            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findAll", Sedes.class);
+            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findAll",Sedes.class);
             return sedesTypedQuery.getResultStream();
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             return null;
         } finally {
-            if (requireNonNull(emfa).isOpen()) {
+            if(requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if (requireNonNull(emt).isOpen()) {
-                emt.close();
-            }
-        }
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Sedes obtenerUltimoFolio(String nombreSede) {
-        var emt = obtenerEntityManagerFactory();
-        var emfa = obtenerEntityManager(emt);
-        try {
-            var lastsedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findLast", Sedes.class);
-            lastsedesTypedQuery.setParameter(1,nombreSede);
-            var ultimofolio = lastsedesTypedQuery.getSingleResult();
-            out.println("Se encontro el folio: " + ultimofolio);
-            return ultimofolio;
-        } catch (Exception e) {
-            out.printf("Error en: %s%n", e.getLocalizedMessage());
-            return null;
-        } finally {
-            if (requireNonNull(emfa).isOpen()) {
-                emfa.clear();
-                emfa.close();
-            }
-            if (requireNonNull(emt).isOpen()) {
-                emt.close();
-            }
-        }
-    }
-
-    @Override
-    public Sedes obtenerSede(String folio) {
-        var emt = obtenerEntityManagerFactory();
-        var emfc = obtenerEntityManager(emt);
-        try {
-            assert emfc != null;
-            requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByNombre_sede", Sedes.class);
-            sedesTypedQuery.setParameter(1, folio);
-            requireNonNull(emfc).getTransaction().commit();
-            var sedeIds = sedesTypedQuery.setMaxResults(1).getSingleResult();
-            out.println(emfc.contains(sedeIds));
-            return sedeIds;
-        } catch (Exception e) {
-            out.printf("Error en: %s%n", e.getLocalizedMessage());
-            requireNonNull(emfc).getTransaction().rollback();
-            return null;
-        } finally {
-            if (requireNonNull(emfc).isOpen()) {
-                emfc.clear();
-                emfc.close();
-            }
-            if (emt != null && emt.isOpen()) {
-                emt.close();
-            }
-        }
-    }
-    
-    @Override
-    public Sedes obtenerSedeActivo(String sede) {
-        var emt = obtenerEntityManagerFactory();
-        var emfc = obtenerEntityManager(emt);
-        try {
-            assert emfc != null;
-            requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByNombre_sede", Sedes.class);
-            sedesTypedQuery.setParameter(1,sede);
-            var sedename = sedesTypedQuery.setMaxResults(1).getSingleResult();
-            requireNonNull(emfc).getTransaction().commit();
-            out.println(emfc.contains(sedename));
-            return sedename;
-        } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()}");
-            if(requireNonNull(emfc).getTransaction().isActive()) {
-                requireNonNull(emfc).getTransaction().rollback();
-            }
-            return null;
-        } finally {
-            if(requireNonNull(emfc).isOpen()) {
-                emfc.clear();
-                emfc.close();
-            }
-            if (emt != null || requireNonNull(emt).isOpen()) {
+            if(requireNonNull(emt).isOpen()){
                 emt.close();
             }
         }
