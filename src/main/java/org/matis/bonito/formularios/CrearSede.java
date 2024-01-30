@@ -183,7 +183,7 @@ public class CrearSede extends JDialog {
             var sedeControler = new SedeController();
             showMessageDialog(this, textSede, "Monitor", ERROR_MESSAGE);
             var sedeid = sedeControler.obtenerSedeActivo(textSede);
-            showMessageDialog(this, sedeid.getNombre_sede(), "Monitor", ERROR_MESSAGE);
+            showMessageDialog(this, sedeid, "Monitor", ERROR_MESSAGE);
             if (sedeid != null) {
                 showMessageDialog(this, "No hay registro", "Monitor", JOptionPane.INFORMATION_MESSAGE);
                 /*var incrementar = Integer.parseInt(sedeid.getCodigo_sede()) + 1;

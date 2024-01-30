@@ -126,4 +126,26 @@ public class SedeController implements Serializable, SedesImpl {
             }
         }
     }
+
+    @Override
+    public Sedes obtenerSedeActivo(String sede) {
+        var emt = obtenerEntityManagerFactory();
+        var emfa = obtenerEntityManager(emt);
+        try {
+            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findByNombre_sede",Sedes.class);
+            sedesTypedQuery.setParameter(1,sede);
+            return sedesTypedQuery.getSingleResult();
+        } catch (Exception e) {
+            out.printf("Error en: %s%n", e.getLocalizedMessage());
+            return null;
+        } finally {
+            if(requireNonNull(emfa).isOpen()) {
+                emfa.clear();
+                emfa.close();
+            }
+            if(requireNonNull(emt).isOpen()){
+                emt.close();
+            }
+        }
+    }
 }
