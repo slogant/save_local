@@ -134,7 +134,7 @@ public class SedeController implements Serializable, SedesImpl {
         try {
             var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findByNombre_sede",Sedes.class);
             sedesTypedQuery.setParameter(1,sede);
-            return sedesTypedQuery.getSingleResult();
+            return sedesTypedQuery.setMaxResults(1).getSingleResult();
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             return null;
