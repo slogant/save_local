@@ -44,7 +44,7 @@ public class SedeController implements Serializable, SedesImpl {
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedeLike", Sedes.class);
+            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
             sedesTypedQuery.setParameter(1,codigo_sede);
             var sedes = sedesTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
@@ -78,7 +78,7 @@ public class SedeController implements Serializable, SedesImpl {
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedeLike", Sedes.class);
+            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
             sedesTypedQuery.setParameter(1,codigo_sede);
             var sedes1 = sedesTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
