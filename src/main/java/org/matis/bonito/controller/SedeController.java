@@ -132,6 +132,7 @@ public class SedeController implements Serializable, SedesImpl {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
+            out.println(sede + "...........................................................................................");
             var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findByNombre_sede",Sedes.class);
             sedesTypedQuery.setParameter(1,sede);
             return sedesTypedQuery.setMaxResults(1).getSingleResult();
