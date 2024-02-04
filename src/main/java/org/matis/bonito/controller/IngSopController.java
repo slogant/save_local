@@ -4,10 +4,11 @@ import org.matis.bonito.impl.IngSopImpl;
 import org.matis.bonito.model.IngenieroSoporte;
 
 import java.io.Serializable;
-import java.util.stream.Stream;
-
+import static java.lang.StringTemplate.STR;
 import static java.lang.System.out;
 import static java.util.Objects.requireNonNull;
+import java.util.stream.Stream;
+
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManager;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManagerFactory;
 
@@ -17,29 +18,30 @@ import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManagerFactory;
  */
 public class IngSopController implements Serializable, IngSopImpl {
 
-    public IngSopController() {}
+    public IngSopController() {
+    }
 
     @Override
     public boolean crearIngSop(IngenieroSoporte ing) {
         var em = obtenerEntityManagerFactory();
         var emf = obtenerEntityManager(em);
         try {
-        requireNonNull(emf).getTransaction().begin();
-        emf.persist(ing);
-        requireNonNull(emf).getTransaction().commit();
-        return emf.contains(ing);
+            requireNonNull(emf).getTransaction().begin();
+            emf.persist(ing);
+            requireNonNull(emf).getTransaction().commit();
+            return emf.contains(ing);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
-            if(requireNonNull(emf).getTransaction().isActive()) {
+            if (requireNonNull(emf).getTransaction().isActive()) {
                 requireNonNull(emf).getTransaction().rollback();
             }
             return false;
         } finally {
-            if(requireNonNull(emf).isOpen()) {
+            if (requireNonNull(emf).isOpen()) {
                 emf.clear();
                 emf.close();
             }
-            if(requireNonNull(em).isOpen()) {
+            if (requireNonNull(em).isOpen()) {
                 em.close();
             }
         }
@@ -57,8 +59,8 @@ public class IngSopController implements Serializable, IngSopImpl {
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var soloIngeSop = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado",IngenieroSoporte.class);
-            soloIngeSop.setParameter(1,numeroEmp);
+            var soloIngeSop = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado", IngenieroSoporte.class);
+            soloIngeSop.setParameter(1, numeroEmp);
             var ingeniero = soloIngeSop.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
@@ -67,12 +69,12 @@ public class IngSopController implements Serializable, IngSopImpl {
             return !emfc.contains(ingeniero);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
-            if(requireNonNull(emfc).getTransaction().isActive()) {
+            if (requireNonNull(emfc).getTransaction().isActive()) {
                 requireNonNull(emfc).getTransaction().rollback();
             }
             return false;
         } finally {
-            if(requireNonNull(emfc).isOpen()) {
+            if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
             }
@@ -86,56 +88,62 @@ public class IngSopController implements Serializable, IngSopImpl {
     public boolean actualizaIngSop(String numeroEmp, IngenieroSoporte ingenieroSoporte) {
         var emt = obtenerEntityManagerFactory();
         var emfc = obtenerEntityManager(emt);
-            try {
-                assert emfc != null;
-                requireNonNull(emfc).getTransaction().begin();
-                var soloIngeSop = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado",IngenieroSoporte.class);
-                soloIngeSop.setParameter(1,numeroEmp);
-                var ingeniero = soloIngeSop.setMaxResults(1).getSingleResult();
+        try {
+            assert emfc != null;
+            requireNonNull(emfc).getTransaction().begin();
+            var soloIngeSop = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado", IngenieroSoporte.class);
+            soloIngeSop.setParameter(1, numeroEmp);
+            var ingeniero = soloIngeSop.setMaxResults(1).getSingleResult();
+            requireNonNull(emfc).getTransaction().commit();
+            requireNonNull(emfc).getTransaction().begin();
+            ingeniero.setNombre_ing(ingenieroSoporte.getNombre_ing());
+            ingeniero.setApellido_pat(ingenieroSoporte.getApellido_pat());
+            ingeniero.setApellido_mat(ingenieroSoporte.getApellido_mat());
+            ingeniero.setNumero_empleado(ingenieroSoporte.getNumero_empleado());
+            emfc.merge(ingeniero);
+            out.println(STR."\{ingeniero
+            }---------------------------------------------------------");
                 requireNonNull(emfc).getTransaction().commit();
-                requireNonNull(emfc).getTransaction().begin();
-                ingeniero.setNombre_ing(ingenieroSoporte.getNombre_ing());
-                ingeniero.setApellido_pat(ingenieroSoporte.getApellido_pat());
-                ingeniero.setApellido_mat(ingenieroSoporte.getApellido_mat());
-                ingeniero.setNumero_empleado(ingenieroSoporte.getNumero_empleado());
-                emfc.merge(ingeniero);
-                out.println(STR."\{ingeniero}---------------------------------------------------------");
-                requireNonNull(emfc).getTransaction().commit();
-                out.println(emfc.contains(ingeniero));
-                return emfc.contains(ingeniero);
-            } catch (Exception e) {
-                out.printf("Error en: %s%n", e.getLocalizedMessage());
-                if(requireNonNull(emfc).getTransaction().isActive()) {
-                    requireNonNull(emfc).getTransaction().rollback();
-                }
-                return false;
-            } finally {
-                if(requireNonNull(emt).isOpen()) {
-                    emt.close();
-                }
-                if(requireNonNull(emfc).isOpen()) {
-                    emfc.clear();
-                    emfc.close();
-                }
+            out.println(emfc.contains(ingeniero));
+            return emfc.contains(ingeniero);
+        } catch (Exception e) {
+            out.println(STR."\{e.getLocalizedMessage()
+            }");
+            if (requireNonNull(emfc).getTransaction().isActive()) {
+                requireNonNull(emfc).getTransaction().rollback();
+            }
+            return false;
+        } finally {
+            if (requireNonNull(emt).isOpen()) {
+                emt.close();
+            }
+            if (requireNonNull(emfc).isOpen()) {
+                emfc.clear();
+                emfc.close();
             }
         }
+    }
 
     @Override
     public Stream<IngenieroSoporte> obtenerIngSop() {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
-            var ingenieroSoporteTypedQuery = requireNonNull(emfa).createNamedQuery("All.Ing",IngenieroSoporte.class);
+            var ingenieroSoporteTypedQuery = requireNonNull(emfa).createNamedQuery("All.Ing", IngenieroSoporte.class);
             return ingenieroSoporteTypedQuery.getResultStream();
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()}");
+            out.println(STR."\{e.getLocalizedMessage()
+            }");
+            if (requireNonNull(emfa).getTransaction().isActive()) {
+                requireNonNull(emfa).getTransaction().rollback();
+            }
             return null;
         } finally {
-            if(requireNonNull(emfa).isOpen()) {
+            if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if(requireNonNull(emt).isOpen()) {
+            if (requireNonNull(emt).isOpen()) {
                 emt.close();
             }
         }
@@ -153,19 +161,23 @@ public class IngSopController implements Serializable, IngSopImpl {
         try {
             assert emfa != null;
             requireNonNull(emfa).getTransaction().begin();
-            var soloIngeSop = requireNonNull(emfa).createNamedQuery("FindBy.NumeroEmp",IngenieroSoporte.class);
-            soloIngeSop.setParameter(1,numeroEmp);
+            var soloIngeSop = requireNonNull(emfa).createNamedQuery("FindBy.NumeroEmp", IngenieroSoporte.class);
+            soloIngeSop.setParameter(1, numeroEmp);
             requireNonNull(emfa).getTransaction().commit();
             return soloIngeSop.getResultStream();
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()}");
+            out.println(STR."\{e.getLocalizedMessage()
+            }");
+            if (requireNonNull(emfa).getTransaction().isActive()) {
+                requireNonNull(emfa).getTransaction().rollback();
+            }
             return null;
         } finally {
-            if(requireNonNull(emfa).isOpen()) {
+            if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if(requireNonNull(emt).isOpen()) {
+            if (requireNonNull(emt).isOpen()) {
                 emt.close();
             }
         }
@@ -178,20 +190,21 @@ public class IngSopController implements Serializable, IngSopImpl {
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var soloIngeSopNum = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado",IngenieroSoporte.class);
-            soloIngeSopNum.setParameter(1,numeroEmpleado);
+            var soloIngeSopNum = requireNonNull(emfc).createNamedQuery("IngenieroSoporte.findByNumero_Empleado", IngenieroSoporte.class);
+            soloIngeSopNum.setParameter(1, numeroEmpleado);
             var ingeniero = soloIngeSopNum.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             out.println(emfc.contains(ingeniero));
             return ingeniero;
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()}");
-            if(requireNonNull(emfc).getTransaction().isActive()) {
+            out.println(STR."\{e.getLocalizedMessage()
+            }");
+            if (requireNonNull(emfc).getTransaction().isActive()) {
                 requireNonNull(emfc).getTransaction().rollback();
             }
-           return null;
+            return null;
         } finally {
-            if(requireNonNull(emfc).isOpen()) {
+            if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
             }
