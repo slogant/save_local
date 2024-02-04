@@ -173,7 +173,7 @@ public class CrearSede extends JDialog {
         this.getRootPane().setDefaultButton(cerrar);
         guardar.addActionListener(e -> guardandoSede());
         cerrar.addActionListener(e -> this.dispose());
-        //String formatoFolio = "F-%07d";
+        String formatoFolio = "F-%07d";
         /*IntStream.range(1,9999999).forEach(i->{String folio = String.format(formatoFolio, i);
             out.println(folio);
         });*/
