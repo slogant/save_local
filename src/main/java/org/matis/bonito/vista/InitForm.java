@@ -12,6 +12,7 @@ import org.matis.bonito.model.IngenieroSoporte;
 import static java.lang.System.out;
 import javax.swing.JFrame;
 import org.matis.bonito.formularios.CrearIngSop;
+import org.matis.bonito.formularios.CrearPiso;
 import org.matis.bonito.formularios.CrearSede;
 import org.matis.bonito.formularios.EditarIngSop;
 import org.matis.bonito.formularios.ElimnarIngSop;
@@ -50,9 +51,9 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         menuEliminaIng = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        MenuCrearSede = new javax.swing.JMenuItem();
+        menuCrearSede = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        menuCrearPiso = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItem5 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
@@ -96,12 +97,12 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuEliminaIng);
         MenuAdmin.add(jSeparator3);
 
-        MenuCrearSede.setText("Registrar sede");
-        MenuAdmin.add(MenuCrearSede);
+        menuCrearSede.setText("Registrar sede");
+        MenuAdmin.add(menuCrearSede);
         MenuAdmin.add(jSeparator5);
 
-        jMenuItem6.setText("Registrar piso");
-        MenuAdmin.add(jMenuItem6);
+        menuCrearPiso.setText("Registrar piso");
+        MenuAdmin.add(menuCrearPiso);
         MenuAdmin.add(jSeparator7);
 
         jMenuItem5.setText("Registrar sistema ope");
@@ -156,15 +157,14 @@ public class InitForm extends javax.swing.JFrame {
         menuCrearIng.addActionListener(e-> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
         menuEditaIng.addActionListener(e-> invokeLater(() -> new EditarIngSop(new JFrame(),true).setVisible(true)));
         menuEliminaIng.addActionListener(e-> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
-        MenuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
+        menuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
+        menuCrearPiso.addActionListener(e-> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
-    private javax.swing.JMenuItem MenuCrearSede;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -177,6 +177,8 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenuItem menuCrearIng;
+    private javax.swing.JMenuItem menuCrearPiso;
+    private javax.swing.JMenuItem menuCrearSede;
     private javax.swing.JMenuItem menuEditaIng;
     private javax.swing.JMenuItem menuEliminaIng;
     // End of variables declaration//GEN-END:variables

@@ -32,14 +32,14 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="MenuCrearSede">
+            <MenuItem class="javax.swing.JMenuItem" name="menuCrearSede">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registrar sede"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
+            <MenuItem class="javax.swing.JMenuItem" name="menuCrearPiso">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registrar piso"/>
               </Properties>
