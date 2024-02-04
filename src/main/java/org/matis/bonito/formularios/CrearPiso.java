@@ -135,6 +135,8 @@ public class CrearPiso extends JDialog {
             showMessageDialog(this, "El campo piso está vacío", "Monitor", ERROR_MESSAGE);
             getDefaultToolkit().beep();
             textoPiso.requestFocus();
+        } else {
+            
         }
     }
 
