@@ -14,7 +14,8 @@ import java.io.Serializable;
         @NamedQuery(name = "Sedes.findByCodigo_sede", query = "select s from Sedes s where s.codigo_sede = ?1"),
         @NamedQuery(name = "Sedes.findByNombre_sede", query = "select s from Sedes s where s.nombre_sede = ?1"),
         @NamedQuery(name = "Sedes.findLast", query = "select s from Sedes s where s.nombre_sede = ?1 order by s.id_sede desc"),
-        @NamedQuery(name = "Sedes.findByCodigo_sedelike", query = "select s from Sedes s where s.codigo_sede like ?1")
+        @NamedQuery(name = "Sedes.findByCodigo_sedelike", query = "select s from Sedes s where s.codigo_sede like ?1"),
+        @NamedQuery(name = "Sedes.findLastCodigoSede", query = "select s from Sedes s order by s.id_sede desc")
 })
 
 public class Sedes implements Serializable {
@@ -69,7 +70,7 @@ public class Sedes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_sede;
-    @Column(name = "nombre_sede",nullable = false,length = 200)
+    @Column(name = "nombre_sede",nullable = false,length = 200, unique = true)
     private String nombre_sede;
     @Size(min = 4, max = 100)
     @NotNull

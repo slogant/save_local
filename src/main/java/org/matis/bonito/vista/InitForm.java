@@ -126,7 +126,7 @@ public class InitForm extends javax.swing.JFrame {
 
     private void cargaComponentes() {
         var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez","65070610");
-        var sede = new Sedes("Torre Tp", "A000001");
+        var sede = new Sedes("Torre Tp", "F-000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
         if (ingSopController.crearIngSop(soporte)) {

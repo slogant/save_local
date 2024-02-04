@@ -6,6 +6,7 @@ package org.matis.bonito.formularios;
 
 import org.matis.bonito.controller.SedeController;
 
+import static java.awt.Color.CYAN;
 import static java.awt.Toolkit.getDefaultToolkit;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -13,11 +14,15 @@ import javax.swing.JFrame;
 
 import java.awt.*;
 
+import static java.lang.Integer.valueOf;
+import static java.lang.String.format;
 import static java.lang.System.out;
+import static javax.swing.JOptionPane.*;
+
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.showMessageDialog;
+
 import org.matis.bonito.model.Sedes;
 
 /**
@@ -131,6 +136,7 @@ public class CrearSede extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void misComponentes() {
+        setUndecorated(true);
         guardar.setEnabled(false);
         textoSede.requestFocus();
         textoSede.addActionListener(e -> {
@@ -141,13 +147,13 @@ public class CrearSede extends JDialog {
                 textoSede.requestFocus();
             } else {
                 var sedeControler = new SedeController();
-                var sedescontrol = sedeControler.obtenerSedeActivo(textSede);
+                var sedescontrol = sedeControler.obtenerSede(textSede);
                 if(sedescontrol != null) {
                     showMessageDialog(this, "Ya existe el registro de la sede", "Monitor", ERROR_MESSAGE);
                     getDefaultToolkit().beep();
                     guardar.setEnabled(false);
                     textoSede.selectAll();
-                    textoSede.setSelectionColor(Color.CYAN);
+                    textoSede.setSelectionColor(CYAN);
                     textoSede.requestFocus();
                 } else {
                     if(textSede.length() == 1) {
@@ -155,7 +161,7 @@ public class CrearSede extends JDialog {
                         guardar.setEnabled(false);
                         getDefaultToolkit().beep();
                         textoSede.selectAll();
-                        textoSede.setSelectionColor(Color.CYAN);
+                        textoSede.setSelectionColor(CYAN);
                         textoSede.requestFocus();
                     } else {
                         guardar.setEnabled(true);
@@ -167,11 +173,42 @@ public class CrearSede extends JDialog {
         this.getRootPane().setDefaultButton(cerrar);
         guardar.addActionListener(e -> guardandoSede());
         cerrar.addActionListener(e -> this.dispose());
+        //String formatoFolio = "F-%07d";
+        /*IntStream.range(1,9999999).forEach(i->{String folio = String.format(formatoFolio, i);
+            out.println(folio);
+        });*/
     }
 
     private void textoSedeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoSedeKeyReleased
         // TODO add your handling code here:
-
+        var formatoFolio = "F-%012d";
+        nuevoNumeroFolio++;
+        var folio = format(formatoFolio, nuevoNumeroFolio);
+        var b = folio.substring(2,14);
+        out.println(folio);
+        out.println(b);
+        var textSede = textoSede.getText();
+        if (textSede.isEmpty()) {
+            textoSede.requestFocus();
+            getDefaultToolkit().beep();
+        } else {
+            var sedeControler = new SedeController();
+            var sedeid = sedeControler.obtenerSedeActivo(textSede);
+            if (sedeid != null) {
+                showMessageDialog(this, "Sede ya registrada...", "Monitor", INFORMATION_MESSAGE);
+                textoSede.requestFocus();
+                textoSede.selectAll();
+                textoSede.setSelectionColor(CYAN);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+                out.println(sedeid);
+                var ca = sedeid.getCodigo_sede();
+                out.println(ca);
+            } else {
+                //showMessageDialog(this, sedeid, "Monitor", INFORMATION_MESSAGE);
+                out.println("Sin registro");
+            }
+        }
     }//GEN-LAST:event_textoSedeKeyReleased
 
     private void guardandoSede() {
@@ -181,29 +218,41 @@ public class CrearSede extends JDialog {
             getDefaultToolkit().beep();
         } else {
             var sedeControler = new SedeController();
-            showMessageDialog(this, textSede, "Monitor", ERROR_MESSAGE);
             var sedeid = sedeControler.obtenerSedeActivo(textSede);
-            showMessageDialog(this, sedeid, "Monitor", ERROR_MESSAGE);
             if (sedeid != null) {
-                showMessageDialog(this, "No hay registro", "Monitor", JOptionPane.INFORMATION_MESSAGE);
-                /*var incrementar = Integer.parseInt(sedeid.getCodigo_sede()) + 1;
-                var miSede = new Sedes(textSede, String.format("A%06d", incrementar));
-                if (sedeControler.crearSede(miSede)) {
-                    System.out.println(miSede);
-                    guardar.setEnabled(false);
-                    showMessageDialog(this, "Se registro la sede", "Monitor", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    textoSede.requestFocus();
-                    textoSede.selectAll();
-                    textoSede.setSelectionColor(Color.red);
-                    getDefaultToolkit().beep();
-                    showMessageDialog(this, "No se registro la sede", "Monitor", ERROR_MESSAGE);
-                }*/
+                showMessageDialog(this, "Sede ya registrada...", "Monitor", INFORMATION_MESSAGE);
+                textoSede.requestFocus();
+                textoSede.selectAll();
+                textoSede.setSelectionColor(CYAN);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
             } else {
-                showMessageDialog(this, sedeid, "Monitor", JOptionPane.INFORMATION_MESSAGE);
-                
+                var miNuevaSede = new Sedes();
+                var nombreSede = textoSede.getText();
+                var elultimo = devuelveLastFolio();
+                miNuevaSede.setNombre_sede(nombreSede);
+                miNuevaSede.setCodigo_sede(elultimo);
+                if(sedeControler.crearSede(miNuevaSede)) {
+                    showMessageDialog(this, "Sede registrada exitosamente", "Monitor", INFORMATION_MESSAGE);
+                    textoSede.requestFocus();
+                    textoSede.setText("");
+                    guardar.setEnabled(false);
+                } else {
+                    showMessageDialog(this, "No se creo la sede.............", "Monitor", ERROR_MESSAGE);
+                    textoSede.requestFocus();
+                }
             }
         }
+    }
+    private String devuelveLastFolio() {
+        var sedeControler = new SedeController();
+        out.println("Sin registro");
+        guardar.setEnabled(true);
+        var initFolio = sedeControler.obtenerUltimoRegistro().get().getCodigo_sede().substring(2,14);
+        var aEntero = valueOf(initFolio);
+        var incrementoFolio = aEntero + 1;
+        var folioToSave = format(miFormatoFolio, incrementoFolio);
+        return folioToSave;
     }
 
 
@@ -219,5 +268,6 @@ public class CrearSede extends JDialog {
     // End of variables declaration//GEN-END:variables
 
     private int nuevoNumeroFolio = 1;
+    final static String miFormatoFolio = "F-%012d";
 
 }

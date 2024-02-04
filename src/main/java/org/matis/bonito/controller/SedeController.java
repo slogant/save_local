@@ -4,6 +4,8 @@ import org.matis.bonito.impl.SedesImpl;
 import org.matis.bonito.model.Sedes;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
@@ -132,12 +134,51 @@ public class SedeController implements Serializable, SedesImpl {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
-            out.println(sede + "...........................................................................................");
+            assert emfa != null;
+            requireNonNull(emfa).getTransaction().begin();
             var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findByNombre_sede",Sedes.class);
             sedesTypedQuery.setParameter(1,sede);
-            return sedesTypedQuery.setMaxResults(1).getSingleResult();
+            var misSedes = sedesTypedQuery.getSingleResult();
+            requireNonNull(emfa).getTransaction().commit();
+            out.println(emfa.contains(misSedes));
+            return misSedes;
         } catch (Exception e) {
-            out.printf("Error en: %s%n", e.getLocalizedMessage());
+            out.printf(STR."\{e.getLocalizedMessage()}");
+            if(requireNonNull(emfa).getTransaction().isActive()) {
+                requireNonNull(emfa).getTransaction().rollback();
+            }
+            return null;
+        } finally {
+            if(requireNonNull(emfa).isOpen()) {
+                emfa.clear();
+                emfa.close();
+            }
+            if(requireNonNull(emt).isOpen()){
+                emt.close();
+            }
+        }
+    }
+    @Override
+    public Optional<Sedes> obtenerUltimoRegistro() {
+        var emt = obtenerEntityManagerFactory();
+        var emfa = obtenerEntityManager(emt);
+        try {
+            assert emfa != null;
+            requireNonNull(emfa).getTransaction().begin();
+            var sedesUltimoTypeQuery = requireNonNull(emfa).createNamedQuery("Sedes.findLastCodigoSede",Sedes.class);
+            var miUltimo = sedesUltimoTypeQuery.setMaxResults(1).getResultList().stream().filter(Objects::nonNull).findFirst();
+            requireNonNull(emfa).getTransaction().commit();
+            if(miUltimo.isPresent()) {
+                return miUltimo;
+            } else {
+                out.println("No existe registro de codigo sede");
+                return null;
+            }
+        } catch (Exception e) {
+            out.printf(STR."\{e.getLocalizedMessage()}");
+            if(requireNonNull(emfa).getTransaction().isActive()) {
+                requireNonNull(emfa).getTransaction().rollback();
+            }
             return null;
         } finally {
             if(requireNonNull(emfa).isOpen()) {
