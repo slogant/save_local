@@ -8,9 +8,8 @@ import org.matis.bonito.controller.SedeController;
 
 import static java.awt.Color.CYAN;
 import static java.awt.Toolkit.getDefaultToolkit;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+
+import javax.swing.*;
 
 
 import static java.lang.Integer.valueOf;
