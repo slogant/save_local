@@ -1,7 +1,7 @@
 package org.matis.bonito.controller;
 
-import org.matis.bonito.impl.SedesImpl;
-import org.matis.bonito.model.Sedes;
+import org.matis.bonito.impl.PisoImpl;
+import org.matis.bonito.model.Piso;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,184 +10,169 @@ import java.util.stream.Stream;
 
 import static java.lang.System.out;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.empty;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManager;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManagerFactory;
 
-public class SedeController implements Serializable, SedesImpl {
-
+public final class PisoController implements Serializable, PisoImpl {
     @Override
-    public boolean crearSede(Sedes sedes) {
+    public boolean crearPiso(Piso piso) {
         var em = obtenerEntityManagerFactory();
         var emf = obtenerEntityManager(em);
         try {
             requireNonNull(emf).getTransaction().begin();
-            emf.persist(sedes);
+            emf.persist(piso);
             requireNonNull(emf).getTransaction().commit();
-            return emf.contains(sedes);
+            return emf.contains(piso);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             requireNonNull(emf).getTransaction().rollback();
             return false;
         } finally {
-            if(requireNonNull(emf).isOpen()) {
+            if (requireNonNull(emf).isOpen()) {
                 emf.clear();
                 emf.close();
             }
-            if(requireNonNull(em).isOpen()){
-                em.close();
-            }
+            if (requireNonNull(em).isOpen()) em.close();
         }
     }
 
     @Override
-    public boolean EliminarSede(String codigo_sede) {
+    public boolean EliminarPiso(String codigo_piso) {
         var emt = obtenerEntityManagerFactory();
         var emfc = obtenerEntityManager(emt);
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
-            sedesTypedQuery.setParameter(1,codigo_sede);
-            var sedes = sedesTypedQuery.setMaxResults(1).getSingleResult();
+            var pisoTypedQuery = requireNonNull(emfc).createNamedQuery("Piso.findByCodigoPiso_pisolike", Piso.class);
+            pisoTypedQuery.setParameter(1, codigo_piso);
+            var pisos = pisoTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
-            emfc.remove(sedes);
+            emfc.remove(pisos);
             requireNonNull(emfc).getTransaction().commit();
-            return !emfc.contains(sedes);
+            return !emfc.contains(pisos);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             requireNonNull(emfc).getTransaction().rollback();
             return false;
         } finally {
-            if(requireNonNull(emfc).isOpen()) {
+            if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
             }
-            if (emt != null && emt.isOpen()) {
-                emt.close();
-            }
+            if (emt != null && emt.isOpen()) emt.close();
         }
     }
 
     /**
-     * @param sedes 
+     * @param piso
      * @return
      */
     @Override
-    public boolean actualizaSede(String codigo_sede,Sedes sedes) {
+    public boolean actualizaPiso(String codigo_piso, Piso piso) {
         var emt = obtenerEntityManagerFactory();
         var emfc = obtenerEntityManager(emt);
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfc).createNamedQuery("Sedes.findByCodigo_sedelike", Sedes.class);
-            sedesTypedQuery.setParameter(1,codigo_sede);
-            var sedes1 = sedesTypedQuery.setMaxResults(1).getSingleResult();
+            var pisoTypedQuery = requireNonNull(emfc).createNamedQuery("Piso.findByCodigo_pisolike", Piso.class);
+            pisoTypedQuery.setParameter(1, codigo_piso);
+            var piso1 = pisoTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
-            sedes1.setNombre_sede(sedes.getNombre_sede());
-            sedes1.setCodigo_sede(sedes.getCodigo_sede());
-            emfc.merge(sedes1);
+            piso1.setNombre_piso(piso.getNombre_piso());
+            piso1.setCodigo_piso(piso.getCodigo_piso());
+            emfc.merge(piso1);
             requireNonNull(emfc).getTransaction().commit();
-            return emfc.contains(sedes1);
+            return emfc.contains(piso1);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             requireNonNull(emfc).getTransaction().rollback();
             return false;
         } finally {
-            if(requireNonNull(emt).isOpen()) {
-                emt.close();
-            }
-            if(requireNonNull(emfc).isOpen()){
+            if (requireNonNull(emt).isOpen()) emt.close();
+            if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
             }
         }
     }
 
-    /**
-     * @return 
-     */
     @Override
-    public Stream<Sedes> obtenerSedes() {
+    public Stream<Piso> obtenerPiso() {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
-            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findAll",Sedes.class);
+            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Piso.findAll", Piso.class);
             return sedesTypedQuery.getResultStream();
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             return null;
         } finally {
-            if(requireNonNull(emfa).isOpen()) {
+            if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if(requireNonNull(emt).isOpen()){
-                emt.close();
-            }
+            if (requireNonNull(emt).isOpen()) emt.close();
         }
     }
-
     @Override
-    public Sedes obtenerSedeActivo(String sede) {
+    public Piso obtenerPisoActivo(String piso) {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
             assert emfa != null;
             requireNonNull(emfa).getTransaction().begin();
-            var sedesTypedQuery = requireNonNull(emfa).createNamedQuery("Sedes.findByNombre_sede",Sedes.class);
-            sedesTypedQuery.setParameter(1,sede);
-            var misSedes = sedesTypedQuery.getSingleResult();
+            var pisosTypedQuery = requireNonNull(emfa).createNamedQuery("Piso.findByNombre_piso", Piso.class);
+            pisosTypedQuery.setParameter(1, piso);
+            var miPiso = pisosTypedQuery.getSingleResult();
             requireNonNull(emfa).getTransaction().commit();
-            out.println(emfa.contains(misSedes));
-            return misSedes;
+            out.println(emfa.contains(miPiso));
+            return miPiso;
         } catch (Exception e) {
             out.printf(STR."\{e.getLocalizedMessage()}");
-            if(requireNonNull(emfa).getTransaction().isActive()) {
+            if (requireNonNull(emfa).getTransaction().isActive()) {
                 requireNonNull(emfa).getTransaction().rollback();
             }
             return null;
         } finally {
-            if(requireNonNull(emfa).isOpen()) {
+            if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if(requireNonNull(emt).isOpen()){
-                emt.close();
-            }
+            if (requireNonNull(emt).isOpen()) emt.close();
         }
     }
+
     @Override
-    public Optional<Sedes> obtenerUltimoRegistro() {
+    public Optional<Piso> obtenerUltimoPisoRegistro() {
         var emt = obtenerEntityManagerFactory();
         var emfa = obtenerEntityManager(emt);
         try {
             assert emfa != null;
             requireNonNull(emfa).getTransaction().begin();
-            var sedesUltimoTypeQuery = requireNonNull(emfa).createNamedQuery("Sedes.findLastCodigoSede",Sedes.class);
-            var miUltimo = sedesUltimoTypeQuery.setMaxResults(1).getResultList().stream().filter(Objects::nonNull).findFirst();
+            var pisosUltimoTypeQuery = requireNonNull(emfa).createNamedQuery("Piso.findLastCodigoPiso", Piso.class);
+            var miUltimo = pisosUltimoTypeQuery.setMaxResults(1).getResultList().stream().filter(Objects::nonNull).findFirst();
             requireNonNull(emfa).getTransaction().commit();
-            if(miUltimo.isPresent()) {
+            if (miUltimo.isPresent()) {
                 return miUltimo;
             } else {
-                out.println("No existe registro de codigo sede");
-                return Optional.empty();
+                out.println("No existe registro de codigo piso");
+                return empty();
             }
         } catch (Exception e) {
             out.printf(STR."\{e.getLocalizedMessage()}");
-            if(requireNonNull(emfa).getTransaction().isActive()) {
+            if (requireNonNull(emfa).getTransaction().isActive()) {
                 requireNonNull(emfa).getTransaction().rollback();
             }
-            return Optional.empty();
+            return empty();
         } finally {
-            if(requireNonNull(emfa).isOpen()) {
+            if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
             }
-            if(requireNonNull(emt).isOpen()){
-                emt.close();
-            }
+            if (requireNonNull(emt).isOpen()) emt.close();
         }
     }
 }
