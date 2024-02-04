@@ -4,6 +4,8 @@
  */
 package org.matis.bonito.formularios;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author oscar
@@ -13,7 +15,7 @@ public class EliminarSede extends javax.swing.JDialog {
     /**
      * Creates new form EliminarSede
      */
-    public EliminarSede(java.awt.Frame parent, boolean modal) {
+    public EliminarSede(JFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         cargaMisComponentes();
