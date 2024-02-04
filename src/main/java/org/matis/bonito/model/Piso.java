@@ -15,7 +15,6 @@ import java.io.Serializable;
         @NamedQuery(name = "Piso.findByCodigoPiso_pisolike", query = "select p from Piso p where p.codigo_piso like ?1"),
         @NamedQuery(name = "Piso.findByCodigo_pisolike", query = "select p from Piso p where p.codigo_piso like ?1"),
         @NamedQuery(name = "Piso.findByNombre_piso", query = "select p from Piso p where p.nombre_piso = ?1"),
-        @NamedQuery(name = "Piso.findLastCodigoPiso", query = "select p from Piso p order by p.id_piso desc")
 })
 public class Piso implements Serializable {
     public Piso() {

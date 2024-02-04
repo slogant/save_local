@@ -4,13 +4,22 @@
  */
 package org.matis.bonito.formularios;
 
+import static java.awt.Color.CYAN;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ActionEvent;
-import javax.swing.Action;
+
+import static java.lang.Integer.valueOf;
+import static java.lang.String.format;
+import static java.lang.System.out;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
+import org.matis.bonito.controller.PisoController;
+import org.matis.bonito.model.Piso;
+import org.matis.bonito.validador.LimitadorTextoNumero;
 
 /**
  *
@@ -56,6 +65,13 @@ public class CrearPiso extends JDialog {
         setResizable(false);
 
         jLabel1.setText("Piso: ");
+
+        textoPiso.setDocument(new LimitadorTextoNumero(textoPiso, 9));
+        textoPiso.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textoPisoKeyReleased(evt);
+            }
+        });
 
         cerrar.setMnemonic('C');
         cerrar.setText("Cerrar");
@@ -122,23 +138,117 @@ public class CrearPiso extends JDialog {
         textoPiso.requestFocus();
         textoPiso.addActionListener(this::accionTextPiso);
         this.getRootPane().setDefaultButton(guardar);
+        guardar.addActionListener(e -> guardandoPiso());
         cerrar.addActionListener(e -> dispose());
     }
 
     private void accionTextPiso(ActionEvent e) {
-        validacionText();
+        validacionText(e);
     }
 
-    private void validacionText() {
+    private void validacionText(ActionEvent e) {
         var piso = textoPiso.getText();
         if (piso.isEmpty()) {
             showMessageDialog(this, "El campo piso está vacío", "Monitor", ERROR_MESSAGE);
             getDefaultToolkit().beep();
             textoPiso.requestFocus();
         } else {
-            
+            var pisoControl = new PisoController();
+            var pisosControl = pisoControl.obtenerPiso(piso);
+            if (pisosControl != null) {
+                showMessageDialog(this, "Ya existe el registro del piso", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+                textoPiso.selectAll();
+                textoPiso.setSelectionColor(CYAN);
+                textoPiso.requestFocus();
+            } else {
+                if (piso.length() == 1) {
+                    showMessageDialog(this, "El nombre del piso debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
+                    guardar.setEnabled(false);
+                    getDefaultToolkit().beep();
+                    textoPiso.selectAll();
+                    textoPiso.setSelectionColor(CYAN);
+                    textoPiso.requestFocus();
+                } else {
+                    guardar.setEnabled(true);
+                    ((JComponent) e.getSource()).transferFocus();
+                }
+            }
         }
     }
+
+    private void textoPisoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoPisoKeyReleased
+        // TODO add your handling code here:
+        var textPiso = textoPiso.getText();
+        if (textPiso.isEmpty()) {
+            textoPiso.requestFocus();
+            getDefaultToolkit().beep();
+        } else {
+            var pisoController = new PisoController();
+            var pisoInegrado = pisoController.obtenerPisoActivo(textPiso);
+            if (pisoInegrado != null) {
+                showMessageDialog(this, "Piso ya registrado...", "Monitor", ERROR_MESSAGE);
+                textoPiso.requestFocus();
+                textoPiso.selectAll();
+                textoPiso.setSelectionColor(CYAN);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+                out.println(pisoInegrado);
+                var ca = pisoInegrado.getCodigo_piso();
+                out.println(ca);
+            } else {
+                //showMessageDialog(this, sedeid, "Monitor", INFORMATION_MESSAGE);
+                out.println("Sin registro");
+            }
+        }
+    }//GEN-LAST:event_textoPisoKeyReleased
+
+    private void guardandoPiso() {
+
+        var textPiso = textoPiso.getText();
+        if (textPiso.isEmpty()) {
+            showMessageDialog(this, "El campo piso está vacío", "Monitor", ERROR_MESSAGE);
+            textoPiso.requestFocus();
+            getDefaultToolkit().beep();
+        } else {
+            var pisoControler = new PisoController();
+            var elPiso = pisoControler.obtenerPisoActivo(textPiso);
+            if (elPiso != null) {
+                showMessageDialog(this, "Piso ya registrado...", "Monitor", ERROR_MESSAGE);
+                textoPiso.requestFocus();
+                textoPiso.selectAll();
+                textoPiso.setSelectionColor(CYAN);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+            } else {
+                var namePiso = textoPiso.getText();
+                var elultimoFolioPiso = devuelveLastFolio();
+                var piso = new Piso(namePiso, elultimoFolioPiso);
+                if (pisoControler.crearPiso(piso)) {
+                    showMessageDialog(this, "Piso registrado exitosamente", "Monitor", INFORMATION_MESSAGE);
+                    textoPiso.requestFocus();
+                    textoPiso.setText("");
+                    guardar.setEnabled(false);
+                } else {
+                    showMessageDialog(this, "No se creo la sede.............", "Monitor", ERROR_MESSAGE);
+                    textoPiso.requestFocus();
+                }
+            }
+        }
+    }
+
+    private String devuelveLastFolio() {
+        var pisoControler = new PisoController();
+        out.println("Sin registro");
+        guardar.setEnabled(true);
+        var initFolioPiso = pisoControler.obtenerUltimoPisoRegistro().get().getCodigo_piso().substring(2, 14);
+        var aEntero = valueOf(initFolioPiso);
+        var incrementoFolio = aEntero + 1;
+        var folioToSave = format(miFormatoFolio, incrementoFolio);
+        return folioToSave;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
@@ -150,4 +260,8 @@ public class CrearPiso extends JDialog {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField textoPiso;
     // End of variables declaration//GEN-END:variables
+
+    private int nuevoNumeroFolio = 1;
+    final static String miFormatoFolio = "P-%012d";
+
 }

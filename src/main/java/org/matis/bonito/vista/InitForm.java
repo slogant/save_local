@@ -9,13 +9,16 @@ import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.controller.SedeController;
 import org.matis.bonito.model.IngenieroSoporte;
 
+
 import static java.lang.System.out;
 import javax.swing.JFrame;
+import org.matis.bonito.controller.PisoController;
 import org.matis.bonito.formularios.CrearIngSop;
-import org.matis.bonito.formularios.CrearPiso;
 import org.matis.bonito.formularios.CrearSede;
 import org.matis.bonito.formularios.EditarIngSop;
 import org.matis.bonito.formularios.ElimnarIngSop;
+import org.matis.bonito.formularios.CrearPiso;
+import org.matis.bonito.model.Piso;
 import org.matis.bonito.model.Sedes;
 
 /**
@@ -128,18 +131,26 @@ public class InitForm extends javax.swing.JFrame {
     private void cargaComponentes() {
         var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez","65070610");
         var sede = new Sedes("Torre Tp", "F-000000000001");
+        var piso = new Piso("PB1","P-000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
+        var pisoController = new PisoController();
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
             out.println("No se logro el registro");
         }
-       /* if(sedesCotroller.crearSede(sede)) {
+       /*if(sedesCotroller.crearSede(sede)) {
             out.println("Sede guardada");
         } else {
             out.println("No se logro el registro de la sede......");
+        }
+        if(pisoController.crearPiso(piso)) {
+            out.println("Piso guardado");
+        } else {
+           out.println("No se logro el registro del piso......"); 
         }*/
+       
         if (ingSopController.eliminarIngsop("23445564")) {
             out.println("Eliminado");
         } else {
