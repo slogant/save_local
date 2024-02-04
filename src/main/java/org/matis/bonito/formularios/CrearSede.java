@@ -180,12 +180,12 @@ public class CrearSede extends JDialog {
 
     private void textoSedeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoSedeKeyReleased
         // TODO add your handling code here:
-        var formatoFolio = "F-%012d";
+        /*var formatoFolio = "F-%012d";
         nuevoNumeroFolio++;
         var folio = format(formatoFolio, nuevoNumeroFolio);
         var b = folio.substring(2,14);
         out.println(folio);
-        out.println(b);
+        out.println(b);*/
         var textSede = textoSede.getText();
         if (textSede.isEmpty()) {
             textoSede.requestFocus();
