@@ -15,6 +15,7 @@ import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManager;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManagerFactory;
 
 public final class PisoController implements Serializable, PisoImpl {
+    
     @Override
     public boolean crearPiso(Piso piso) {
         var em = obtenerEntityManagerFactory();
@@ -66,6 +67,7 @@ public final class PisoController implements Serializable, PisoImpl {
     }
 
     /**
+     * @param codigo_piso
      * @param piso
      * @return
      */
