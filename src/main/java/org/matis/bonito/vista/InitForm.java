@@ -4,23 +4,19 @@
  */
 package org.matis.bonito.vista;
 
-import java.awt.Dialog;
-import java.awt.Dialog.ModalExclusionType;
 import org.matis.bonito.controller.*;
 import org.matis.bonito.formularios.*;
 import org.matis.bonito.model.*;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
 import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
-import java.awt.event.ActionEvent;
-
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.System.out;
 import static javax.swing.JOptionPane.*;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
