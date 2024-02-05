@@ -4,14 +4,23 @@
  */
 package org.matis.bonito.formularios;
 
+import org.matis.bonito.controller.PisoController;
+import org.matis.bonito.controller.TipoEquipoController;
+import org.matis.bonito.model.Piso;
+import org.matis.bonito.model.TipoEquipo;
+
+import static java.awt.Color.CYAN;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.showMessageDialog;
+import static java.lang.Integer.valueOf;
+import static java.lang.String.format;
+import static java.lang.System.out;
+import static javax.swing.JOptionPane.*;
+import org.matis.bonito.validador.LimitadorTextoNumero;
 
 /**
  *
@@ -57,6 +66,8 @@ public class CreaTipoEquipo extends JDialog {
         setResizable(false);
 
         jLabel1.setText("Tipo de equipo: ");
+
+        textTipoEquipo.setDocument(new LimitadorTextoNumero(textTipoEquipo, 12));
 
         cerrar.setMnemonic('C');
         cerrar.setText("Cancelar");
@@ -138,10 +149,26 @@ public class CreaTipoEquipo extends JDialog {
                     getDefaultToolkit().beep();
                     textTipoEquipo.requestFocus();
                 } else {
-
+                    var tipoEquipoController = new TipoEquipoController();
+                    var tipoEquipoIntegrado = tipoEquipoController.obtenerTipoEquipoActivo(tipo);
+                    if (tipoEquipoIntegrado != null) {
+                        showMessageDialog(CreaTipoEquipo.this, "Piso ya registrado...", "Monitor", ERROR_MESSAGE);
+                        textTipoEquipo.requestFocus();
+                        textTipoEquipo.selectAll();
+                        textTipoEquipo.setSelectionColor(CYAN);
+                        getDefaultToolkit().beep();
+                        guardar.setEnabled(false);
+                        out.println(tipoEquipoIntegrado);
+                        var ca = tipoEquipoIntegrado.getCodigo_tipo();
+                        out.println(ca);
+                    } else {
+                        //showMessageDialog(this, sedeid, "Monitor", INFORMATION_MESSAGE);
+                        out.println("Sin registro");
+                    }
                 }
             }
         });
+        guardar.addActionListener(e -> guardandoTipo());
         cerrar.addActionListener(e -> dispose());
         this.getRootPane().setDefaultButton(guardar);
     }
@@ -153,10 +180,77 @@ public class CreaTipoEquipo extends JDialog {
             getDefaultToolkit().beep();
             textTipoEquipo.requestFocus();
         } else {
-
+            var tipoEquipoController = new TipoEquipoController();
+            var tipoEquipoControl = tipoEquipoController.obtenerTipoEquipoActivo(tipo);
+            if (tipoEquipoControl != null) {
+                showMessageDialog(this, "Ya existe el registro del piso", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+                textTipoEquipo.selectAll();
+                textTipoEquipo.setSelectionColor(CYAN);
+                textTipoEquipo.requestFocus();
+            } else {
+                switch (tipo.length()) {
+                    case 1 -> {
+                        showMessageDialog(this, "El tipo de equipo debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
+                        guardar.setEnabled(false);
+                        getDefaultToolkit().beep();
+                        textTipoEquipo.selectAll();
+                        textTipoEquipo.setSelectionColor(CYAN);
+                        textTipoEquipo.requestFocus();
+                    }
+                    default -> {
+                        guardar.setEnabled(true);
+                        ((JComponent) e.getSource()).transferFocus();
+                    }
+                }
+            }
         }
     }
 
+    private void guardandoTipo() {
+        var tipoEquipoTexto = textTipoEquipo.getText();
+        if (tipoEquipoTexto.isEmpty()) {
+            showMessageDialog(this, "El campo piso está vacío", "Monitor", ERROR_MESSAGE);
+            textTipoEquipo.requestFocus();
+            getDefaultToolkit().beep();
+        } else {
+            var tipoEquipoController = new TipoEquipoController();
+            var tipoEquipo = tipoEquipoController.obtenerTipoEquipoActivo(tipoEquipoTexto);
+            if (tipoEquipo != null) {
+                showMessageDialog(this, "Tipo equipo ya registrado...", "Monitor", ERROR_MESSAGE);
+                textTipoEquipo.requestFocus();
+                textTipoEquipo.selectAll();
+                textTipoEquipo.setSelectionColor(CYAN);
+                getDefaultToolkit().beep();
+                guardar.setEnabled(false);
+            } else {
+                var nameEquipo = textTipoEquipo.getText();
+                var elultimoFolioPiso = devuelveLastFolio();
+                var tipoequipo = new TipoEquipo(nameEquipo, elultimoFolioPiso);
+                if (tipoEquipoController.crearTipoEquipo(tipoequipo)) {
+                    showMessageDialog(this, "Equipo registrado exitosamente", "Monitor", INFORMATION_MESSAGE);
+                    textTipoEquipo.requestFocus();
+                    textTipoEquipo.setText("");
+                    guardar.setEnabled(false);
+                } else {
+                    showMessageDialog(this, "No se logro crear el tipo de equipo.............", "Monitor", ERROR_MESSAGE);
+                    textTipoEquipo.requestFocus();
+                }
+            }
+        }
+    }
+
+    private String devuelveLastFolio() {
+        var tipoEquipoController = new TipoEquipoController();
+        out.println("Sin registro");
+        guardar.setEnabled(true);
+        var initFolioPiso = tipoEquipoController.obtenerUltimoTipoEquipoRegistro().get().getCodigo_tipo().substring(2, 14);
+        var aEntero = valueOf(initFolioPiso);
+        var incrementoFolio = aEntero + 1;
+        var folioToSave = format(miFormatoFolio, incrementoFolio);
+        return folioToSave;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
@@ -168,4 +262,6 @@ public class CreaTipoEquipo extends JDialog {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField textTipoEquipo;
     // End of variables declaration//GEN-END:variables
+    private int nuevoNumeroFolio = 1;
+    final static String miFormatoFolio = "E-%012d";
 }

@@ -10,8 +10,11 @@ import java.io.Serializable;
 @Table(name = "tipoequipo")
 @NamedQueries({
         @NamedQuery(name = "TipoEquipo.findAll", query = "select t from TipoEquipo t"),
-        @NamedQuery(name = "TipoEquipo.findByCodigo_tipó", query = "select t from TipoEquipo t where t.codigo_tipo = ?1"),
-        @NamedQuery(name = "TipoEquipo.findLastCodigoSede", query = "select t from TipoEquipo t  order by t.id_tipo desc")
+        @NamedQuery(name = "TipoEquipo.findByCodigo_tipo", query = "select t from TipoEquipo t where t.codigo_tipo = ?1"),
+        @NamedQuery(name = "TipoEquipo.findLastTipoCodigo", query = "select t from TipoEquipo t  order by t.id_tipo desc"),
+        @NamedQuery(name = "TipoEquipo.findByCodigo_tipEqulike", query = "select t from TipoEquipo t where t.codigo_tipo like ?1"),
+        @NamedQuery(name = "TipoEquipo.findByNombre_tipo", query = "select t from TipoEquipo t where t.nombre_tipo = ?1")
+
 })
 public class TipoEquipo implements Serializable {
     

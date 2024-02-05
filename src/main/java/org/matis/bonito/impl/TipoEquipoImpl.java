@@ -1,12 +1,17 @@
 package org.matis.bonito.impl;
 
-import org.matis.bonito.model.IngenieroSoporte;
 import org.matis.bonito.model.TipoEquipo;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface TipoEquipoImpl {
 
+    /**
+     *
+     * @param tipoEquipo
+     * @return
+     */
     default boolean crearTipoEquipo(TipoEquipo tipoEquipo) { return false; }
 
     default boolean eliminarTipoEquipo(String codigoTipo) {
@@ -25,7 +30,7 @@ public interface TipoEquipoImpl {
         return null;
     }
 
-    default IngenieroSoporte obtenerIngenieroSoporteActivo(String numeroEmpleado) {
-        return null;
-    }
+    default TipoEquipo obtenerTipoEquipoActivo(String codigoTipo) { return null; }
+
+    default Optional<TipoEquipo> obtenerUltimoTipoEquipoRegistro() { return null; }
 }

@@ -4,15 +4,9 @@
  */
 package org.matis.bonito.vista;
 
-import org.matis.bonito.controller.IngSopController;
-import org.matis.bonito.controller.PisoController;
-import org.matis.bonito.controller.SedeController;
-import org.matis.bonito.controller.SistemaOperativoController;
+import org.matis.bonito.controller.*;
 import org.matis.bonito.formularios.*;
-import org.matis.bonito.model.IngenieroSoporte;
-import org.matis.bonito.model.Piso;
-import org.matis.bonito.model.Sedes;
-import org.matis.bonito.model.SistemaOperativo;
+import org.matis.bonito.model.*;
 
 import javax.swing.*;
 
@@ -148,11 +142,15 @@ public class InitForm extends javax.swing.JFrame {
         var sede = new Sedes("Torre Tp", "F-000000000001");
         var piso = new Piso("PB1","P-000000000001");
         var so = new SistemaOperativo("Windows 7 Pro","x32","S-000000000001");
+        var tipoEquipo = new TipoEquipo("PC","E-000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
         var pisoController = new PisoController();
         var sistemaOpeControler = new SistemaOperativoController();
-        /*if (ingSopController.crearIngSop(soporte)) {
+        var tipoEquipoController = new TipoEquipoController();
+
+        /*
+        if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
             out.println("No se logro el registro");
@@ -171,8 +169,14 @@ public class InitForm extends javax.swing.JFrame {
             out.println("Sistema Operativo creado");
         } else {
             out.println("No se logro el registro del sistema operativo......");
-        }*/
-       
+        }
+        */
+
+        if(tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
+            out.println("Tipo creado");
+        } else {
+            out.println("No se logro el registro del tipo......");
+        }
         if (ingSopController.eliminarIngsop("23445564")) {
             out.println("Eliminado");
         } else {
