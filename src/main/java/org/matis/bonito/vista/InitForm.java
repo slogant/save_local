@@ -7,6 +7,7 @@ package org.matis.bonito.vista;
 import static java.awt.EventQueue.invokeLater;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.controller.SedeController;
+import org.matis.bonito.controller.SistemaOperativoController;
 import org.matis.bonito.model.IngenieroSoporte;
 
 
@@ -18,8 +19,10 @@ import org.matis.bonito.formularios.CrearSede;
 import org.matis.bonito.formularios.EditarIngSop;
 import org.matis.bonito.formularios.ElimnarIngSop;
 import org.matis.bonito.formularios.CrearPiso;
+import org.matis.bonito.formularios.CrearSO;
 import org.matis.bonito.model.Piso;
 import org.matis.bonito.model.Sedes;
+import org.matis.bonito.model.SistemaOperativo;
 
 /**
  *
@@ -58,7 +61,9 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         menuCrearPiso = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        menuCreaSO = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         jMenuItem7 = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
@@ -85,37 +90,51 @@ public class InitForm extends javax.swing.JFrame {
 
         getContentPane().add(PanelPrincipal, java.awt.BorderLayout.CENTER);
 
+        MenuAdmin.setMnemonic('o');
         MenuAdmin.setText("Admin");
         MenuAdmin.add(jSeparator1);
 
+        menuCrearIng.setMnemonic('C');
         menuCrearIng.setText("Crear Ingeniero Soporte");
         MenuAdmin.add(menuCrearIng);
         MenuAdmin.add(jSeparator2);
 
+        menuEditaIng.setMnemonic('E');
         menuEditaIng.setText("Editar Ingeniero Soporte");
         MenuAdmin.add(menuEditaIng);
         MenuAdmin.add(jSeparator4);
 
+        menuEliminaIng.setMnemonic('m');
         menuEliminaIng.setText("Eliminar Ingeniero Soporte");
         MenuAdmin.add(menuEliminaIng);
         MenuAdmin.add(jSeparator3);
 
+        menuCrearSede.setMnemonic('R');
         menuCrearSede.setText("Registrar sede");
         MenuAdmin.add(menuCrearSede);
         MenuAdmin.add(jSeparator5);
 
+        menuCrearPiso.setMnemonic('e');
         menuCrearPiso.setText("Registrar piso");
         MenuAdmin.add(menuCrearPiso);
         MenuAdmin.add(jSeparator7);
 
-        jMenuItem5.setText("Registrar sistema ope");
-        MenuAdmin.add(jMenuItem5);
+        menuCreaSO.setMnemonic('o');
+        menuCreaSO.setText("Registrar sistema operativo");
+        MenuAdmin.add(menuCreaSO);
+        MenuAdmin.add(jSeparator10);
+
+        jMenuItem1.setMnemonic('t');
+        jMenuItem1.setText("Registrar tipo equipo");
+        MenuAdmin.add(jMenuItem1);
         MenuAdmin.add(jSeparator6);
 
+        jMenuItem7.setMnemonic('g');
         jMenuItem7.setText("Registrar marca");
         MenuAdmin.add(jMenuItem7);
         MenuAdmin.add(jSeparator9);
 
+        jMenuItem8.setMnemonic('S');
         jMenuItem8.setText("Salir");
         MenuAdmin.add(jMenuItem8);
         MenuAdmin.add(jSeparator8);
@@ -132,15 +151,17 @@ public class InitForm extends javax.swing.JFrame {
         var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez","65070610");
         var sede = new Sedes("Torre Tp", "F-000000000001");
         var piso = new Piso("PB1","P-000000000001");
+        var so = new SistemaOperativo("Windows 7 Pro","x32","S-000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
         var pisoController = new PisoController();
-        if (ingSopController.crearIngSop(soporte)) {
+        var sistemaOpeControler = new SistemaOperativoController();
+        /*if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
             out.println("No se logro el registro");
         }
-       /*if(sedesCotroller.crearSede(sede)) {
+       if(sedesCotroller.crearSede(sede)) {
             out.println("Sede guardada");
         } else {
             out.println("No se logro el registro de la sede......");
@@ -149,6 +170,11 @@ public class InitForm extends javax.swing.JFrame {
             out.println("Piso guardado");
         } else {
            out.println("No se logro el registro del piso......"); 
+        }
+        if(sistemaOpeControler.crearSisOpe(so)) {
+            out.println("Sistema Operativo creado");
+        } else {
+            out.println("No se logro el registro del sistema operativo......");
         }*/
        
         if (ingSopController.eliminarIngsop("23445564")) {
@@ -170,15 +196,17 @@ public class InitForm extends javax.swing.JFrame {
         menuEliminaIng.addActionListener(e-> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
         menuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
         menuCrearPiso.addActionListener(e-> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
+        menuCreaSO.addActionListener(e-> invokeLater(() -> new CrearSO(new JFrame(),true).setVisible(true)));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -187,6 +215,7 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator8;
     private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenuItem menuCreaSO;
     private javax.swing.JMenuItem menuCrearIng;
     private javax.swing.JMenuItem menuCrearPiso;
     private javax.swing.JMenuItem menuCrearSede;

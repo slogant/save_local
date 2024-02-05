@@ -6,6 +6,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="MenuAdmin">
           <Properties>
+            <Property name="mnemonic" type="int" value="111"/>
             <Property name="text" type="java.lang.String" value="Admin"/>
           </Properties>
           <SubComponents>
@@ -13,6 +14,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuCrearIng">
               <Properties>
+                <Property name="mnemonic" type="int" value="67"/>
                 <Property name="text" type="java.lang.String" value="Crear Ingeniero Soporte"/>
               </Properties>
             </MenuItem>
@@ -20,6 +22,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuEditaIng">
               <Properties>
+                <Property name="mnemonic" type="int" value="69"/>
                 <Property name="text" type="java.lang.String" value="Editar Ingeniero Soporte"/>
               </Properties>
             </MenuItem>
@@ -27,6 +30,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuEliminaIng">
               <Properties>
+                <Property name="mnemonic" type="int" value="109"/>
                 <Property name="text" type="java.lang.String" value="Eliminar Ingeniero Soporte"/>
               </Properties>
             </MenuItem>
@@ -34,6 +38,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuCrearSede">
               <Properties>
+                <Property name="mnemonic" type="int" value="82"/>
                 <Property name="text" type="java.lang.String" value="Registrar sede"/>
               </Properties>
             </MenuItem>
@@ -41,20 +46,31 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuCrearPiso">
               <Properties>
+                <Property name="mnemonic" type="int" value="101"/>
                 <Property name="text" type="java.lang.String" value="Registrar piso"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator7">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+            <MenuItem class="javax.swing.JMenuItem" name="menuCreaSO">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registrar sistema ope"/>
+                <Property name="mnemonic" type="int" value="111"/>
+                <Property name="text" type="java.lang.String" value="Registrar sistema operativo"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator10">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="mnemonic" type="int" value="116"/>
+                <Property name="text" type="java.lang.String" value="Registrar tipo equipo"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator6">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
+                <Property name="mnemonic" type="int" value="103"/>
                 <Property name="text" type="java.lang.String" value="Registrar marca"/>
               </Properties>
             </MenuItem>
@@ -62,6 +78,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
               <Properties>
+                <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
             </MenuItem>
