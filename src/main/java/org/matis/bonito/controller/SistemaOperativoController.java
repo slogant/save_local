@@ -37,8 +37,10 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             if (requireNonNull(emf).isOpen()) {
                 emf.clear();
                 emf.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
             if (requireNonNull(em).isOpen()) em.close();
+            out.println("Cerrando entitymanager.............");
         }
     }
 
@@ -65,8 +67,10 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
             if (emt != null && emt.isOpen()) emt.close();
+            out.println("Cerrando entitymanager.............");
         }
     }
 
@@ -98,9 +102,11 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             return false;
         } finally {
             if (requireNonNull(emt).isOpen()) emt.close();
+            out.println("Cerrando entitymanager.............");
             if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
         }
     }
@@ -117,14 +123,16 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             return sistemaOperativoTypedQuery.getResultStream();
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
-            return null;
+            return Stream.empty();
         } finally {
             if(requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
             if(requireNonNull(emt).isOpen()){
                 emt.close();
+                out.println("Cerrando entitymanager.............");
             }
         }
     }
@@ -152,8 +160,10 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
             if (requireNonNull(emt).isOpen()) emt.close();
+            out.println("Cerrando entitymanager.............");
         }
     }
 
@@ -183,8 +193,10 @@ public class SistemaOperativoController implements Serializable, SistemaOperativ
             if (requireNonNull(emfa).isOpen()) {
                 emfa.clear();
                 emfa.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
             if (requireNonNull(emt).isOpen()) emt.close();
+            out.println("Cerrando entitymanager.............");
         }
     }
 }
