@@ -17,7 +17,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  *
  * @author oscar
  */
-public class TipoEquipo extends JDialog {
+public class CreaTipoEquipo extends JDialog {
 
     /**
      * Creates new form TipoEquipo
@@ -25,7 +25,7 @@ public class TipoEquipo extends JDialog {
      * @param parent
      * @param modal
      */
-    public TipoEquipo(JFrame parent, boolean modal) {
+    public CreaTipoEquipo(JFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         cargaMisComponentes();
@@ -134,7 +134,7 @@ public class TipoEquipo extends JDialog {
             public void keyReleased(KeyEvent e) {
                 var tipo = textTipoEquipo.getText();
                 if (tipo.isEmpty()) {
-                    showMessageDialog(TipoEquipo.this, "El campo tipo de equipo está vacío", "Monitor", ERROR_MESSAGE);
+                    showMessageDialog(CreaTipoEquipo.this, "El campo tipo de equipo está vacío", "Monitor", ERROR_MESSAGE);
                     getDefaultToolkit().beep();
                     textTipoEquipo.requestFocus();
                 } else {

@@ -193,7 +193,7 @@ public class InitForm extends javax.swing.JFrame {
         menuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
         menuCrearPiso.addActionListener(e-> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
         menuCreaSO.addActionListener(e-> invokeLater(() -> new CrearSO(new JFrame(),true).setVisible(true)));
-        menuCrearEquipo.addActionListener(e-> invokeLater(()  -> new TipoEquipo(new JFrame(), true).setVisible(true)));
+        menuCrearEquipo.addActionListener(e-> invokeLater(()  -> new CreaTipoEquipo(new JFrame(), true).setVisible(true)));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
