@@ -4,9 +4,7 @@
  */
 package org.matis.bonito.formularios;
 
-import org.matis.bonito.controller.PisoController;
 import org.matis.bonito.controller.TipoEquipoController;
-import org.matis.bonito.model.Piso;
 import org.matis.bonito.model.TipoEquipo;
 
 import static java.awt.Color.CYAN;
@@ -131,6 +129,7 @@ public class CreaTipoEquipo extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaMisComponentes() {
+        setUndecorated(true);
         textTipoEquipo.requestFocus();
         guardar.setEnabled(false);
         textTipoEquipo.addActionListener(e1 -> validaDatos(e1));

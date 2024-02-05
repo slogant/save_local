@@ -55,7 +55,7 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
         menuCrearEquipo = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        menuCrearMarca = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         jMenuItem8 = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
@@ -119,9 +119,9 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuCrearEquipo);
         MenuAdmin.add(jSeparator6);
 
-        jMenuItem7.setMnemonic('g');
-        jMenuItem7.setText("Registrar marca");
-        MenuAdmin.add(jMenuItem7);
+        menuCrearMarca.setMnemonic('g');
+        menuCrearMarca.setText("Registrar marca");
+        MenuAdmin.add(menuCrearMarca);
         MenuAdmin.add(jSeparator9);
 
         jMenuItem8.setMnemonic('S');
@@ -143,13 +143,14 @@ public class InitForm extends javax.swing.JFrame {
         var piso = new Piso("PB1","P-000000000001");
         var so = new SistemaOperativo("Windows 7 Pro","x32","S-000000000001");
         var tipoEquipo = new TipoEquipo("PC","E-000000000001");
+        var marcas = new MarcaEquipo("DELL", "M-000000000001", "000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
         var pisoController = new PisoController();
         var sistemaOpeControler = new SistemaOperativoController();
         var tipoEquipoController = new TipoEquipoController();
-
-        /*
+        var marcaControlador = new MarcaEquipoController();
+        
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
@@ -170,7 +171,11 @@ public class InitForm extends javax.swing.JFrame {
         } else {
             out.println("No se logro el registro del sistema operativo......");
         }
-        */
+        if(marcaControlador.crearMarcaEquipo(marcas)) {
+            out.println("La marca de equipo se a creado........");
+        } else {
+            out.println("No se logro el registro de la marca......");
+        }
 
         if(tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
             out.println("Tipo creado");
@@ -198,13 +203,13 @@ public class InitForm extends javax.swing.JFrame {
         menuCrearPiso.addActionListener(e-> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
         menuCreaSO.addActionListener(e-> invokeLater(() -> new CrearSO(new JFrame(),true).setVisible(true)));
         menuCrearEquipo.addActionListener(e-> invokeLater(()  -> new CreaTipoEquipo(new JFrame(), true).setVisible(true)));
+        menuCrearMarca.addActionListener(e-> invokeLater(() -> new CrearMarca(new JFrame(), true).setVisible(true)));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
@@ -219,6 +224,7 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCreaSO;
     private javax.swing.JMenuItem menuCrearEquipo;
     private javax.swing.JMenuItem menuCrearIng;
+    private javax.swing.JMenuItem menuCrearMarca;
     private javax.swing.JMenuItem menuCrearPiso;
     private javax.swing.JMenuItem menuCrearSede;
     private javax.swing.JMenuItem menuEditaIng;

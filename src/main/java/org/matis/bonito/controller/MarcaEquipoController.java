@@ -82,6 +82,7 @@ public class MarcaEquipoController implements Serializable, MarcaEquipoImpl {
     }
 
     /**
+     * @param codigoMarca
      * @param marcaEquipo
      * @return
      */

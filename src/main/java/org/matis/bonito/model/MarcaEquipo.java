@@ -86,6 +86,6 @@ public class MarcaEquipo implements Serializable {
     @Column(name = "codigo_marca", nullable = false, length = 200, unique = true)
     private String codigo_marca;
     @NotEmpty
-    @Column(name = "descripcion", nullable = false, length = 200)
+    @Column(name = "descripcion", nullable = true, length = 200)
     private String descripcion;
 }
