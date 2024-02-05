@@ -253,7 +253,6 @@ public class CrearMarca extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextField textMarca;
     // End of variables declaration//GEN-END:variables
-
     private int nuevoNumeroFolio = 1;
     final static String miFormatoFolio = "M-%012d";
 }
