@@ -155,16 +155,19 @@ public class CrearSede extends JDialog {
                     textoSede.setSelectionColor(CYAN);
                     textoSede.requestFocus();
                 } else {
-                    if(textSede.length() == 1) {
-                        showMessageDialog(this, "El nombre de la sede debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
-                        guardar.setEnabled(false);
-                        getDefaultToolkit().beep();
-                        textoSede.selectAll();
-                        textoSede.setSelectionColor(CYAN);
-                        textoSede.requestFocus();
-                    } else {
-                        guardar.setEnabled(true);
-                        ((JComponent) e.getSource()).transferFocus();
+                    switch (textSede.length()) {
+                        case 1 -> {
+                            showMessageDialog(this, "El nombre de la sede debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
+                            guardar.setEnabled(false);
+                            getDefaultToolkit().beep();
+                            textoSede.selectAll();
+                            textoSede.setSelectionColor(CYAN);
+                            textoSede.requestFocus();
+                        }
+                        default -> {
+                            guardar.setEnabled(true);
+                            ((JComponent) e.getSource()).transferFocus();
+                        }
                     }
                 }
             }

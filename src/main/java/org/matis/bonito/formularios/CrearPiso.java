@@ -163,16 +163,19 @@ public class CrearPiso extends JDialog {
                 textoPiso.setSelectionColor(CYAN);
                 textoPiso.requestFocus();
             } else {
-                if (piso.length() == 1) {
-                    showMessageDialog(this, "El nombre del piso debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
-                    guardar.setEnabled(false);
-                    getDefaultToolkit().beep();
-                    textoPiso.selectAll();
-                    textoPiso.setSelectionColor(CYAN);
-                    textoPiso.requestFocus();
-                } else {
-                    guardar.setEnabled(true);
-                    ((JComponent) e.getSource()).transferFocus();
+                switch (piso.length()) {
+                    case 1 -> {
+                        showMessageDialog(this, "El nombre del piso debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
+                        guardar.setEnabled(false);
+                        getDefaultToolkit().beep();
+                        textoPiso.selectAll();
+                        textoPiso.setSelectionColor(CYAN);
+                        textoPiso.requestFocus();
+                    }
+                    default -> {
+                        guardar.setEnabled(true);
+                        ((JComponent) e.getSource()).transferFocus();
+                    }
                 }
             }
         }

@@ -4,9 +4,13 @@
  */
 package org.matis.bonito.formularios;
 
-import org.matis.bonito.controller.SedeController;
 import org.matis.bonito.controller.SistemaOperativoController;
 import org.matis.bonito.model.SistemaOperativo;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map;
 
 import static java.awt.Color.CYAN;
 import static java.awt.Toolkit.getDefaultToolkit;
@@ -16,15 +20,7 @@ import static java.lang.System.out;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Stream.of;
 import static javax.swing.JOptionPane.*;
-import static javax.swing.SwingConstants.*;
-
-import java.awt.event.ActionEvent;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.swing.*;
+import static javax.swing.SwingConstants.RIGHT;
 
 /**
  *
@@ -195,16 +191,19 @@ public class CrearSO extends JDialog {
                 textoSO.requestFocus();
                 comboBits.setSelectedIndex(0);
             } else {
-                if(sis.length() == 1) {
-                    showMessageDialog(this, "El nombre de la sede debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
-                    guardar.setEnabled(false);
-                    getDefaultToolkit().beep();
-                    textoSO.selectAll();
-                    textoSO.setSelectionColor(CYAN);
-                    textoSO.requestFocus();
-                } else {
-                    guardar.setEnabled(true);
-                    ((JComponent) e.getSource()).transferFocus();
+                switch (sis.length()) {
+                    case 1 -> {
+                        showMessageDialog(this, "El nombre de la sede debe de contener más caracteres", "Monitor", ERROR_MESSAGE);
+                        guardar.setEnabled(false);
+                        getDefaultToolkit().beep();
+                        textoSO.selectAll();
+                        textoSO.setSelectionColor(CYAN);
+                        textoSO.requestFocus();
+                    }
+                    default -> {
+                        guardar.setEnabled(true);
+                        ((JComponent) e.getSource()).transferFocus();
+                    }
                 }
             }
         }
