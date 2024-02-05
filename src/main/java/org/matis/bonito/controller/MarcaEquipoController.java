@@ -4,12 +4,13 @@ import org.matis.bonito.impl.MarcaEquipoImpl;
 import org.matis.bonito.model.MarcaEquipo;
 
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.util.stream.Stream;
 
-import static java.lang.System.out;
 import static java.util.Objects.requireNonNull;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManager;
 import static org.matis.bonito.db.ConectaEntityDB.obtenerEntityManagerFactory;
+import org.matis.bonito.model.TipoEquipo;
 
 public class MarcaEquipoController implements Serializable, MarcaEquipoImpl {
     /**
@@ -41,34 +42,36 @@ public class MarcaEquipoController implements Serializable, MarcaEquipoImpl {
     }
 
     /**
-     * @param id_marca
+     * @param codigoMarca
      * @return
      */
     @Override
-    public boolean EliminarMarcaEquipo(Long id_marca) {
+    public boolean eliminarMarcaEquipo(String codigoMarca) {
         var emt = obtenerEntityManagerFactory();
         var emfc = obtenerEntityManager(emt);
         try {
             assert emfc != null;
             requireNonNull(emfc).getTransaction().begin();
-            var encontrado = requireNonNull(emfc).find(MarcaEquipo.class,id_marca);
+            var marcaTypedQuery = requireNonNull(emfc).createNamedQuery("MarcaEquipo.findByMarcaEquipolike", MarcaEquipo.class);
+            marcaTypedQuery.setParameter(1, codigoMarca);
+            var marcaEquipo = marcaTypedQuery.setMaxResults(1).getSingleResult();
             requireNonNull(emfc).getTransaction().commit();
             requireNonNull(emfc).getTransaction().begin();
-            emfc.remove(encontrado);
+            emfc.remove(marcaEquipo);
             requireNonNull(emfc).getTransaction().commit();
-            return !emfc.contains(encontrado);
+            return !emfc.contains(marcaEquipo);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
             requireNonNull(emfc).getTransaction().rollback();
             return false;
         } finally {
-            if(requireNonNull(emfc).isOpen()) {
+            if (requireNonNull(emfc).isOpen()) {
                 emfc.clear();
                 emfc.close();
+                out.println("Cerrando entitymanagerfactory.............");
             }
-            if (emt != null && emt.isOpen()) {
-                emt.close();
-            }
+            if (emt != null && emt.isOpen()) emt.close();
+            out.println("Cerrando entitymanager.............");
         }
     }
 
