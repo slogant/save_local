@@ -12,9 +12,15 @@ import org.matis.bonito.model.*;
 
 import javax.swing.*;
 
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import java.awt.event.ActionEvent;
+
+import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.System.out;
+import static javax.swing.JOptionPane.*;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -152,7 +158,7 @@ public class InitForm extends javax.swing.JFrame {
         var sistemaOpeControler = new SistemaOperativoController();
         var tipoEquipoController = new TipoEquipoController();
         var marcaControlador = new MarcaEquipoController();
-
+        /*
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
@@ -178,7 +184,7 @@ public class InitForm extends javax.swing.JFrame {
         } else {
             out.println("No se logro el registro de la marca......");
         }
-
+        */
         if (tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
             out.println("Tipo creado");
         } else {
@@ -212,18 +218,18 @@ public class InitForm extends javax.swing.JFrame {
     }
 
     private void cerrarPrincipal(ActionEvent e) {
-        final var pane = new JOptionPane("Desea cerrar la aplicación", JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        final var pane = new JOptionPane("Desea cerrar la aplicación", QUESTION_MESSAGE, OK_CANCEL_OPTION);
         final var dialogo = pane.createDialog(this, "Monitor");
         dialogo.setModal(true);
-        dialogo.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-        dialogo.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+        dialogo.setModalExclusionType(APPLICATION_EXCLUDE);
+        dialogo.setModalityType(TOOLKIT_MODAL);
         dialogo.setVisible(true);
         dialogo.dispose();
-        dialogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialogo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         var value = ((Integer) pane.getValue());
-        java.awt.Toolkit.getDefaultToolkit().beep();
+        getDefaultToolkit().beep();
         //var close = JOptionPane.showConfirmDialog(this, "Desea cerrar la aplicación", "Monitor", JOptionPane.YES_NO_OPTION);
-        if (value == JOptionPane.YES_OPTION) {
+        if (value == YES_OPTION) {
             revalidate();
             repaint();
             dispose();
@@ -231,15 +237,15 @@ public class InitForm extends javax.swing.JFrame {
             Runtime.getRuntime().gc();
             System.exit(0);
         } else {
-            final var paneop = new JOptionPane("Cancelando cerrar aplicación", JOptionPane.INFORMATION_MESSAGE);
+            final var paneop = new JOptionPane("Cancelando cerrar aplicación", INFORMATION_MESSAGE);
             final var dialogoOp = paneop.createDialog(this, "Monitor");
             dialogoOp.setModal(true);
-            dialogoOp.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-            dialogoOp.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+            dialogoOp.setModalExclusionType(APPLICATION_EXCLUDE);
+            dialogoOp.setModalityType(TOOLKIT_MODAL);
             dialogoOp.setVisible(true);
             dialogoOp.dispose();
-            dialogoOp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            java.awt.Toolkit.getDefaultToolkit().beep();
+            dialogoOp.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            getDefaultToolkit().beep();
         }
     }
 
