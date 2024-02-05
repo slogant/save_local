@@ -243,7 +243,6 @@ public class CrearMarca extends javax.swing.JDialog {
         return folioToSave;
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
     private javax.swing.JButton guardar;

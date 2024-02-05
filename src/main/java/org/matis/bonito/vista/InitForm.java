@@ -245,7 +245,6 @@ public class InitForm extends javax.swing.JFrame {
         }
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
