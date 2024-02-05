@@ -4,14 +4,16 @@
  */
 package org.matis.bonito.vista;
 
+import java.awt.Dialog;
+import java.awt.Dialog.ModalExclusionType;
 import org.matis.bonito.controller.*;
 import org.matis.bonito.formularios.*;
 import org.matis.bonito.model.*;
 
 import javax.swing.*;
 
-
 import static java.awt.EventQueue.invokeLater;
+import java.awt.event.ActionEvent;
 import static java.lang.System.out;
 
 /**
@@ -57,7 +59,7 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         menuCrearMarca = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        menuSalir = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -124,9 +126,9 @@ public class InitForm extends javax.swing.JFrame {
         MenuAdmin.add(menuCrearMarca);
         MenuAdmin.add(jSeparator9);
 
-        jMenuItem8.setMnemonic('S');
-        jMenuItem8.setText("Salir");
-        MenuAdmin.add(jMenuItem8);
+        menuSalir.setMnemonic('S');
+        menuSalir.setText("Salir");
+        MenuAdmin.add(menuSalir);
         MenuAdmin.add(jSeparator8);
 
         barraPrincipal.add(MenuAdmin);
@@ -138,11 +140,11 @@ public class InitForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaComponentes() {
-        var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez","65070610");
+        var soporte = new IngenieroSoporte("Oscar Antonio", "Lopez", "Gonzalez", "65070610");
         var sede = new Sedes("Torre Tp", "F-000000000001");
-        var piso = new Piso("PB1","P-000000000001");
-        var so = new SistemaOperativo("Windows 7 Pro","x32","S-000000000001");
-        var tipoEquipo = new TipoEquipo("PC","E-000000000001");
+        var piso = new Piso("PB1", "P-000000000001");
+        var so = new SistemaOperativo("Windows 7 Pro", "x32", "S-000000000001");
+        var tipoEquipo = new TipoEquipo("PC", "E-000000000001");
         var marcas = new MarcaEquipo("DELL", "M-000000000001", "000000000001");
         var ingSopController = new IngSopController();
         var sedesCotroller = new SedeController();
@@ -150,34 +152,34 @@ public class InitForm extends javax.swing.JFrame {
         var sistemaOpeControler = new SistemaOperativoController();
         var tipoEquipoController = new TipoEquipoController();
         var marcaControlador = new MarcaEquipoController();
-        
+
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
         } else {
             out.println("No se logro el registro");
         }
-       if(sedesCotroller.crearSede(sede)) {
+        if (sedesCotroller.crearSede(sede)) {
             out.println("Sede guardada");
         } else {
             out.println("No se logro el registro de la sede......");
         }
-        if(pisoController.crearPiso(piso)) {
+        if (pisoController.crearPiso(piso)) {
             out.println("Piso guardado");
         } else {
-           out.println("No se logro el registro del piso......"); 
+            out.println("No se logro el registro del piso......");
         }
-        if(sistemaOpeControler.crearSisOpe(so)) {
+        if (sistemaOpeControler.crearSisOpe(so)) {
             out.println("Sistema Operativo creado");
         } else {
             out.println("No se logro el registro del sistema operativo......");
         }
-        if(marcaControlador.crearMarcaEquipo(marcas)) {
+        if (marcaControlador.crearMarcaEquipo(marcas)) {
             out.println("La marca de equipo se a creado........");
         } else {
             out.println("No se logro el registro de la marca......");
         }
 
-        if(tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
+        if (tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
             out.println("Tipo creado");
         } else {
             out.println("No se logro el registro del tipo......");
@@ -187,30 +189,65 @@ public class InitForm extends javax.swing.JFrame {
         } else {
             out.println("Sin eliminar");
         }
-        var updatesoporte = new IngenieroSoporte("Matias","Peque Bonito","Mi Niño bonito","20201982");
-        if(ingSopController.actualizaIngSop("65070600", updatesoporte)) {
+        var updatesoporte = new IngenieroSoporte("Matias", "Peque Bonito", "Mi Niño bonito", "20201982");
+        if (ingSopController.actualizaIngSop("65070600", updatesoporte)) {
             out.println("Actualizados");
         } else {
             out.println("No Actualizados");
         }
         ingSopController.obtenerIngSop().forEachOrdered(out::println);
         ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
-        
-        menuCrearIng.addActionListener(e-> invokeLater(() -> new CrearIngSop(new JFrame(),true).setVisible(true)));
-        menuEditaIng.addActionListener(e-> invokeLater(() -> new EditarIngSop(new JFrame(),true).setVisible(true)));
-        menuEliminaIng.addActionListener(e-> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
-        menuCrearSede.addActionListener(e-> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
-        menuCrearPiso.addActionListener(e-> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
-        menuCreaSO.addActionListener(e-> invokeLater(() -> new CrearSO(new JFrame(),true).setVisible(true)));
-        menuCrearEquipo.addActionListener(e-> invokeLater(()  -> new CreaTipoEquipo(new JFrame(), true).setVisible(true)));
-        menuCrearMarca.addActionListener(e-> invokeLater(() -> new CrearMarca(new JFrame(), true).setVisible(true)));
+
+        menuCrearIng.addActionListener(e -> invokeLater(() -> new CrearIngSop(new JFrame(), true).setVisible(true)));
+        menuEditaIng.addActionListener(e -> invokeLater(() -> new EditarIngSop(new JFrame(), true).setVisible(true)));
+        menuEliminaIng.addActionListener(e -> invokeLater(() -> new ElimnarIngSop(new JFrame(), true).setVisible(true)));
+        menuCrearSede.addActionListener(e -> invokeLater(() -> new CrearSede(new JFrame(), true).setVisible(true)));
+        menuCrearPiso.addActionListener(e -> invokeLater(() -> new CrearPiso(new JFrame(), true).setVisible(true)));
+        menuCreaSO.addActionListener(e -> invokeLater(() -> new CrearSO(new JFrame(), true).setVisible(true)));
+        menuCrearEquipo.addActionListener(e -> invokeLater(() -> new CreaTipoEquipo(new JFrame(), true).setVisible(true)));
+        menuCrearMarca.addActionListener(e -> invokeLater(() -> new CrearMarca(new JFrame(), true).setVisible(true)));
+        menuSalir.addActionListener(e -> {
+            cerrarPrincipal(e);
+        });
     }
+
+    private void cerrarPrincipal(ActionEvent e) {
+        final var pane = new JOptionPane("Desea cerrar la aplicación", JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        final var dialogo = pane.createDialog(this, "Monitor");
+        dialogo.setModal(true);
+        dialogo.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+        dialogo.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+        dialogo.setVisible(true);
+        dialogo.dispose();
+        dialogo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        var value = ((Integer) pane.getValue());
+        java.awt.Toolkit.getDefaultToolkit().beep();
+        //var close = JOptionPane.showConfirmDialog(this, "Desea cerrar la aplicación", "Monitor", JOptionPane.YES_NO_OPTION);
+        if (value == JOptionPane.YES_OPTION) {
+            revalidate();
+            repaint();
+            dispose();
+            System.gc();
+            Runtime.getRuntime().gc();
+            System.exit(0);
+        } else {
+            final var paneop = new JOptionPane("Cancelando cerrar aplicación", JOptionPane.INFORMATION_MESSAGE);
+            final var dialogoOp = paneop.createDialog(this, "Monitor");
+            dialogoOp.setModal(true);
+            dialogoOp.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+            dialogoOp.setModalityType(Dialog.ModalityType.TOOLKIT_MODAL);
+            dialogoOp.setVisible(true);
+            dialogoOp.dispose();
+            dialogoOp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            java.awt.Toolkit.getDefaultToolkit().beep();
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -229,5 +266,6 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCrearSede;
     private javax.swing.JMenuItem menuEditaIng;
     private javax.swing.JMenuItem menuEliminaIng;
+    private javax.swing.JMenuItem menuSalir;
     // End of variables declaration//GEN-END:variables
 }
