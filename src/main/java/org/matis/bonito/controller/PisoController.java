@@ -27,7 +27,9 @@ public final class PisoController implements Serializable, PisoImpl {
             return emf.contains(piso);
         } catch (Exception e) {
             out.printf("Error en: %s%n", e.getLocalizedMessage());
-            requireNonNull(emf).getTransaction().rollback();
+            if (requireNonNull(emf).getTransaction().isActive()) {
+                requireNonNull(emf).getTransaction().rollback();
+            }
             return false;
         } finally {
             if (requireNonNull(emf).isOpen()) {
