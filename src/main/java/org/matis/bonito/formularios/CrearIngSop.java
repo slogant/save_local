@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import static java.awt.Toolkit.getDefaultToolkit;
+import java.awt.event.KeyEvent;
 import static java.lang.System.out;
 import static javax.swing.JOptionPane.*;
 
@@ -231,7 +232,18 @@ public class CrearIngSop extends javax.swing.JDialog {
                 }
             }
         });
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
 
+                return false;
+            }
+        });
         guardar.addActionListener(this::actionPerformed);
         cerrar.addActionListener(this::actionPerformed2);
     }
