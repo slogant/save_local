@@ -8,6 +8,8 @@ import org.matis.bonito.controller.TipoEquipoController;
 import org.matis.bonito.model.TipoEquipo;
 
 import static java.awt.Color.CYAN;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -165,6 +167,18 @@ public class CreaTipoEquipo extends JDialog {
                         out.println("Sin registro");
                     }
                 }
+            }
+        });
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
+
+                return false;
             }
         });
         guardar.addActionListener(e -> guardandoTipo());

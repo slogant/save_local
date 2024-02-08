@@ -5,12 +5,15 @@
 package org.matis.bonito.formularios;
 
 import java.awt.Color;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.matis.bonito.controller.IngSopController;
 import org.matis.bonito.model.IngenieroSoporte;
 
 import static java.awt.Toolkit.getDefaultToolkit;
+import java.awt.event.KeyEvent;
 import static java.lang.System.out;
 import java.util.Objects;
 
@@ -259,6 +262,18 @@ public class EditarIngSop extends javax.swing.JDialog {
         comboEmpleado.removeAllItems();
         comboEmpleado.addItem(null);
         ing.obtenerIngSop().forEach(this::ingresa);
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
+
+                return false;
+            }
+        });
         btnSave.addActionListener(e -> actualizaDatos());
         cerrar.addActionListener(e-> dispose());
     }

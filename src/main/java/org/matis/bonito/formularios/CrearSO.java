@@ -13,7 +13,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 
 import static java.awt.Color.CYAN;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
 import static java.awt.Toolkit.getDefaultToolkit;
+import java.awt.event.KeyEvent;
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
 import static java.lang.System.out;
@@ -162,6 +165,18 @@ public class CrearSO extends JDialog {
         ((JLabel) comboBits.getRenderer()).setHorizontalAlignment(RIGHT);
         //Stream.of("x32","x64").map(m-> m.toUpperCase()).forEach(s-> {comboBits.addItem(s);});
         mapa.forEach((x,y)-> {comboBits.addItem(y);});
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
+
+                return false;
+            }
+        });
         textoSO.addActionListener(this::validaDatos);
         guardar.addActionListener(this::guardando);
         cerrar.addActionListener(e -> dispose());

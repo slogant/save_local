@@ -15,6 +15,8 @@ import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
 import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
+import static java.lang.Runtime.getRuntime;
+import static java.lang.System.exit;
 import static java.lang.System.out;
 import static javax.swing.JOptionPane.*;
 
@@ -63,6 +65,8 @@ public class InitForm extends javax.swing.JFrame {
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         menuSalir = new javax.swing.JMenuItem();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        jMenu1 = new javax.swing.JMenu();
+        menuRegisrarEquipoCert = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EntryForm");
@@ -135,6 +139,13 @@ public class InitForm extends javax.swing.JFrame {
 
         barraPrincipal.add(MenuAdmin);
 
+        jMenu1.setText("Crear");
+
+        menuRegisrarEquipoCert.setText("Registrar Equipo");
+        jMenu1.add(menuRegisrarEquipoCert);
+
+        barraPrincipal.add(jMenu1);
+
         setJMenuBar(barraPrincipal);
 
         setSize(new java.awt.Dimension(1022, 606));
@@ -180,7 +191,8 @@ public class InitForm extends javax.swing.JFrame {
         } else {
             out.println("No se logro el registro de la marca......");
         }
-        */
+
+
         if (tipoEquipoController.crearTipoEquipo(tipoEquipo)) {
             out.println("Tipo creado");
         } else {
@@ -196,7 +208,7 @@ public class InitForm extends javax.swing.JFrame {
             out.println("Actualizados");
         } else {
             out.println("No Actualizados");
-        }
+        }*/
         ingSopController.obtenerIngSop().forEachOrdered(out::println);
         ingSopController.otenerIngSopNumEmp("23425564").forEachOrdered(out::println);
 
@@ -211,6 +223,7 @@ public class InitForm extends javax.swing.JFrame {
         menuSalir.addActionListener(e -> {
             cerrarPrincipal(e);
         });
+        menuRegisrarEquipoCert.addActionListener(e -> invokeLater(() -> new RegistraCertificacion(new JFrame(), true).setVisible(true)));
     }
 
     private void cerrarPrincipal(ActionEvent e) {
@@ -230,8 +243,8 @@ public class InitForm extends javax.swing.JFrame {
             repaint();
             dispose();
             System.gc();
-            Runtime.getRuntime().gc();
-            System.exit(0);
+            getRuntime().gc();
+            exit(0);
         } else {
             final var paneop = new JOptionPane("Cancelando cerrar aplicación", INFORMATION_MESSAGE);
             final var dialogoOp = paneop.createDialog(this, "Monitor");
@@ -249,6 +262,7 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JMenu MenuAdmin;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -267,6 +281,7 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCrearSede;
     private javax.swing.JMenuItem menuEditaIng;
     private javax.swing.JMenuItem menuEliminaIng;
+    private javax.swing.JMenuItem menuRegisrarEquipoCert;
     private javax.swing.JMenuItem menuSalir;
     // End of variables declaration//GEN-END:variables
 }

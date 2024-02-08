@@ -5,8 +5,11 @@
 package org.matis.bonito.formularios;
 
 import static java.awt.Color.CYAN;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
@@ -136,6 +139,18 @@ public class CrearPiso extends JDialog {
         setUndecorated(true);
         guardar.setEnabled(false);
         textoPiso.requestFocus();
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
+
+                return false;
+            }
+        });
         textoPiso.addActionListener(this::accionTextPiso);
         this.getRootPane().setDefaultButton(guardar);
         guardar.addActionListener(e -> guardandoPiso());

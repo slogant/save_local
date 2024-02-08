@@ -5,15 +5,22 @@
 package org.matis.bonito.formularios;
 
 import static java.awt.Color.CYAN;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
+
+import static java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
+
+import javax.swing.*;
+
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -24,7 +31,7 @@ import org.matis.bonito.model.MarcaEquipo;
  *
  * @author oscar
  */
-public class CrearMarca extends javax.swing.JDialog {
+public class CrearMarca extends JDialog {
 
     /**
      * Creates new form CrearMarca
@@ -134,6 +141,17 @@ public class CrearMarca extends javax.swing.JDialog {
                 keyCampo(evt);
             }
         });
+        var kb = getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == VK_ESCAPE && this != null) {
+                    System.out.println("Cerrando dialogo...");
+                    dispose();
+                }
+                return false;
+            }
+        });
         textMarca.addActionListener(e -> validaCampos(e));
         guardar.addActionListener(e -> guardando(e));
         cerrar.addActionListener(e -> dispose());
@@ -217,9 +235,8 @@ public class CrearMarca extends javax.swing.JDialog {
                 getDefaultToolkit().beep();
                 guardar.setEnabled(false);
             } else {
-                var marcas = textMarca.getText();
                 var elultimo = devuelveLastFolio();
-                var marcaIngresa = new MarcaEquipo(marcas,elultimo, elultimo);
+                var marcaIngresa = new MarcaEquipo(marca,elultimo, elultimo);
                 if(marcaController.crearMarcaEquipo(marcaIngresa)) {
                     showMessageDialog(this, "Marca registrada exitosamente", "Monitor", INFORMATION_MESSAGE);
                     textMarca.requestFocus();
