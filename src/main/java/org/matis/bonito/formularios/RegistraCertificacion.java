@@ -4,16 +4,42 @@
  */
 package org.matis.bonito.formularios;
 
-import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.*;
+import javax.swing.JSpinner.DateEditor;
+
+import org.matis.bonito.validador.LocalDateTimeSpinnerModel;
+
+import static java.awt.BorderLayout.*;
+import static java.lang.System.out;
+import static java.lang.Thread.sleep;
+import static java.time.LocalDateTime.*;
+import static java.time.LocalDateTime.now;
+import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.logging.Level.SEVERE;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author oscar
  */
-public class RegistraCertificacion extends javax.swing.JDialog {
+public class RegistraCertificacion extends JDialog {
 
-    /**
+    /*
      * Creates new form RegistraCertificacion
+     *
      * @param parent
      * @param modal
      */
@@ -33,6 +59,10 @@ public class RegistraCertificacion extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        fechaLocal = new javax.swing.JTextField();
+        spinnerFecha = new javax.swing.JSpinner(new LocalDateTimeSpinnerModel(now()));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
@@ -42,15 +72,48 @@ public class RegistraCertificacion extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel1.setText("Fecha: ");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(spinnerFecha)
+                    .addComponent(fechaLocal, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(fechaLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(455, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 957, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(621, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -60,11 +123,106 @@ public class RegistraCertificacion extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaMisComponentes() {
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        // Define una tarea que se ejecutará cada segundo para actualizar el reloj
+        scheduledExecutorService.scheduleAtFixedRate(() -> printTime(), 0, 1000, MILLISECONDS);
+        spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
+        spinnerFecha.setEnabled(false);
         this.toFront();
+        IniciaReloj();
+        repaint();
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ventanaCerrar(e);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
     }
-   
+
+    private void IniciaReloj() {
+
+        temp = new javax.swing.Timer(1000, e -> {
+            cargaHora();
+        });
+        temp.start();
+    }
+
+    private void cargaHora() {
+
+        var ti = now().format(ofPattern("yyyy-MM-dd KK:mm:ss a"));
+        //fechaLocal.setText(ti);
+        //spinnerFecha.setValue(new Date());
+
+    }
+
+    private void ventanaCerrar(WindowEvent e) {
+        if (e.getSource() instanceof JDialog dia) {
+            try {
+                sleep(3000);
+                dia.dispose();
+                temp.setRepeats(false);
+                temp.stop();
+                if(temp.isRunning()){
+                    out.println("Sigue corriendo el timer");
+                } else {
+                    out.println("Se detuvo el timer");
+                    scheduledExecutorService.close();
+                    if(scheduledExecutorService.isTerminated()){
+                        out.println("Cerrandolos............");
+                        scheduledExecutorService.shutdown();
+                        if(scheduledExecutorService.isShutdown()) {
+                            out.println("Hilo terminado...................");
+                        }
+                    }
+                }
+                out.println("Cerrando la ventana................................");
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RegistraCertificacion.class.getName()).log(SEVERE, null, ex);
+            }
+        }
+    }
+
+    public static void printTime() {
+        var ti = now().format(ofPattern("yyyy-MM-dd KK:mm:ss a"));
+        fechaLocal.setText(ti);
+        spinnerFecha.setValue(new Date());
+        out.println("Fecha y Hora actual: " + ti);
+        
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private static javax.swing.JTextField fechaLocal;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private static javax.swing.JSpinner spinnerFecha;
     // End of variables declaration//GEN-END:variables
+
+    private javax.swing.Timer temp;
+    private ScheduledExecutorService scheduledExecutorService;
 }

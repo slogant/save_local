@@ -19,6 +19,7 @@ import static java.lang.Runtime.getRuntime;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static javax.swing.JOptionPane.*;
+import org.matis.bonito.validador.RandomGradientPanelThread;
 
 /**
  *
@@ -43,7 +44,6 @@ public class InitForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PanelPrincipal = new javax.swing.JPanel();
         barraPrincipal = new javax.swing.JMenuBar();
         MenuAdmin = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -72,21 +72,6 @@ public class InitForm extends javax.swing.JFrame {
         setTitle("EntryForm");
         setLocationByPlatform(true);
         setResizable(false);
-
-        PanelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
-        PanelPrincipal.setLayout(PanelPrincipalLayout);
-        PanelPrincipalLayout.setHorizontalGroup(
-            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1012, Short.MAX_VALUE)
-        );
-        PanelPrincipalLayout.setVerticalGroup(
-            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(PanelPrincipal, java.awt.BorderLayout.CENTER);
 
         MenuAdmin.setMnemonic('o');
         MenuAdmin.setText("Admin");
@@ -165,6 +150,7 @@ public class InitForm extends javax.swing.JFrame {
         var sistemaOpeControler = new SistemaOperativoController();
         var tipoEquipoController = new TipoEquipoController();
         var marcaControlador = new MarcaEquipoController();
+        this.add(new RandomGradientPanelThread());
         /*
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
@@ -260,7 +246,6 @@ public class InitForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
-    private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JMenuBar barraPrincipal;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
