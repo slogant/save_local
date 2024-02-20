@@ -17,6 +17,8 @@ import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
 import java.awt.event.ItemEvent;
+
+import static java.awt.event.ItemEvent.SELECTED;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -289,7 +291,7 @@ public class InitForm extends JFrame {
 
         abrir.addItemListener(e -> {
             int estado = e.getStateChange();
-            if (estado == ItemEvent.SELECTED) {
+            if (estado == SELECTED) {
                 panelPrincipal.setVisible(false);
             } else {
                 panelPrincipal.setVisible(true);
