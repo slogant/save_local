@@ -51,7 +51,7 @@ public class TipoEquipo implements Serializable {
     }
     @Override
     public String toString() {
-        return STR."\{nombre_tipo} \{codigo_tipo}";
+        return STR."\{nombre_tipo}";
     }
 
     @NotNull

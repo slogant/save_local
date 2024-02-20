@@ -4,6 +4,7 @@
  */
 package org.matis.bonito.vista;
 
+import java.awt.BorderLayout;
 import org.matis.bonito.controller.*;
 import org.matis.bonito.formularios.*;
 import org.matis.bonito.model.*;
@@ -15,6 +16,7 @@ import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
 import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
+import java.awt.event.ItemEvent;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -25,7 +27,7 @@ import org.matis.bonito.validador.RandomGradientPanelThread;
  *
  * @author oscar
  */
-public class InitForm extends javax.swing.JFrame {
+public class InitForm extends JFrame {
 
     /**
      * Creates new form InitForm
@@ -44,6 +46,12 @@ public class InitForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelPrincipal = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        abrir = new javax.swing.JToggleButton();
         barraPrincipal = new javax.swing.JMenuBar();
         MenuAdmin = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -70,8 +78,61 @@ public class InitForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("EntryForm");
+        setBackground(new java.awt.Color(255, 255, 255));
         setLocationByPlatform(true);
         setResizable(false);
+
+        panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton1.setText("jButton1");
+
+        jButton2.setText("jButton2");
+
+        jButton3.setText("jButton3");
+
+        javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
+        panelPrincipal.setLayout(panelPrincipalLayout);
+        panelPrincipalLayout.setHorizontalGroup(
+            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+        panelPrincipalLayout.setVerticalGroup(
+            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(405, Short.MAX_VALUE))
+        );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        abrir.setText("☰");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(abrir)
+                .addContainerGap(791, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(abrir)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         MenuAdmin.setMnemonic('o');
         MenuAdmin.setText("Admin");
@@ -133,6 +194,21 @@ public class InitForm extends javax.swing.JFrame {
 
         setJMenuBar(barraPrincipal);
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setSize(new java.awt.Dimension(1022, 606));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -150,7 +226,7 @@ public class InitForm extends javax.swing.JFrame {
         var sistemaOpeControler = new SistemaOperativoController();
         var tipoEquipoController = new TipoEquipoController();
         var marcaControlador = new MarcaEquipoController();
-        this.add(new RandomGradientPanelThread());
+        this.add(new RandomGradientPanelThread(), BorderLayout.CENTER);
         /*
         if (ingSopController.crearIngSop(soporte)) {
             out.println("Valor guardado");
@@ -210,6 +286,17 @@ public class InitForm extends javax.swing.JFrame {
             cerrarPrincipal(e);
         });
         menuRegisrarEquipoCert.addActionListener(e -> invokeLater(() -> new RegistraCertificacion(new JFrame(), true).setVisible(true)));
+
+        abrir.addItemListener(e -> {
+            int estado = e.getStateChange();
+            if (estado == ItemEvent.SELECTED) {
+                panelPrincipal.setVisible(false);
+            } else {
+                panelPrincipal.setVisible(true);
+            }
+
+        });
+
     }
 
     private void cerrarPrincipal(ActionEvent e) {
@@ -246,8 +333,13 @@ public class InitForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuAdmin;
+    private javax.swing.JToggleButton abrir;
     private javax.swing.JMenuBar barraPrincipal;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -268,5 +360,6 @@ public class InitForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuEliminaIng;
     private javax.swing.JMenuItem menuRegisrarEquipoCert;
     private javax.swing.JMenuItem menuSalir;
+    private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables
 }
