@@ -221,6 +221,14 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JSpinner" name="spinnerEquipo">
+              <Properties>
+                <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="obtenerModelo()" type="code"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="RegistraCertificacion_spinnerEquipo"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

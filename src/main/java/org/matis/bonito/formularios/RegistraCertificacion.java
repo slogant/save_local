@@ -66,6 +66,14 @@ public class RegistraCertificacion extends JDialog {
         jTextField5 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         spinnerEquipo = new javax.swing.JSpinner();
+        JComponent editor = spinnerEquipo.getEditor();
+        if (editor instanceof JSpinner.DefaultEditor) {
+            out.println("Cierto...,....,-,mñlm");
+            JSpinner.DefaultEditor defaultEditor = (JSpinner.DefaultEditor) editor;
+            JTextField textField = defaultEditor.getTextField();
+            textField.setText("Seleccionar"); // Texto inicial
+        }
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
         setModal(true);
@@ -77,7 +85,6 @@ public class RegistraCertificacion extends JDialog {
         panelCentral.setBackground(new java.awt.Color(255, 255, 255));
 
         spinnerFecha.setModel(new LocalDateTimeSpinnerModel(now()));
-        spinnerEquipo.setModel(obtenerModelo());
 
         jLabel2.setText("Nombre: ");
 
@@ -94,6 +101,8 @@ public class RegistraCertificacion extends JDialog {
         jLabel7.setText("Contraseña Inicial: ");
 
         jLabel8.setText("Tipo de equipo: ");
+
+        spinnerEquipo.setModel(obtenerModelo());
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
         panelCentral.setLayout(panelCentralLayout);
@@ -192,7 +201,6 @@ public class RegistraCertificacion extends JDialog {
         scheduledExecutorService.scheduleAtFixedRate(() -> printTime(), 0, 1000, MILLISECONDS);
         spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
         spinnerFecha.setEnabled(false);
-
         //
         this.addWindowListener(new WindowListener() {
             @Override
