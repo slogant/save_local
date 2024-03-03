@@ -5,6 +5,8 @@
 package org.matis.bonito.formularios;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -17,13 +19,22 @@ import javax.swing.JSpinner.DefaultEditor;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import java.util.ArrayList;
+import java.util.List;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static javax.swing.SwingConstants.CENTER;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import org.matis.bonito.controller.TipoEquipoController;
 import org.matis.bonito.model.TipoEquipo;
@@ -97,6 +108,7 @@ public class RegistraCertificacion extends JDialog {
         jPanel3 = new javax.swing.JPanel();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
+        mu = new javax.swing.JLabel();
         panelImage = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -149,12 +161,16 @@ public class RegistraCertificacion extends JDialog {
 
         jLabel12.setText("Activo fijo:  ");
 
+        campoActivo.setDocument(new JTextFieldLimit(9, true));
+
         jLabel13.setText("Localidad: ");
 
         jLabel14.setText("Piso: ");
 
+        campoRespaldo.setBackground(new java.awt.Color(255, 255, 255));
         campoRespaldo.setText("Respaldo");
 
+        campoCargador.setBackground(new java.awt.Color(255, 255, 255));
         campoCargador.setText("Cargador");
 
         javax.swing.GroupLayout panelCentralLayout = new javax.swing.GroupLayout(panelCentral);
@@ -277,6 +293,7 @@ public class RegistraCertificacion extends JDialog {
         areaSoft.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Software autorizado", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.TOP));
         jScrollPane1.setViewportView(areaSoft);
 
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Observaciones", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.BOTTOM));
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -315,6 +332,8 @@ public class RegistraCertificacion extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        mu.setText("Muestrame");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -327,6 +346,10 @@ public class RegistraCertificacion extends JDialog {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mu)
+                .addGap(51, 51, 51))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,7 +360,9 @@ public class RegistraCertificacion extends JDialog {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(mu)
+                .addContainerGap())
         );
 
         panelImage.setBackground(new java.awt.Color(255, 255, 255));
@@ -376,22 +401,31 @@ public class RegistraCertificacion extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargaMisComponentes() {
+        spinnerFecha.setEnabled(false);
+        campoNombre.requestFocus();
         final var MAX_LENGTH = 120;
+        var document = (PlainDocument) campoContrasenia.getDocument();
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         // Define una tarea que se ejecutará cada segundo para actualizar el reloj
         scheduledExecutorService.scheduleAtFixedRate(() -> printTime(), 0, 1000, MILLISECONDS);
         spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
-        spinnerFecha.setEnabled(false);
-        //
+        var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
+        tf.setEditable(false);
+        tf.setBackground(Color.white);
         var editor = campoTipo.getEditor();
         if (editor instanceof DefaultEditor defaultEditor) {
+            final var mensaje = "Selecciona un valor";
             var spinnerEditor = (DefaultEditor) defaultEditor;
             spinnerEditor.getTextField().setHorizontalAlignment(CENTER);
             spinnerEditor.getTextField().setEditable(false);
-            final var mensaje = "Selecciona un valor";
             spinnerEditor.getTextField().setText(mensaje); // Establecer el texto dentro del editor
             spinnerEditor.getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
+            spinnerEditor.getTextField().setEditable(false);
         }
+        mu.setVisible(false);
+        areaSoft.setLineWrap(true);
+        areaOb.setLineWrap(true);
+
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -422,8 +456,7 @@ public class RegistraCertificacion extends JDialog {
             public void windowDeactivated(WindowEvent e) {
             }
         });
-        areaSoft.setLineWrap(true);
-        areaOb.setLineWrap(true);
+
         campoNombre.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -433,6 +466,18 @@ public class RegistraCertificacion extends JDialog {
                 }
             }
         });
+
+        campoNombre.addActionListener(e -> {
+            var textnombre = campoNombre.getText();
+            if (textnombre.isEmpty()) {
+                showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoNombre.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
         campoApellidoPat.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -442,24 +487,149 @@ public class RegistraCertificacion extends JDialog {
                 }
             }
         });
+
+        campoApellidoPat.addActionListener(e -> {
+            var apellidoPat = campoApellidoPat.getText();
+            if (apellidoPat.isEmpty()) {
+                showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoApellidoPat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoApellidoMat.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 35;
+                if (campoApellidoMat.getText().length() > tamano) {
+                    campoApellidoMat.setText(campoApellidoMat.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoApellidoMat.addActionListener(e -> {
+            var apellidoMat = campoApellidoMat.getText();
+            if (apellidoMat.isEmpty()) {
+                showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoApellidoMat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoNumEmp.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 8;
+                if (campoNumEmp.getText().length() > tamano) {
+                    campoNumEmp.setText(campoNumEmp.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoNumEmp.addActionListener(e -> {
+            var textnumeroempleado = campoNumEmp.getText().trim();
+            if (textnumeroempleado.isEmpty()) {
+                showMessageDialog(this, "El campo número de empleado está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoNumEmp.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoTelefono.addActionListener(e -> {
+            var texttelefono = (String) campoTelefono.getValue();
+            if (texttelefono.isEmpty()) {
+                showMessageDialog(this, "El campo teléfono esta vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoTelefono.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
+        document.setDocumentFilter(new DocumentFilter() {
+            int maxCharacters = 15; // Define el límite máximo de caracteres
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                // Verifica si el texto a insertar contiene espacios en blanco
+                if (text != null && text.trim().length() > 0 && (fb.getDocument().getLength() + text.length() - length) <= maxCharacters) {
+                    super.replace(fb, offset, length, text, attrs); // Permite la inserción
+                } else {
+                    // Muestra un mensaje de error o realiza otra acción
+                    // En este ejemplo, simplemente ignoramos la inserción
+                }
+            }
+        });
+
+        campoContrasenia.addActionListener(e -> {
+            var textcontra = new String(campoContrasenia.getPassword());
+            if (textcontra.isEmpty()) {
+                showMessageDialog(this, "El campo contraseña esta vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoContrasenia.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoActivo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 9;
+                if (campoActivo.getText().length() > tamano) {
+                    campoActivo.setText(campoActivo.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoActivo.addActionListener(e -> {
+            var textactivofijo = campoActivo.getText().trim();
+            if (textactivofijo.isEmpty()) {
+                showMessageDialog(this, "El campo activo fijo está vacío", "Monitor", ERROR_MESSAGE);
+                java.awt.Toolkit.getDefaultToolkit().beep();
+                campoActivo.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
         areaSoft.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                final var tamano = 120;
-                if (areaSoft.getText().length() > tamano) {
-                    areaSoft.setText(areaSoft.getText().substring(0, tamano));
+                final int tamano = 120;
+                if (e.getSource() instanceof JTextArea source) {
+                    if (source.getText().length() > tamano) {
+                        source.setText(source.getText().substring(0, tamano));
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) {
+                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                    }
                 }
             }
         });
+
         areaOb.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                final var tamano = 120;
-                if (areaOb.getText().length() > tamano) {
-                    areaOb.setText(areaOb.getText().substring(0, tamano));
+                 final int tamano = 120;
+                if (e.getSource() instanceof JTextArea source) {
+                    if (source.getText().length() > tamano) {
+                        source.setText(source.getText().substring(0, tamano));
+                    }
+                    if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) {
+                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                    }
                 }
             }
         });
+
         areaSoft.setDocument(new PlainDocument() {
             @Override
             public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -469,6 +639,7 @@ public class RegistraCertificacion extends JDialog {
                 super.insertString(offs, str, a);
             }
         });
+
         areaOb.setDocument(new PlainDocument() {
             @Override
             public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
@@ -478,8 +649,24 @@ public class RegistraCertificacion extends JDialog {
                 super.insertString(offs, str, a);
             }
         });
-        panelImage.add(new ImagePanel(IMAGEN),BorderLayout.CENTER);
         
+        cancelar.addActionListener(e -> {
+            System.out.println(campoTipo.getValue().toString());
+        });
+
+        panelImage.add(new ImagePanel(IMAGEN), CENTER);
+
+        // Agregar el KeyListener al JFrame
+//        this.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) { // Ctrl + M
+//                    mu.setVisible(!mu.isVisible());
+//                }
+//            }
+//        });
+        //setFocusable(true);
+        //setFocusTraversalKeysEnabled(false);
         this.toFront();
         repaint();
     }
@@ -505,14 +692,19 @@ public class RegistraCertificacion extends JDialog {
         out.println("Fecha y Hora actual: " + ti);
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     private SpinnerListModel obtenerModelo() {
-        var tipoController = new TipoEquipoController();
+        TipoEquipoController tipoController = new TipoEquipoController();
         TipoEquipo[] tipos;
         try (var tipoEquipo = tipoController.obtenerTipoEquipos()) {
-            tipos = tipoEquipo.toArray(value -> new TipoEquipo[value]);
+            List<TipoEquipo> tipoEquipoList = new ArrayList<>();
+            tipoEquipo.forEach(tipoEquipoList::add);
+            tipos = tipoEquipoList.toArray(TipoEquipo[]::new);
+        } catch (Exception e) {
+            e.printStackTrace(); // Manejo de excepciones según sea necesario
+            tipos = new TipoEquipo[0]; // Si hay un error, devuelve un arreglo vacío
         }
-        var spinnerListModel = new SpinnerListModel(tipos);
-        return spinnerListModel;
+        return new SpinnerListModel(tipos);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -552,6 +744,7 @@ public class RegistraCertificacion extends JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel mu;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelImage;
     private static javax.swing.JSpinner spinnerFecha;

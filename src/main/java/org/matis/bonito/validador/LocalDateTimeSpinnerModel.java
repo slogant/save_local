@@ -19,6 +19,7 @@ import static java.util.Date.from;
  * @author oscar
  */
 public class LocalDateTimeSpinnerModel extends SpinnerDateModel {
+    
         public LocalDateTimeSpinnerModel(LocalDateTime value) {
             super(from(value.atZone(systemDefault()).toInstant()), null, null, SECOND);
         }
