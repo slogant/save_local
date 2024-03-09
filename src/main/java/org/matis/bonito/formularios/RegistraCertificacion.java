@@ -555,7 +555,6 @@ public class RegistraCertificacion extends JDialog {
         // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
         document.setDocumentFilter(new DocumentFilter() {
             int maxCharacters = 15; // Define el límite máximo de caracteres
-
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Verifica si el texto a insertar contiene espacios en blanco
