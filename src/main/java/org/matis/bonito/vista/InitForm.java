@@ -290,15 +290,13 @@ public class InitForm extends JFrame {
         menuRegisrarEquipoCert.addActionListener(e -> invokeLater(() -> new RegistraCertificacion(new JFrame(), true).setVisible(true)));
 
         abrir.addItemListener(e -> {
-            int estado = e.getStateChange();
+            var estado = e.getStateChange();
             if (estado == SELECTED) {
                 panelPrincipal.setVisible(false);
             } else {
                 panelPrincipal.setVisible(true);
             }
-
         });
-
     }
 
     private void cerrarPrincipal(ActionEvent e) {

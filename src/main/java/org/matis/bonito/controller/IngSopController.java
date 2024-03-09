@@ -107,8 +107,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             out.println(emfc.contains(ingeniero));
             return emfc.contains(ingeniero);
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()
-            }");
+            out.println(STR."\{e.getLocalizedMessage()}");
             if (requireNonNull(emfc).getTransaction().isActive()) {
                 requireNonNull(emfc).getTransaction().rollback();
             }
@@ -132,8 +131,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             var ingenieroSoporteTypedQuery = requireNonNull(emfa).createNamedQuery("All.Ing", IngenieroSoporte.class);
             return ingenieroSoporteTypedQuery.getResultStream();
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()
-            }");
+            out.println(STR."\{e.getLocalizedMessage()}");
             if (requireNonNull(emfa).getTransaction().isActive()) {
                 requireNonNull(emfa).getTransaction().rollback();
             }
@@ -166,8 +164,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             requireNonNull(emfa).getTransaction().commit();
             return soloIngeSop.getResultStream();
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()
-            }");
+            out.println(STR."\{e.getLocalizedMessage()}");
             if (requireNonNull(emfa).getTransaction().isActive()) {
                 requireNonNull(emfa).getTransaction().rollback();
             }
@@ -197,8 +194,7 @@ public class IngSopController implements Serializable, IngSopImpl {
             out.println(emfc.contains(ingeniero));
             return ingeniero;
         } catch (Exception e) {
-            out.println(STR."\{e.getLocalizedMessage()
-            }");
+            out.println(STR."\{e.getLocalizedMessage()}");
             if (requireNonNull(emfc).getTransaction().isActive()) {
                 requireNonNull(emfc).getTransaction().rollback();
             }
