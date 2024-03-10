@@ -4,9 +4,7 @@
  */
 package org.matis.bonito.formularios;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.KeyboardFocusManager;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -16,6 +14,7 @@ import javax.swing.*;
 import javax.swing.JSpinner.DateEditor;
 import javax.swing.JSpinner.DefaultEditor;
 
+import static java.awt.Toolkit.getDefaultToolkit;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -471,7 +470,7 @@ public class RegistraCertificacion extends JDialog {
             var textnombre = campoNombre.getText();
             if (textnombre.isEmpty()) {
                 showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoNombre.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -492,7 +491,7 @@ public class RegistraCertificacion extends JDialog {
             var apellidoPat = campoApellidoPat.getText();
             if (apellidoPat.isEmpty()) {
                 showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoApellidoPat.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -513,7 +512,7 @@ public class RegistraCertificacion extends JDialog {
             var apellidoMat = campoApellidoMat.getText();
             if (apellidoMat.isEmpty()) {
                 showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoApellidoMat.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -534,7 +533,7 @@ public class RegistraCertificacion extends JDialog {
             var textnumeroempleado = campoNumEmp.getText().trim();
             if (textnumeroempleado.isEmpty()) {
                 showMessageDialog(this, "El campo número de empleado está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoNumEmp.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -545,7 +544,7 @@ public class RegistraCertificacion extends JDialog {
             var texttelefono = (String) campoTelefono.getValue();
             if (texttelefono.isEmpty()) {
                 showMessageDialog(this, "El campo teléfono esta vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoTelefono.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -571,7 +570,7 @@ public class RegistraCertificacion extends JDialog {
             var textcontra = new String(campoContrasenia.getPassword());
             if (textcontra.isEmpty()) {
                 showMessageDialog(this, "El campo contraseña esta vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoContrasenia.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -592,7 +591,7 @@ public class RegistraCertificacion extends JDialog {
             var textactivofijo = campoActivo.getText().trim();
             if (textactivofijo.isEmpty()) {
                 showMessageDialog(this, "El campo activo fijo está vacío", "Monitor", ERROR_MESSAGE);
-                java.awt.Toolkit.getDefaultToolkit().beep();
+                getDefaultToolkit().beep();
                 campoActivo.requestFocus();
             } else {
                 ((JComponent) e.getSource()).transferFocus();
@@ -664,6 +663,18 @@ public class RegistraCertificacion extends JDialog {
 //                }
 //            }
 //        });
+
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                    out.println("Cerrando dialogo...");
+                    dispose();
+                }
+                return false;
+            }
+        });
         //setFocusable(true);
         //setFocusTraversalKeysEnabled(false);
         this.toFront();
