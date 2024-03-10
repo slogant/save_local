@@ -15,6 +15,7 @@ import javax.swing.JSpinner.DateEditor;
 import javax.swing.JSpinner.DefaultEditor;
 
 import static java.awt.Toolkit.getDefaultToolkit;
+import static java.awt.event.KeyEvent.VK_M;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -606,7 +607,7 @@ public class RegistraCertificacion extends JDialog {
                     if (source.getText().length() > tamano) {
                         source.setText(source.getText().substring(0, tamano));
                     }
-                    if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) {
+                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
                         KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
                     }
                 }
@@ -621,7 +622,7 @@ public class RegistraCertificacion extends JDialog {
                     if (source.getText().length() > tamano) {
                         source.setText(source.getText().substring(0, tamano));
                     }
-                    if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) {
+                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
                         KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
                     }
                 }
@@ -707,7 +708,7 @@ public class RegistraCertificacion extends JDialog {
         TipoEquipoController tipoController = new TipoEquipoController();
         TipoEquipo[] tipos;
         try (var tipoEquipo = tipoController.obtenerTipoEquipos()) {
-            List<TipoEquipo> tipoEquipoList = new ArrayList<>();
+            var tipoEquipoList = new ArrayList<>();
             tipoEquipo.forEach(tipoEquipoList::add);
             tipos = tipoEquipoList.toArray(TipoEquipo[]::new);
         } catch (Exception e) {
