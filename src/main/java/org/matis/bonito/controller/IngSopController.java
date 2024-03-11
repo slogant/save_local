@@ -21,6 +21,10 @@ public class IngSopController implements Serializable, IngSopImpl {
     public IngSopController() {
     }
 
+    /**
+     * @param ing
+     * @return
+     */
     @Override
     public boolean crearIngSop(IngenieroSoporte ing) {
         var em = obtenerEntityManagerFactory();

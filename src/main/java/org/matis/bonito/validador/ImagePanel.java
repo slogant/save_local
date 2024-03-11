@@ -8,10 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
+import static javax.imageio.ImageIO.read;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ImagePanel extends JPanel {
     public ImagePanel(String imagePath) {
         try {
             // Carga la imagen en color desde el archivo
-            colorImage = javax.imageio.ImageIO.read(new java.io.File(imagePath));
+            colorImage = read(new File(imagePath));
             // Convierte la imagen en blanco y negro
             var grayImage = toGrayScale(colorImage);
             // Inicializa la imagen actual como la imagen en color
@@ -33,7 +35,7 @@ public class ImagePanel extends JPanel {
         }
 
         // Inicia el ciclo de animación en un hilo de fondo
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        var worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
                 do {

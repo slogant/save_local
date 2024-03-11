@@ -4,44 +4,45 @@
  */
 package org.matis.bonito.formularios;
 
+import org.matis.bonito.controller.TipoEquipoController;
+import org.matis.bonito.model.TipoEquipo;
+import org.matis.bonito.validador.*;
+
+import javax.swing.*;
+import javax.swing.JSpinner.DateEditor;
+import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.*;
-import javax.swing.JSpinner.DateEditor;
-import javax.swing.JSpinner.DefaultEditor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 import static java.awt.Toolkit.getDefaultToolkit;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_M;
+import static java.lang.System.getProperty;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
-import java.util.ArrayList;
-import java.util.List;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static javax.swing.SwingConstants.CENTER;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static javax.swing.JFileChooser.CANCEL_OPTION;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.PlainDocument;
-import org.matis.bonito.controller.TipoEquipoController;
-import org.matis.bonito.model.TipoEquipo;
-import org.matis.bonito.validador.ImagePanel;
-import org.matis.bonito.validador.JTextFieldLimit;
-import org.matis.bonito.validador.LimitandorTexto;
-import org.matis.bonito.validador.LocalDateTimeSpinnerModel;
+import static javax.swing.SwingConstants.CENTER;
+import static javax.swing.SwingUtilities.windowForComponent;
+
 
 /**
  *
@@ -108,13 +109,15 @@ public class RegistraCertificacion extends JDialog {
         jPanel3 = new javax.swing.JPanel();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
-        mu = new javax.swing.JLabel();
         panelImage = new javax.swing.JPanel();
+        cargaImage = new javax.swing.JButton();
+        mu = new javax.swing.JLabel();
+        panelCargarImagen = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
         setModal(true);
-        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setModalExclusionType(APPLICATION_EXCLUDE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -332,7 +335,9 @@ public class RegistraCertificacion extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        mu.setText("Muestrame");
+        panelImage.setBackground(new java.awt.Color(255, 255, 255));
+        panelImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelImage.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -344,12 +349,10 @@ public class RegistraCertificacion extends JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(mu)
-                .addGap(51, 51, 51))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -359,15 +362,18 @@ public class RegistraCertificacion extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(mu)
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(50, Short.MAX_VALUE))
         );
 
-        panelImage.setBackground(new java.awt.Color(255, 255, 255));
-        panelImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        panelImage.setLayout(new java.awt.BorderLayout());
+        cargaImage.setText("Imagen");
+
+        mu.setText("Muestrame");
+
+        panelCargarImagen.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelCargarImagen.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -376,22 +382,37 @@ public class RegistraCertificacion extends JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelImage, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(mu)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                    .addGap(0, 108, Short.MAX_VALUE)
+                                                    .addComponent(cargaImage)))
+                                    .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 26, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cargaImage)
+                                    .addGap(154, 154, 154)))
+                    .addComponent(mu)
+                    .addGap(0, 4, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -404,10 +425,13 @@ public class RegistraCertificacion extends JDialog {
         spinnerFecha.setEnabled(false);
         campoNombre.requestFocus();
         final var MAX_LENGTH = 120;
+        imagePanel = new ImagenPanel();
         var document = (PlainDocument) campoContrasenia.getDocument();
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         // Define una tarea que se ejecutará cada segundo para actualizar el reloj
-        scheduledExecutorService.scheduleAtFixedRate(() -> printTime(), 0, 1000, MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            printTime();
+        }, 0, 1000, MILLISECONDS);
         spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
         var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
         tf.setEditable(false);
@@ -555,6 +579,7 @@ public class RegistraCertificacion extends JDialog {
         // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
         document.setDocumentFilter(new DocumentFilter() {
             int maxCharacters = 15; // Define el límite máximo de caracteres
+
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Verifica si el texto a insertar contiene espacios en blanco
@@ -617,7 +642,7 @@ public class RegistraCertificacion extends JDialog {
         areaOb.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                 final int tamano = 120;
+                final int tamano = 120;
                 if (e.getSource() instanceof JTextArea source) {
                     if (source.getText().length() > tamano) {
                         source.setText(source.getText().substring(0, tamano));
@@ -648,12 +673,13 @@ public class RegistraCertificacion extends JDialog {
                 super.insertString(offs, str, a);
             }
         });
-        
+
         cancelar.addActionListener(e -> {
-            System.out.println(campoTipo.getValue().toString());
+            out.println(campoTipo.getValue().toString());
         });
 
         panelImage.add(new ImagePanel(IMAGEN), CENTER);
+        panelCargarImagen.add(imagePanel, CENTER);
 
         // Agregar el KeyListener al JFrame
 //        this.addKeyListener(new KeyAdapter() {
@@ -664,12 +690,11 @@ public class RegistraCertificacion extends JDialog {
 //                }
 //            }
 //        });
-
         var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
             @Override
             public boolean postProcessKeyEvent(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null) {
+                if (e.getKeyCode() == VK_ESCAPE && this != null) {
                     out.println("Cerrando dialogo...");
                     dispose();
                 }
@@ -678,6 +703,29 @@ public class RegistraCertificacion extends JDialog {
         });
         //setFocusable(true);
         //setFocusTraversalKeysEnabled(false);
+        cargaImage.addActionListener(e -> {
+            var basePath = getProperty("user.dir");
+            var fileChooser = new JFileChooser(basePath);
+            // Mostrar el diálogo de selección de archivos
+            var result = fileChooser.showOpenDialog(this);
+            // Verificar si el usuario seleccionó un archivo
+            if (result == APPROVE_OPTION) {
+                // Obtener el archivo seleccionado
+                var selectedFile = fileChooser.getSelectedFile();
+                JOptionPane.showMessageDialog(this, "Archivo seleccionado: " + selectedFile.getAbsolutePath());
+                imagePanel.loadImage(selectedFile.getAbsolutePath());
+            } else if (result == CANCEL_OPTION) {
+                JOptionPane.showMessageDialog(this, "Operación cancelada por el usuario.");
+            }
+
+            // Obtener el diálogo subyacente después de que se haya mostrado
+            var dialog = (JDialog) windowForComponent(fileChooser);
+            if (dialog != null) {
+                dialog.setModalExclusionType(APPLICATION_EXCLUDE);
+                dialog.setModalityType (APPLICATION_MODAL);
+                dialog.toFront();
+            }
+        });
         this.toFront();
         repaint();
     }
@@ -708,7 +756,7 @@ public class RegistraCertificacion extends JDialog {
         TipoEquipoController tipoController = new TipoEquipoController();
         TipoEquipo[] tipos;
         try (var tipoEquipo = tipoController.obtenerTipoEquipos()) {
-            var tipoEquipoList = new ArrayList<>();
+            var tipoEquipoList = new ArrayList<TipoEquipo>();
             tipoEquipo.forEach(tipoEquipoList::add);
             tipos = tipoEquipoList.toArray(TipoEquipo[]::new);
         } catch (Exception e) {
@@ -737,6 +785,7 @@ public class RegistraCertificacion extends JDialog {
     private javax.swing.JFormattedTextField campoTelefono;
     private javax.swing.JSpinner campoTipo;
     private javax.swing.JButton cancelar;
+    private javax.swing.JButton cargaImage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -756,6 +805,7 @@ public class RegistraCertificacion extends JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel mu;
+    private javax.swing.JPanel panelCargarImagen;
     private javax.swing.JPanel panelCentral;
     private javax.swing.JPanel panelImage;
     private static javax.swing.JSpinner spinnerFecha;
@@ -763,4 +813,5 @@ public class RegistraCertificacion extends JDialog {
 
     private ScheduledExecutorService scheduledExecutorService;
     static final private String IMAGEN = "/home/oscar/NetBeansProjects/MiMatis/src/main/java/org/matis/bonito/image/linux.jpg";
+    private ImagenPanel imagePanel;
 }

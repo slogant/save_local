@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import static java.lang.StringTemplate.STR;
 
+/**
+ * This class represents an Engineer Support entity.
+ */
 @Entity
 @Table(name = "ingeniero_soporte")
 @NamedQueries({
