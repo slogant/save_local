@@ -21,10 +21,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
 
 import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
 import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
@@ -32,19 +34,15 @@ import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_M;
-import java.io.IOException;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-
 import static java.util.logging.Level.SEVERE;
 import static javax.imageio.ImageIO.read;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.SwingConstants.CENTER;
 
 /**
