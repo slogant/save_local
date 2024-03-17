@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
@@ -39,6 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
+import static java.util.logging.Level.SEVERE;
 import static javax.imageio.ImageIO.read;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.JOptionPane.*;
@@ -117,7 +120,7 @@ public class RegistraCertificacion extends JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
         setModal(true);
-        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        setModalExclusionType(APPLICATION_EXCLUDE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -699,12 +702,12 @@ public class RegistraCertificacion extends JDialog {
         cargaImage.addActionListener((var e) -> {
             invokeLater(() -> {
                 var ima = new ImagenDialog(new JFrame(), true);
-                ima.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-                ima.setModalityType(ModalityType.TOOLKIT_MODAL);
+                ima.setModalExclusionType(APPLICATION_EXCLUDE);
+                ima.setModalityType(TOOLKIT_MODAL);
                 var cargaImages = ima.archivosImagenes;
                 cargaImages.setDialogTitle("Busca imagenes");
                 cargaImages.setFileFilter(new FileNameExtensionFilter("Imagenes", "jpg", "png", "gif"));
-                var respuesta = cargaImages.showOpenDialog(RegistraCertificacion.this);
+                var respuesta = cargaImages.showOpenDialog(this);
                 if (respuesta == APPROVE_OPTION) {
                     try {
                         var respuestas = cargaImages.getSelectedFile();
@@ -715,35 +718,11 @@ public class RegistraCertificacion extends JDialog {
                         }
                         imagenEnPanel.setImage(imagen);
                     } catch (IOException ex) {
-                        Logger.getLogger(RegistraCertificacion.class.getName()).log(Level.SEVERE, null, ex);
-                        System.out.println(ex.getLocalizedMessage());
+                        Logger.getLogger(RegistraCertificacion.class.getName()).log(SEVERE, null, ex);
+                        out.println(ex.getLocalizedMessage());
                     }
                 }
             });
-
-
-
-            /*var basePath = getProperty("user.dir");
-            var fileChooser = new JFileChooser(basePath);
-            // Mostrar el diálogo de selección de archivos
-            var result = fileChooser.showOpenDialog(this);
-            // Verificar si el usuario seleccionó un archivo
-            if (result == APPROVE_OPTION) {
-                // Obtener el archivo seleccionado
-                var selectedFile = fileChooser.getSelectedFile();
-                JOptionPane.showMessageDialog(this, "Archivo seleccionado: " + selectedFile.getAbsolutePath());
-                imagePanel.loadImage(selectedFile.getAbsolutePath());
-            } else if (result == CANCEL_OPTION) {
-                JOptionPane.showMessageDialog(this, "Operación cancelada por el usuario.");
-            }
-
-            // Obtener el diálogo subyacente después de que se haya mostrado
-            var dialog = (JDialog) windowForComponent(fileChooser);
-            if (dialog != null) {
-                dialog.setModalExclusionType(APPLICATION_EXCLUDE);
-                dialog.setModalityType (APPLICATION_MODAL);
-                dialog.toFront();
-            }*/
         });
         panelCargarImagen.add(imagenEnPanel, CENTER);
         this.toFront();
