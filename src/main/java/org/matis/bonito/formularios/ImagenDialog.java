@@ -4,13 +4,13 @@
  */
 package org.matis.bonito.formularios;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  *
  * @author oscar
  */
-public class ImagenDialog extends javax.swing.JDialog {
+public class ImagenDialog extends JDialog {
 
     /**
      * Creates new form ImagenDialog
@@ -46,8 +46,6 @@ public class ImagenDialog extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(528, 310));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JFileChooser archivosImagenes;

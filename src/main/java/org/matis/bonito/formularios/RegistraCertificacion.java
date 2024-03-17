@@ -17,6 +17,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -28,8 +30,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
-import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
-import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
@@ -41,6 +41,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Level.SEVERE;
 import static javax.imageio.ImageIO.read;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static javax.swing.JFileChooser.OPEN_DIALOG;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.SwingConstants.CENTER;
@@ -61,6 +62,318 @@ public class RegistraCertificacion extends JDialog {
         super(parent, modal);
         initComponents();
         cargaMisComponentes();
+    }
+
+    private void cargaMisComponentes() {
+        spinnerFecha.setEnabled(false);
+        campoNombre.requestFocus();
+        final var MAX_LENGTH = 120;
+        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        imagenEnPanel = new ImagenEnPanel();
+        var document = (PlainDocument) campoContrasenia.getDocument();
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        // Define una tarea que se ejecutará cada segundo para actualizar el reloj
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            printTime();
+        }, 0, 1000, MILLISECONDS);
+        spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
+        var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
+        tf.setEditable(false);
+        tf.setBackground(Color.white);
+        var editor = campoTipo.getEditor();
+        if (editor instanceof DefaultEditor defaultEditor) {
+            final var mensaje = "Selecciona un valor";
+            var spinnerEditor = (DefaultEditor) defaultEditor;
+            spinnerEditor.getTextField().setHorizontalAlignment(CENTER);
+            spinnerEditor.getTextField().setEditable(false);
+            spinnerEditor.getTextField().setText(mensaje); // Establecer el texto dentro del editor
+            spinnerEditor.getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
+            spinnerEditor.getTextField().setEditable(false);
+        }
+        mu.setVisible(false);
+        areaSoft.setLineWrap(true);
+        areaOb.setLineWrap(true);
+
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ventanaCerrar(e);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
+
+        campoNombre.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 35;
+                if (campoNombre.getText().length() > tamano) {
+                    campoNombre.setText(campoNombre.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoNombre.addActionListener(e -> {
+            var textnombre = campoNombre.getText();
+            if (textnombre.isEmpty()) {
+                showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoNombre.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoApellidoPat.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 35;
+                if (campoApellidoPat.getText().length() > tamano) {
+                    campoApellidoPat.setText(campoApellidoPat.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoApellidoPat.addActionListener(e -> {
+            var apellidoPat = campoApellidoPat.getText();
+            if (apellidoPat.isEmpty()) {
+                showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoApellidoPat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoApellidoMat.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 35;
+                if (campoApellidoMat.getText().length() > tamano) {
+                    campoApellidoMat.setText(campoApellidoMat.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoApellidoMat.addActionListener(e -> {
+            var apellidoMat = campoApellidoMat.getText();
+            if (apellidoMat.isEmpty()) {
+                showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoApellidoMat.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoNumEmp.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 8;
+                if (campoNumEmp.getText().length() > tamano) {
+                    campoNumEmp.setText(campoNumEmp.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoNumEmp.addActionListener(e -> {
+            var textnumeroempleado = campoNumEmp.getText().trim();
+            if (textnumeroempleado.isEmpty()) {
+                showMessageDialog(this, "El campo número de empleado está vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoNumEmp.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoTelefono.addActionListener(e -> {
+            var texttelefono = (String) campoTelefono.getValue();
+            if (texttelefono.isEmpty()) {
+                showMessageDialog(this, "El campo teléfono esta vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoTelefono.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
+        document.setDocumentFilter(new DocumentFilter() {
+            int maxCharacters = 15; // Define el límite máximo de caracteres
+
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                // Verifica si el texto a insertar contiene espacios en blanco
+                if (text != null && text.trim().length() > 0 && (fb.getDocument().getLength() + text.length() - length) <= maxCharacters) {
+                    super.replace(fb, offset, length, text, attrs); // Permite la inserción
+                } else {
+                    // Muestra un mensaje de error o realiza otra acción
+                    // En este ejemplo, simplemente ignoramos la inserción
+                }
+            }
+        });
+
+        campoContrasenia.addActionListener(e -> {
+            var textcontra = new String(campoContrasenia.getPassword());
+            if (textcontra.isEmpty()) {
+                showMessageDialog(this, "El campo contraseña esta vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoContrasenia.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        campoActivo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final var tamano = 9;
+                if (campoActivo.getText().length() > tamano) {
+                    campoActivo.setText(campoActivo.getText().substring(0, tamano));
+                }
+            }
+        });
+
+        campoActivo.addActionListener(e -> {
+            var textactivofijo = campoActivo.getText().trim();
+            if (textactivofijo.isEmpty()) {
+                showMessageDialog(this, "El campo activo fijo está vacío", "Monitor", ERROR_MESSAGE);
+                getDefaultToolkit().beep();
+                campoActivo.requestFocus();
+            } else {
+                ((JComponent) e.getSource()).transferFocus();
+            }
+        });
+
+        areaSoft.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final int tamano = 120;
+                if (e.getSource() instanceof JTextArea source) {
+                    if (source.getText().length() > tamano) {
+                        source.setText(source.getText().substring(0, tamano));
+                    }
+                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
+                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                    }
+                }
+            }
+        });
+
+        areaOb.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                final int tamano = 120;
+                if (e.getSource() instanceof JTextArea source) {
+                    if (source.getText().length() > tamano) {
+                        source.setText(source.getText().substring(0, tamano));
+                    }
+                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
+                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                    }
+                }
+            }
+        });
+
+        areaSoft.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null || areaSoft.getText().length() >= MAX_LENGTH) {
+                    return;
+                }
+                super.insertString(offs, str, a);
+            }
+        });
+
+        areaOb.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null || areaOb.getText().length() >= MAX_LENGTH) {
+                    return;
+                }
+                super.insertString(offs, str, a);
+            }
+        });
+
+        cancelar.addActionListener(e -> {
+            out.println(campoTipo.getValue().toString());
+        });
+
+        //panelCargarImagen.add(imagePanel, CENTER);
+
+        // Agregar el KeyListener al JFrame
+//        this.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) { // Ctrl + M
+//                    mu.setVisible(!mu.isVisible());
+//                }
+//            }
+//        });
+        //setFocusable(true);
+        //setFocusTraversalKeysEnabled(false);
+        cargaImage.addActionListener((var e) -> {
+            invokeLater(() -> {
+                var ima = new ImagenDialog(new JFrame(), true);
+                ima.setModalExclusionType(APPLICATION_EXCLUDE);
+                ima.setModalityType(TOOLKIT_MODAL);
+                var cargaImages = ima.archivosImagenes;
+                cargaImages.setDialogTitle("Busca imagenes");
+                cargaImages.setFileFilter(new FileNameExtensionFilter("Imagenes", "jpg", "png", "gif"));
+                var respuesta = cargaImages.showOpenDialog(RegistraCertificacion.this);
+                if (respuesta == APPROVE_OPTION) {
+                    try {
+                        var respuestas = cargaImages.getSelectedFile();
+                        cargaImages.setCurrentDirectory(respuestas);
+                        var imagen = read(respuestas);
+                        if (imagen == null) {
+                            out.println("No se pudo cargar la imagen");
+                        }
+                        imagenEnPanel.setImage(imagen);
+                    } catch (IOException ex) {
+                        Logger.getLogger(RegistraCertificacion.class.getName()).log(SEVERE, null, ex);
+                        out.println(ex.getLocalizedMessage());
+                    }
+                }
+            });
+        });
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+            @Override
+            public boolean postProcessKeyEvent(KeyEvent e) {
+                if (e.getKeyCode() == VK_ESCAPE && this != null) {
+                    out.println("Cerrando dialogo...");
+                    dispose();
+                }
+                return false;
+            }
+        });
+        panelImage.add(new ImagePanel(IMAGEN), CENTER);
+        panelCargarImagen.add(imagenEnPanel, CENTER);
+        this.toFront();
+        repaint();
     }
 
     /**
@@ -110,15 +423,15 @@ public class RegistraCertificacion extends JDialog {
         jPanel3 = new javax.swing.JPanel();
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
-        panelImage = new javax.swing.JPanel();
         cargaImage = new javax.swing.JButton();
         mu = new javax.swing.JLabel();
         panelCargarImagen = new javax.swing.JPanel();
+        panelImage = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
         setModal(true);
-        setModalExclusionType(APPLICATION_EXCLUDE);
+        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -336,26 +649,20 @@ public class RegistraCertificacion extends JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelImage.setBackground(new java.awt.Color(255, 255, 255));
-        panelImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        panelImage.setLayout(new java.awt.BorderLayout());
-
         cargaImage.setText("Imagen");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cargaImage)))
+                        .addComponent(cargaImage))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -366,17 +673,25 @@ public class RegistraCertificacion extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cargaImage)
-                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                    .addComponent(cargaImage))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         mu.setText("Muestrame");
 
+        panelCargarImagen.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelCargarImagen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MostrarArchivo(evt);
+            }
+        });
         panelCargarImagen.setLayout(new java.awt.BorderLayout());
+
+        panelImage.setBackground(new java.awt.Color(255, 255, 255));
+        panelImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelImage.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -392,7 +707,11 @@ public class RegistraCertificacion extends JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -403,10 +722,12 @@ public class RegistraCertificacion extends JDialog {
                     .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelCargarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panelCargarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mu)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -415,290 +736,11 @@ public class RegistraCertificacion extends JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cargaMisComponentes() {
-        spinnerFecha.setEnabled(false);
-        campoNombre.requestFocus();
-        final var MAX_LENGTH = 120;
-        imagenEnPanel = new ImagenEnPanel();
-        var document = (PlainDocument) campoContrasenia.getDocument();
-        scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        // Define una tarea que se ejecutará cada segundo para actualizar el reloj
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            printTime();
-        }, 0, 1000, MILLISECONDS);
-        spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
-        var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
-        tf.setEditable(false);
-        tf.setBackground(Color.white);
-        var editor = campoTipo.getEditor();
-        if (editor instanceof DefaultEditor defaultEditor) {
-            final var mensaje = "Selecciona un valor";
-            var spinnerEditor = (DefaultEditor) defaultEditor;
-            spinnerEditor.getTextField().setHorizontalAlignment(CENTER);
-            spinnerEditor.getTextField().setEditable(false);
-            spinnerEditor.getTextField().setText(mensaje); // Establecer el texto dentro del editor
-            spinnerEditor.getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
-            spinnerEditor.getTextField().setEditable(false);
-        }
-        mu.setVisible(false);
-        areaSoft.setLineWrap(true);
-        areaOb.setLineWrap(true);
-
-        this.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                ventanaCerrar(e);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
-
-        campoNombre.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final var tamano = 35;
-                if (campoNombre.getText().length() > tamano) {
-                    campoNombre.setText(campoNombre.getText().substring(0, tamano));
-                }
-            }
-        });
-
-        campoNombre.addActionListener(e -> {
-            var textnombre = campoNombre.getText();
-            if (textnombre.isEmpty()) {
-                showMessageDialog(this, "El campo nombre está vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoNombre.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        campoApellidoPat.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final var tamano = 35;
-                if (campoApellidoPat.getText().length() > tamano) {
-                    campoApellidoPat.setText(campoApellidoPat.getText().substring(0, tamano));
-                }
-            }
-        });
-
-        campoApellidoPat.addActionListener(e -> {
-            var apellidoPat = campoApellidoPat.getText();
-            if (apellidoPat.isEmpty()) {
-                showMessageDialog(this, "El campo apellido paterno está vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoApellidoPat.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        campoApellidoMat.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final var tamano = 35;
-                if (campoApellidoMat.getText().length() > tamano) {
-                    campoApellidoMat.setText(campoApellidoMat.getText().substring(0, tamano));
-                }
-            }
-        });
-
-        campoApellidoMat.addActionListener(e -> {
-            var apellidoMat = campoApellidoMat.getText();
-            if (apellidoMat.isEmpty()) {
-                showMessageDialog(this, "El campo apellido materno está vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoApellidoMat.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        campoNumEmp.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final var tamano = 8;
-                if (campoNumEmp.getText().length() > tamano) {
-                    campoNumEmp.setText(campoNumEmp.getText().substring(0, tamano));
-                }
-            }
-        });
-
-        campoNumEmp.addActionListener(e -> {
-            var textnumeroempleado = campoNumEmp.getText().trim();
-            if (textnumeroempleado.isEmpty()) {
-                showMessageDialog(this, "El campo número de empleado está vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoNumEmp.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        campoTelefono.addActionListener(e -> {
-            var texttelefono = (String) campoTelefono.getValue();
-            if (texttelefono.isEmpty()) {
-                showMessageDialog(this, "El campo teléfono esta vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoTelefono.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
-        document.setDocumentFilter(new DocumentFilter() {
-            int maxCharacters = 15; // Define el límite máximo de caracteres
-
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                // Verifica si el texto a insertar contiene espacios en blanco
-                if (text != null && text.trim().length() > 0 && (fb.getDocument().getLength() + text.length() - length) <= maxCharacters) {
-                    super.replace(fb, offset, length, text, attrs); // Permite la inserción
-                } else {
-                    // Muestra un mensaje de error o realiza otra acción
-                    // En este ejemplo, simplemente ignoramos la inserción
-                }
-            }
-        });
-
-        campoContrasenia.addActionListener(e -> {
-            var textcontra = new String(campoContrasenia.getPassword());
-            if (textcontra.isEmpty()) {
-                showMessageDialog(this, "El campo contraseña esta vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoContrasenia.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        campoActivo.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final var tamano = 9;
-                if (campoActivo.getText().length() > tamano) {
-                    campoActivo.setText(campoActivo.getText().substring(0, tamano));
-                }
-            }
-        });
-
-        campoActivo.addActionListener(e -> {
-            var textactivofijo = campoActivo.getText().trim();
-            if (textactivofijo.isEmpty()) {
-                showMessageDialog(this, "El campo activo fijo está vacío", "Monitor", ERROR_MESSAGE);
-                getDefaultToolkit().beep();
-                campoActivo.requestFocus();
-            } else {
-                ((JComponent) e.getSource()).transferFocus();
-            }
-        });
-
-        areaSoft.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final int tamano = 120;
-                if (e.getSource() instanceof JTextArea source) {
-                    if (source.getText().length() > tamano) {
-                        source.setText(source.getText().substring(0, tamano));
-                    }
-                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
-                    }
-                }
-            }
-        });
-
-        areaOb.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                final int tamano = 120;
-                if (e.getSource() instanceof JTextArea source) {
-                    if (source.getText().length() > tamano) {
-                        source.setText(source.getText().substring(0, tamano));
-                    }
-                    if (e.getKeyCode() == VK_M && e.isControlDown()) {
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
-                    }
-                }
-            }
-        });
-
-        areaSoft.setDocument(new PlainDocument() {
-            @Override
-            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                if (str == null || areaSoft.getText().length() >= MAX_LENGTH) {
-                    return;
-                }
-                super.insertString(offs, str, a);
-            }
-        });
-
-        areaOb.setDocument(new PlainDocument() {
-            @Override
-            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                if (str == null || areaOb.getText().length() >= MAX_LENGTH) {
-                    return;
-                }
-                super.insertString(offs, str, a);
-            }
-        });
-
-        cancelar.addActionListener(e -> {
-            out.println(campoTipo.getValue().toString());
-        });
-
-        panelImage.add(new ImagePanel(IMAGEN), CENTER);
-        //panelCargarImagen.add(imagePanel, CENTER);
-
-        // Agregar el KeyListener al JFrame
-//        this.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_M && e.isControlDown()) { // Ctrl + M
-//                    mu.setVisible(!mu.isVisible());
-//                }
-//            }
-//        });
-        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        kb.addKeyEventPostProcessor(new KeyEventPostProcessor() {
-            @Override
-            public boolean postProcessKeyEvent(KeyEvent e) {
-                if (e.getKeyCode() == VK_ESCAPE && this != null) {
-                    out.println("Cerrando dialogo...");
-                    dispose();
-                }
-                return false;
-            }
-        });
-        //setFocusable(true);
-        //setFocusTraversalKeysEnabled(false);
-        cargaImage.addActionListener((var e) -> {
-            invokeLater(() -> {
+    private void MostrarArchivo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MostrarArchivo
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            // Double-click detected
+             invokeLater(() -> {
                 var ima = new ImagenDialog(new JFrame(), true);
                 ima.setModalExclusionType(APPLICATION_EXCLUDE);
                 ima.setModalityType(TOOLKIT_MODAL);
@@ -721,11 +763,9 @@ public class RegistraCertificacion extends JDialog {
                     }
                 }
             });
-        });
-        panelCargarImagen.add(imagenEnPanel, CENTER);
-        this.toFront();
-        repaint();
-    }
+        }
+
+    }//GEN-LAST:event_MostrarArchivo
 
     private void ventanaCerrar(WindowEvent e) {
         if (e.getSource() instanceof JDialog dia) {
