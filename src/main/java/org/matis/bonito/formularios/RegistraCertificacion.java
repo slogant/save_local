@@ -17,8 +17,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
-import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
-import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -28,8 +26,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
@@ -41,7 +42,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Level.SEVERE;
 import static javax.imageio.ImageIO.read;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static javax.swing.JFileChooser.OPEN_DIALOG;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.SwingConstants.CENTER;
@@ -73,9 +73,7 @@ public class RegistraCertificacion extends JDialog {
         var document = (PlainDocument) campoContrasenia.getDocument();
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         // Define una tarea que se ejecutará cada segundo para actualizar el reloj
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            printTime();
-        }, 0, 1000, MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(RegistraCertificacion::printTime, 0, 1000, MILLISECONDS);
         spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
         var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
         tf.setEditable(false);
@@ -83,12 +81,11 @@ public class RegistraCertificacion extends JDialog {
         var editor = campoTipo.getEditor();
         if (editor instanceof DefaultEditor defaultEditor) {
             final var mensaje = "Selecciona un valor";
-            var spinnerEditor = (DefaultEditor) defaultEditor;
-            spinnerEditor.getTextField().setHorizontalAlignment(CENTER);
-            spinnerEditor.getTextField().setEditable(false);
-            spinnerEditor.getTextField().setText(mensaje); // Establecer el texto dentro del editor
-            spinnerEditor.getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
-            spinnerEditor.getTextField().setEditable(false);
+            new AtomicReference<>(defaultEditor).get().getTextField().setHorizontalAlignment(CENTER);
+            new AtomicReference<>(defaultEditor).get().getTextField().setEditable(false);
+            new AtomicReference<>(defaultEditor).get().getTextField().setText(mensaje); // Establecer el texto dentro del editor
+            new AtomicReference<>(defaultEditor).get().getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
+            new AtomicReference<>(defaultEditor).get().getTextField().setEditable(false);
         }
         mu.setVisible(false);
         areaSoft.setLineWrap(true);
@@ -222,8 +219,7 @@ public class RegistraCertificacion extends JDialog {
 
         // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
         document.setDocumentFilter(new DocumentFilter() {
-            int maxCharacters = 15; // Define el límite máximo de caracteres
-
+            final int maxCharacters = 15; // Define el límite máximo de caracteres
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Verifica si el texto a insertar contiene espacios en blanco
