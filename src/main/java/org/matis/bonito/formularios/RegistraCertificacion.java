@@ -4,6 +4,7 @@
  */
 package org.matis.bonito.formularios;
 
+import com.google.zxing.WriterException;
 import org.matis.bonito.controller.TipoEquipoController;
 import org.matis.bonito.model.TipoEquipo;
 import org.matis.bonito.validador.*;
@@ -24,7 +25,6 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -32,12 +32,14 @@ import java.util.logging.Logger;
 import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
 import static java.awt.Dialog.ModalityType.TOOLKIT_MODAL;
 import static java.awt.EventQueue.invokeLater;
+import static java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager;
 import static java.awt.Toolkit.getDefaultToolkit;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_M;
 import static java.lang.System.out;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Level.SEVERE;
 import static javax.imageio.ImageIO.read;
@@ -45,6 +47,7 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.SwingConstants.CENTER;
+import static org.matis.bonito.validador.QRCodeGenerator.generateQRCode;
 
 /**
  *
@@ -68,20 +71,20 @@ public class RegistraCertificacion extends JDialog {
         spinnerFecha.setEnabled(false);
         campoNombre.requestFocus();
         final var MAX_LENGTH = 120;
-        var kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        var kb = getCurrentKeyboardFocusManager();
         imagenEnPanel = new ImagenEnPanel();
         var document = (PlainDocument) campoContrasenia.getDocument();
-        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService = newScheduledThreadPool(1);
         // Define una tarea que se ejecutará cada segundo para actualizar el reloj
         scheduledExecutorService.scheduleAtFixedRate(RegistraCertificacion::printTime, 0, 1000, MILLISECONDS);
         spinnerFecha.setEditor(new DateEditor(spinnerFecha, "yyyy-MM-dd HH:mm:ss a"));
-        var tf = ((JSpinner.DefaultEditor) campoTipo.getEditor()).getTextField();
+        var tf = ((DefaultEditor) campoTipo.getEditor()).getTextField();
         tf.setEditable(false);
         tf.setBackground(Color.white);
         var editor = campoTipo.getEditor();
         if (editor instanceof DefaultEditor defaultEditor) {
             final var mensaje = "Selecciona un valor";
-            new AtomicReference<>(defaultEditor).get().getTextField().setHorizontalAlignment(CENTER);
+            new AtomicReference<>(defaultEditor).get().getTextField().setHorizontalAlignment(SwingConstants.CENTER);
             new AtomicReference<>(defaultEditor).get().getTextField().setEditable(false);
             new AtomicReference<>(defaultEditor).get().getTextField().setText(mensaje); // Establecer el texto dentro del editor
             new AtomicReference<>(defaultEditor).get().getTextField().setCaretPosition(mensaje.length()); // Colocar el cursor al final del texto
@@ -220,6 +223,7 @@ public class RegistraCertificacion extends JDialog {
         // Agrega un DocumentFilter para limitar el número de caracteres y evitar espacios en blanco
         document.setDocumentFilter(new DocumentFilter() {
             final int maxCharacters = 15; // Define el límite máximo de caracteres
+
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Verifica si el texto a insertar contiene espacios en blanco
@@ -273,7 +277,7 @@ public class RegistraCertificacion extends JDialog {
                         source.setText(source.getText().substring(0, tamano));
                     }
                     if (e.getKeyCode() == VK_M && e.isControlDown()) {
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                        getCurrentKeyboardFocusManager().focusNextComponent();
                     }
                 }
             }
@@ -288,7 +292,7 @@ public class RegistraCertificacion extends JDialog {
                         source.setText(source.getText().substring(0, tamano));
                     }
                     if (e.getKeyCode() == VK_M && e.isControlDown()) {
-                        KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+                        getCurrentKeyboardFocusManager().focusNextComponent();
                     }
                 }
             }
@@ -313,13 +317,39 @@ public class RegistraCertificacion extends JDialog {
                 super.insertString(offs, str, a);
             }
         });
+        JLabel errorLabel = new JLabel("Error al cargar el código QR.");
+        errorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+        cancelar.addActionListener((var e) -> {
 
-        cancelar.addActionListener(e -> {
             out.println(campoTipo.getValue().toString());
+
+            fantasma.setBackground(Color.red);
+            fantasma.add(errorLabel,CENTER);
+
+            try {
+                var qrImage = generateQRCode("Mi Matias", fantasma.getWidth(), fantasma.getHeight());
+                if (qrImage != null) {
+                    out.println("Hay imagen");
+                    qrIcon = new ImageIcon(qrImage);
+                    qrLabel = new JLabel(qrIcon);
+                    JOptionPane.showMessageDialog(this, qrLabel, "Imagen", JOptionPane.PLAIN_MESSAGE);
+
+                } else {
+                    out.println("no hay imagen.......................");
+                    JLabel errorLabels = new JLabel("Error al cargar el código QR.");
+                    fantasma.add(errorLabels);
+                }
+
+//                var qrIcon = new ImageIcon(qrImage);
+//                JLabel qrLabel = new JLabel(qrIcon);
+//                fantasma.add(qrLabel);
+            } catch (WriterException ex) {
+                ex.printStackTrace();
+            }
+
         });
 
         //panelCargarImagen.add(imagePanel, CENTER);
-
         // Agregar el KeyListener al JFrame
 //        this.addKeyListener(new KeyAdapter() {
 //            @Override
@@ -366,8 +396,8 @@ public class RegistraCertificacion extends JDialog {
                 return false;
             }
         });
-        panelImage.add(new ImagePanel(IMAGEN), CENTER);
-        panelCargarImagen.add(imagenEnPanel, CENTER);
+        panelImage.add(new ImagePanel(IMAGEN), SwingConstants.CENTER);
+        panelCargarImagen.add(imagenEnPanel, SwingConstants.CENTER);
         this.toFront();
         repaint();
     }
@@ -420,6 +450,7 @@ public class RegistraCertificacion extends JDialog {
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         cargaImage = new javax.swing.JButton();
+        fantasma = new javax.swing.JPanel();
         mu = new javax.swing.JLabel();
         panelCargarImagen = new javax.swing.JPanel();
         panelImage = new javax.swing.JPanel();
@@ -647,18 +678,21 @@ public class RegistraCertificacion extends JDialog {
 
         cargaImage.setText("Imagen");
 
+        fantasma.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                         .addComponent(cargaImage))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fantasma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -672,7 +706,9 @@ public class RegistraCertificacion extends JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cargaImage))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fantasma, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mu.setText("Muestrame");
@@ -704,7 +740,7 @@ public class RegistraCertificacion extends JDialog {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                            .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -714,21 +750,21 @@ public class RegistraCertificacion extends JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(panelCargarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(99, 99, 99)
                 .addComponent(mu)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(967, 447));
+        setSize(new java.awt.Dimension(967, 481));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -736,7 +772,7 @@ public class RegistraCertificacion extends JDialog {
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             // Double-click detected
-             invokeLater(() -> {
+            invokeLater(() -> {
                 var ima = new ImagenDialog(new JFrame(), true);
                 ima.setModalExclusionType(APPLICATION_EXCLUDE);
                 ima.setModalityType(TOOLKIT_MODAL);
@@ -819,6 +855,7 @@ public class RegistraCertificacion extends JDialog {
     private javax.swing.JSpinner campoTipo;
     private javax.swing.JButton cancelar;
     private javax.swing.JButton cargaImage;
+    private javax.swing.JPanel fantasma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -848,4 +885,7 @@ public class RegistraCertificacion extends JDialog {
     static final private String IMAGEN = "/home/oscar/NetBeansProjects/MiMatis/src/main/java/org/matis/bonito/image/linux.jpg";
     private ImagenPanel imagePanel;
     private ImagenEnPanel imagenEnPanel;
+    private ImageIcon qrIcon;
+    private JLabel qrLabel;
+
 }

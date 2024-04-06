@@ -23,7 +23,7 @@ import org.matis.bonito.validador.RoundButtonUI;
  *
  * @author oscar
  */
-public class CrearIngSop extends javax.swing.JDialog {
+public class CrearIngSop extends JDialog {
 
     public CrearIngSop(JFrame parent, boolean modal) {
         super(parent, modal);
