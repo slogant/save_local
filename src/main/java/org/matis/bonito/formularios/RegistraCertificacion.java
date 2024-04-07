@@ -20,6 +20,7 @@ import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -317,14 +318,10 @@ public class RegistraCertificacion extends JDialog {
                 super.insertString(offs, str, a);
             }
         });
-        JLabel errorLabel = new JLabel("Error al cargar el código QR.");
-        errorLabel.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+
         cancelar.addActionListener((var e) -> {
 
             out.println(campoTipo.getValue().toString());
-
-            fantasma.setBackground(Color.red);
-            fantasma.add(errorLabel,CENTER);
 
             try {
                 var qrImage = generateQRCode("Mi Matias", fantasma.getWidth(), fantasma.getHeight());
@@ -333,7 +330,9 @@ public class RegistraCertificacion extends JDialog {
                     qrIcon = new ImageIcon(qrImage);
                     qrLabel = new JLabel(qrIcon);
                     JOptionPane.showMessageDialog(this, qrLabel, "Imagen", JOptionPane.PLAIN_MESSAGE);
-
+                    fantasma.removeAll();
+                    fantasma.add(qrLabel);
+                    fantasma.repaint();
                 } else {
                     out.println("no hay imagen.......................");
                     JLabel errorLabels = new JLabel("Error al cargar el código QR.");
@@ -450,10 +449,10 @@ public class RegistraCertificacion extends JDialog {
         aceptar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         cargaImage = new javax.swing.JButton();
-        fantasma = new javax.swing.JPanel();
         mu = new javax.swing.JLabel();
         panelCargarImagen = new javax.swing.JPanel();
         panelImage = new javax.swing.JPanel();
+        fantasma = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registra equipo para certificación");
@@ -678,22 +677,19 @@ public class RegistraCertificacion extends JDialog {
 
         cargaImage.setText("Imagen");
 
-        fantasma.setLayout(new java.awt.BorderLayout());
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(cargaImage))
                     .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fantasma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cargaImage))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -706,8 +702,6 @@ public class RegistraCertificacion extends JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cargaImage))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fantasma, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -715,7 +709,7 @@ public class RegistraCertificacion extends JDialog {
 
         panelCargarImagen.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         panelCargarImagen.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) {
                 MostrarArchivo(evt);
             }
         });
@@ -724,6 +718,8 @@ public class RegistraCertificacion extends JDialog {
         panelImage.setBackground(new java.awt.Color(255, 255, 255));
         panelImage.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         panelImage.setLayout(new java.awt.BorderLayout());
+
+        fantasma.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -737,28 +733,33 @@ public class RegistraCertificacion extends JDialog {
                         .addComponent(mu)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(fantasma, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelCargarImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(panelCentral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(141, 141, 141)
+                        .addComponent(mu))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(panelCargarImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(99, 99, 99)
-                .addComponent(mu)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fantasma, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -768,7 +769,7 @@ public class RegistraCertificacion extends JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MostrarArchivo(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MostrarArchivo
+    private void MostrarArchivo(MouseEvent evt) {//GEN-FIRST:event_MostrarArchivo
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             // Double-click detected
@@ -836,48 +837,48 @@ public class RegistraCertificacion extends JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aceptar;
-    private javax.swing.JTextArea areaOb;
-    private javax.swing.JTextArea areaSoft;
-    private javax.swing.JTextField campoActivo;
-    private javax.swing.JTextField campoApellidoMat;
-    private javax.swing.JTextField campoApellidoPat;
-    private javax.swing.JCheckBox campoCargador;
-    private javax.swing.JPasswordField campoContrasenia;
-    private javax.swing.JSpinner campoLocalidad;
-    private javax.swing.JSpinner campoMarca;
-    private javax.swing.JSpinner campoModelo;
-    private javax.swing.JTextField campoNombre;
-    private javax.swing.JTextField campoNumEmp;
-    private javax.swing.JSpinner campoPiso;
-    private javax.swing.JCheckBox campoRespaldo;
-    private javax.swing.JFormattedTextField campoTelefono;
-    private javax.swing.JSpinner campoTipo;
-    private javax.swing.JButton cancelar;
-    private javax.swing.JButton cargaImage;
-    private javax.swing.JPanel fantasma;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel mu;
-    private javax.swing.JPanel panelCargarImagen;
-    private javax.swing.JPanel panelCentral;
-    private javax.swing.JPanel panelImage;
+    javax.swing.JButton aceptar;
+    javax.swing.JTextArea areaOb;
+    javax.swing.JTextArea areaSoft;
+    javax.swing.JTextField campoActivo;
+    javax.swing.JTextField campoApellidoMat;
+    javax.swing.JTextField campoApellidoPat;
+    javax.swing.JCheckBox campoCargador;
+    javax.swing.JPasswordField campoContrasenia;
+    javax.swing.JSpinner campoLocalidad;
+    javax.swing.JSpinner campoMarca;
+    javax.swing.JSpinner campoModelo;
+    javax.swing.JTextField campoNombre;
+    javax.swing.JTextField campoNumEmp;
+    javax.swing.JSpinner campoPiso;
+    javax.swing.JCheckBox campoRespaldo;
+    javax.swing.JFormattedTextField campoTelefono;
+    javax.swing.JSpinner campoTipo;
+    javax.swing.JButton cancelar;
+    javax.swing.JButton cargaImage;
+    javax.swing.JPanel fantasma;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JLabel jLabel10;
+    javax.swing.JLabel jLabel12;
+    javax.swing.JLabel jLabel13;
+    javax.swing.JLabel jLabel14;
+    javax.swing.JLabel jLabel2;
+    javax.swing.JLabel jLabel3;
+    javax.swing.JLabel jLabel4;
+    javax.swing.JLabel jLabel5;
+    javax.swing.JLabel jLabel6;
+    javax.swing.JLabel jLabel7;
+    javax.swing.JLabel jLabel8;
+    javax.swing.JLabel jLabel9;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JPanel jPanel2;
+    javax.swing.JPanel jPanel3;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JScrollPane jScrollPane2;
+    javax.swing.JLabel mu;
+    javax.swing.JPanel panelCargarImagen;
+    javax.swing.JPanel panelCentral;
+    javax.swing.JPanel panelImage;
     private static javax.swing.JSpinner spinnerFecha;
     // End of variables declaration//GEN-END:variables
 
